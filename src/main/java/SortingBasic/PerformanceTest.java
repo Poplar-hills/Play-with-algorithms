@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Random;
 
 public class PerformanceTest {
-    public static double test(Comparable[] arr, String sortClassName) {
+    public static double test(Comparable[] arr, String sortClassName) {  // TODO: how to pass static method as a parameter?
         double secondsConsumed = 0.0;
         try {
             Class sortClass = Class.forName(sortClassName);
