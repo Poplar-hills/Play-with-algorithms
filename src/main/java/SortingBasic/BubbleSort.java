@@ -4,18 +4,46 @@ import java.util.Arrays;
 
 import static SortingBasic.Helpers.*;
 
+/**
+ * 冒泡排序（Bubble Sort）
+ * - 排序过程解释 SEE: https://algorithms.tutorialhorizon.com/optmized-bubble-sort-java-implementation/
+ * - Pros: Very simple, all it does is compare all the adjacent elements and swap them if they are in wrong order.
+ * - Cons: The complexity is O(n^2), as all the pairs are compared, even when the original array is already sorted.（这点跟选择排序类似）
+ * - 冒泡排序不是一种实用的排序，因为它的是 O(n^2) 量级的复杂度，并且比同是 O(n^2) 的插入排序还要差，因此几乎不会被用在真实项目中。
+ */
+
 public class BubbleSort {
-    public static void sort(Comparable[] arr) {
-        for (int i = 0; i < arr.length; i++)
-            for (int j = 0; j < arr.length - i - 1; j++)
+    public static void sort1(Comparable[] arr) {
+        for (int i = 0; i < arr.length; i++)  // 外层循环控制排序遍数
+            for (int j = 0; j < arr.length - i - 1; j++)  // 内层循环控制一遍排序中的比较次数，图解 SEE: https://blog.csdn.net/guoweimelon/article/details/50902597
                 if (arr[j].compareTo(arr[j + 1]) > 0)
                     swap(arr, j, j + 1);
     }
 
+    /**
+     * 在 sort1 的实现中，每一遍排序都会比较所有元素 pair，不论当时数组是否已经是有序的了（即不能提前结束）。
+     * 因此可以针对这点进行优化：提前结束的条件就是某一遍排序中是否 swap 过元素，如果没有则说明此时的数组已经是有序的了。
+     */
+    public static void sort2(Comparable[] arr) {
+        boolean hasSwapped = true;
+        for (int i = 0; i < arr.length && hasSwapped; i++) {
+            hasSwapped = false;
+            for (int j = 0; j < arr.length - i - 1; j++)
+                if (arr[j].compareTo(arr[j + 1]) > 0) {
+                    swap(arr, j, j + 1);
+                    hasSwapped = true;
+                }
+        }
+    }
+
     public static void main(String[] args) {
-        Integer[] arr = generateRandomIntArr(5);
-        System.out.println(Arrays.toString(arr));
-        sort(arr);
-        System.out.println(Arrays.toString(arr));
+        Integer[] arr1 = generateRandomIntArr(5);
+        Integer[] arr2 = arr1.clone();
+
+        System.out.println(Arrays.toString(arr1));
+        sort1(arr1);
+        sort2(arr2);
+        System.out.println(Arrays.toString(arr1));
+        System.out.println(Arrays.toString(arr2));
     }
 }

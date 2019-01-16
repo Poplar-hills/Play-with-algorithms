@@ -6,7 +6,7 @@ import java.util.Random;
 import static SortingBasic.Helpers.*;
 
 /*
- * 插入排序
+ * 插入排序（Insertion Sort）
  * - 插入排序的两个性质：
  *   1. 可以提前终止循环（相对于选择排序来说）
  *   2. 当数据越接近有序数组时，性能优势越明显（甚至比 O(nlogn) 的算法还高）
@@ -45,8 +45,8 @@ public class InsertionSrot {
 
         System.out.println(Arrays.toString(arr1));
         sort1(arr1);
-        System.out.println(Arrays.toString(arr1));
         sort2(arr2);
+        System.out.println(Arrays.toString(arr1));
         System.out.println(Arrays.toString(arr2));
     }
 }

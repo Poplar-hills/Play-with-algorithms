@@ -6,7 +6,7 @@ import java.util.Random;
 import static SortingBasic.Helpers.*;
 
 /*
- * 选择排序
+ * 选择排序（Selection Sort）
  * - 复杂度：O(n^2)。
  * */
 
