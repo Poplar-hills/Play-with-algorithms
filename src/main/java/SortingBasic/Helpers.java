@@ -28,4 +28,8 @@ public class Helpers {
 
         return arr;
     }
+
+    public static void timeIt(Comparable[] arr) {
+
+    }
 }

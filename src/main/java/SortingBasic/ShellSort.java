@@ -3,7 +3,6 @@ package SortingBasic;
 import java.util.Arrays;
 
 import static SortingBasic.Helpers.generateRandomIntArr;
-import static SortingBasic.Helpers.swap;
 
 /**
  * 希尔排序（Shell Sort）：
@@ -42,19 +41,16 @@ import static SortingBasic.Helpers.swap;
 
 public class ShellSort {
     public static void sort(Comparable[] arr) {
-        int n = arr.length;
-        int h = 1;  // h 即为 gap
-        while (h < n / 3) h = 3 * h + 1;  // 计算 gap: 1, 4, 13, 40, 121, 364, 1093...
-
-        while (h >= 1) {  // h-sort the array
-            for (int i = h; i < n; i++) {  // 对 arr[i], arr[i-h], arr[i-2*h], arr[i-3*h]... 使用插入排序
+        int h = arr.length / 2;  // h 即为 gap
+        while (h >= 1) {         // h-sort the array
+            for (int i = h; i < arr.length; i++) {  // 将 arr[i], arr[i-h], arr[i-2*h], arr[i-3*h]... 分为一组并对他们使用插入排序（这个过程很精密，用手一步步画出来才能理解）
                 Comparable e = arr[i];
                 int j = i;
-                for ( ; j >= h && e.compareTo(arr[j - h]) < 0 ; j -= h)
+                for ( ; j >= h && e.compareTo(arr[j - h]) < 0 ; j -= h)  // 当 h 较大时，j -= h 之后会 < h，从而退出循环
                     arr[j] = arr[j - h];
                 arr[j] = e;
             }
-            h /= 3;
+            h /= 2;
         }
     }
 
