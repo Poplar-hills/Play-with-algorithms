@@ -7,9 +7,11 @@ import static SortingBasic.Helpers.*;
 /**
  * 冒泡排序（Bubble Sort）
  * - 排序过程解释 SEE: https://algorithms.tutorialhorizon.com/optmized-bubble-sort-java-implementation/
+ * - 插入排序是把小的元素往数组前面移动，而冒泡排序是把大的元素往数组后面移动。
  * - Pros: Very simple, all it does is compare all the adjacent elements and swap them if they are in wrong order.
- * - Cons: The complexity is O(n^2), as all the pairs are compared, even when the original array is already sorted.（这点跟选择排序类似）
- * - 冒泡排序不是一种实用的排序，因为它的是 O(n^2) 量级的复杂度，并且比同是 O(n^2) 的插入排序还要差，因此几乎不会被用在真实项目中。
+ * - Cons: The complexity is O(n^2), as all the pairs are compared, even when the original array is already sorted.
+ *   （这点跟选择排序类似，因为不能像插入排序那样提前结束循环）
+ * - 冒泡排序不是一种实用的排序，因为它的是 O(n^2) 量级的复杂度，并且比同是 O(n^2) 的插入排序还要差，因此几乎不会被用在实际工程中。
  */
 
 public class BubbleSort {
