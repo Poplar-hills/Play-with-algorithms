@@ -1,10 +1,11 @@
 package Utils;
 
-import java.lang.reflect.Method;
-import java.util.Random;
-import java.util.function.Function;
+import com.sun.tools.javac.util.StringUtils;
 
-public class Helpers {
+import java.util.Random;
+import java.util.function.Consumer;
+
+public class Helpers<E> {
     public static void swap(Object[] arr, int i, int j) {
         Object temp = arr[i];
         arr[i] = arr[j];
@@ -31,23 +32,11 @@ public class Helpers {
         return arr;
     }
 
-    // TODO: this is not working
-    // TODO: is it possible to pass in a lambda that take an arr as the arguement and call it afterwards?
-    public static double timeIt(Comparable[] arr, String sortClassName) {
-        double secondsConsumed = 0.0;
-        try {
-            Class sortClass = Class.forName(sortClassName);
-            Method sortMethod = sortClass.getMethod("sort1", Comparable[].class);
-
-            double startTime = System.nanoTime();
-            sortMethod.invoke(null, arr);
-            double endTime = System.nanoTime();
-
-            secondsConsumed = (endTime - startTime) / 1000000000.0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return secondsConsumed;
+    public static void timeIt(Comparable[] arr, Consumer<Comparable[]> fn) {
+        double startTime = System.nanoTime();
+        fn.accept(arr);
+        double endTime = System.nanoTime();
+        System.out.println(String.format("Time consumed: %s", (endTime - startTime) / 1000000000.0));
     }
 
     public static Integer[] generateNearlyOrderedArr(int size, int numOfSwap) {
