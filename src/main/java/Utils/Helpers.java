@@ -31,7 +31,9 @@ public class Helpers {
         return arr;
     }
 
-    public static double timeIt(Comparable[] arr, String sortClassName) {  // TODO: this is not working
+    // TODO: this is not working
+    // TODO: is it possible to pass in a lambda that take an arr as the arguement and call it afterwards?
+    public static double timeIt(Comparable[] arr, String sortClassName) {
         double secondsConsumed = 0.0;
         try {
             Class sortClass = Class.forName(sortClassName);
