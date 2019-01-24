@@ -1,11 +1,13 @@
 package Utils;
 
-import com.sun.tools.javac.util.StringUtils;
-
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class Helpers<E> {
+public class Helpers {
+    public static void log(Object content) {
+        System.out.println(content);
+    }
+
     public static void swap(Object[] arr, int i, int j) {
         Object temp = arr[i];
         arr[i] = arr[j];
@@ -36,7 +38,7 @@ public class Helpers<E> {
         double startTime = System.nanoTime();
         fn.accept(arr);
         double endTime = System.nanoTime();
-        System.out.println(String.format("Time consumed: %s", (endTime - startTime) / 1000000000.0));
+        log(String.format("Time consumed: %s", (endTime - startTime) / 1000000000.0));
     }
 
     public static Integer[] generateNearlyOrderedArr(int size, int numOfSwap) {

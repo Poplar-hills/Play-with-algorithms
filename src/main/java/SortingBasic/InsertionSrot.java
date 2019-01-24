@@ -53,11 +53,11 @@ public class InsertionSrot {
         Integer[] arr2 = arr1.clone();
 
         // 功能测试
-        System.out.println(Arrays.toString(arr1));
+        log(Arrays.toString(arr1));
         sort1(arr1);
         sort2(arr2);
-        System.out.println(Arrays.toString(arr1));
-        System.out.println(Arrays.toString(arr2));
+        log(Arrays.toString(arr1));
+        log(Arrays.toString(arr2));
 
         // 性能测试
         Integer[] arr3 = generateRandomIntArr(50000);

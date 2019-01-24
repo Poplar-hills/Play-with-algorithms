@@ -42,10 +42,10 @@ public class BubbleSort {
         Integer[] arr1 = generateRandomIntArr(5);
         Integer[] arr2 = arr1.clone();
 
-        System.out.println(Arrays.toString(arr1));
+        log(Arrays.toString(arr1));
         sort1(arr1);
         sort2(arr2);
-        System.out.println(Arrays.toString(arr1));
-        System.out.println(Arrays.toString(arr2));
+        log(Arrays.toString(arr1));
+        log(Arrays.toString(arr2));
     }
 }

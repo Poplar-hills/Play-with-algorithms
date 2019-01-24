@@ -69,8 +69,8 @@ public class MergeSort {
 
     public static void main(String[] args) {
         Integer[] arr = generateRandomIntArr(10);
-        System.out.println(Arrays.toString(arr));
+        log(Arrays.toString(arr));
         sort(arr);
-        System.out.println(Arrays.toString(arr));
+        log(Arrays.toString(arr));
     }
 }
