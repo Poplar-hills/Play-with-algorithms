@@ -2,7 +2,7 @@ package SortingBasic;
 
 import java.util.Arrays;
 
-import static SortingBasic.Helpers.*;
+import static Utils.Helpers.*;
 
 /**
  * 冒泡排序（Bubble Sort）

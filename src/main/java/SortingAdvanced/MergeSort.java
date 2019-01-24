@@ -2,7 +2,7 @@ package SortingAdvanced;
 
 import java.util.Arrays;
 
-import static SortingBasic.Helpers.generateRandomIntArr;
+import static Utils.Helpers.*;
 
 /*
 * 归并排序（Merge Sort）
@@ -21,7 +21,11 @@ import static SortingBasic.Helpers.generateRandomIntArr;
 * - 归并排序的思想：
 *   - 有 n 个元素的数组可以进行 log(n) 次二分操作，共分出 log(n) 个层级。
 *   - 如果每层的排序和归并过程能在 O(n) 的复杂度内完成，则该算法的整体复杂度就是 O(nlogn)。
-* - 这个思想也是所有 O(nlogn) 复杂度的算法的来源 —— 通过二分达到 log(n) 的层级，在每层内用 O(n) 的算法来做事情。
+*   注：这个思想也是所有 O(nlogn) 复杂度的算法的来源 —— 通过二分达到 log(n) 的层级，在每层内用 O(n) 的算法来做事情。
+*
+* - 归并排序的优化：
+*   对于近乎有序的数组，归并排序要慢于插入排序，因为归并排序不能像插入排序那样退化成 O(n) 的复杂度。但是仍然可以进行优化：
+*   1.
 * */
 
 public class MergeSort {

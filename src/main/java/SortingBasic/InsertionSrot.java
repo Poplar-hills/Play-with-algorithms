@@ -1,9 +1,8 @@
 package SortingBasic;
 
 import java.util.Arrays;
-import java.util.Random;
 
-import static SortingBasic.Helpers.*;
+import static Utils.Helpers.*;
 
 /*
  * 插入排序（Insertion Sort）

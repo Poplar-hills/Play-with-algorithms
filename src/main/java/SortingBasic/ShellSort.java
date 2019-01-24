@@ -2,7 +2,7 @@ package SortingBasic;
 
 import java.util.Arrays;
 
-import static SortingBasic.Helpers.generateRandomIntArr;
+import static Utils.Helpers.*;
 
 /**
  * 希尔排序（Shell Sort）：
