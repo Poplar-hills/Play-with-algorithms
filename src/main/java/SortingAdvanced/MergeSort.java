@@ -9,7 +9,8 @@ import static Utils.Helpers.*;
 * - 复杂度是 O(nlogn)
 * - 归并排序递归地：
 *   1. 将数组进行二分（从上到下）
-*   2. 对每一层的每一部分进行归并（从下到上）
+*   2. 将二分后的左右两部分分别进行排序
+*   3. 将排序后的左右两部分归并到上一层（从下到上）
 *
 *              不断进行二分                第一次归并                第二次归并                第三次归并
 *   Level0   8 6 2 3 1 5 7 4          8 6 2 3 1 5 7 4          8 6 2 3 1 5 7 4          1 2 3 4 5 6 7 8
@@ -38,7 +39,7 @@ public class MergeSort {
         int mid = (r - l) / 2  + l;  // 也可以写成 (l + r) / 2，但是可能整型溢出
         sort(arr, l, mid);
         sort(arr, mid + 1, r);
-        merge(arr, l, mid, r);       // 递归到最小单元后再归并
+        merge(arr, l, mid, r);       // 递归到底后再从底往上进行归并（每次归并）
     }
 
     // 将 arr[l, mid] 和 arr[mid + 1, r] 这两部分进行归并
@@ -46,19 +47,19 @@ public class MergeSort {
         // 创建辅助数组（空间换时间）
         Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);
 
-        // 进行归并
-        int i = l, j = mid + 1;  // 初始化，i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid + 1
-        for (int k = l; k <= r; k++) {
-            if (i > mid) {  // 如果左半部分元素已经全部处理完毕
+        // 进行归并：需要3个索引 i, j, k
+        int i = l, j = mid + 1;         // i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid + 1
+        for (int k = l; k <= r; k++) {  // k 指向 arr[l, r] 中的每个位置
+            if (i > mid) {              // 如果左半部分元素已经全部处理完毕
                 arr[k] = aux[j - l]; j++;
             }
-            else if (j > r) {  // 如果右半部分元素已经全部处理完毕
+            else if (j > r) {           // 如果右半部分元素已经全部处理完毕
                 arr[k] = aux[i - l]; i++;
             }
             else if (aux[i - l].compareTo(aux[j - l]) < 0) {  // 左半部分所指元素 < 右半部分所指元素
                 arr[k] = aux[i - l]; i++;
             }
-            else {  // 左半部分所指元素 >= 右半部分所指元素
+            else {                      // 左半部分所指元素 >= 右半部分所指元素
                 arr[k] = aux[j - l]; j++;
             }
         }
