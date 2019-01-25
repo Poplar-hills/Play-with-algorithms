@@ -51,7 +51,7 @@ public class MergeSort {
         int i = l, j = mid + 1;         // i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid + 1
         for (int k = l; k <= r; k++) {  // k 指向 arr[l, r] 中的每个位置
             if (i > mid) {              // 如果左半部分元素已经全部处理完毕
-                arr[k] = aux[j - l]; j++;
+                arr[k] = aux[j - l]; j++;  // 有 l 的偏移量，要减去
             }
             else if (j > r) {           // 如果右半部分元素已经全部处理完毕
                 arr[k] = aux[i - l]; i++;
