@@ -4,8 +4,7 @@ import SortingBasic.InsertionSrot;
 
 import java.util.Arrays;
 
-import static Utils.Helpers.generateRandomIntArr;
-import static Utils.Helpers.log;
+import static Utils.Helpers.*;
 
 /*
 * - MergeSort 中实现的归并排序已经是 O(nlogn) 的复杂度，快于插入排序的 O(n^2)，但是对于接近有序的数组仍然比插入排序慢。
@@ -26,7 +25,7 @@ public class MergeSortOptimised {
     }
 
     private static void sort(Comparable[] arr, int l, int r) {
-        if (r - l <= 15) {  // 优化 2：当元素个数 >= 15时，直接采用插入排序
+        if (r - l <= 15) {  // 优化 2：当元素个数 >= 15时，直接采用插入排序（这个优化不一定能带来性能提升）
             InsertionSrot.sortRange(arr, l, r);
             return;
         }
@@ -35,7 +34,7 @@ public class MergeSortOptimised {
         sort(arr, l, mid);
         sort(arr, mid + 1, r);
 
-        if (arr[mid].compareTo(arr[mid + 1]) < 0)  // 优化 1
+        if (arr[mid].compareTo(arr[mid + 1]) < 0)  // 优化 1（这个优化就能带来很大的性能提升）
             merge(arr, l, mid, r);
     }
 
@@ -64,5 +63,17 @@ public class MergeSortOptimised {
         log(arr);
         sort(arr);
         log(arr);
+
+        // 性能测试（随机数组）
+        Integer[] arr1 = generateRandomIntArr(100000);
+        Integer[] arr2 = arr1.clone();
+        timeIt(arr1, MergeSort::sort);
+        timeIt(arr2, MergeSortOptimised::sort);  // 反而比普通的 MergeSort 慢很多
+
+        // 性能测试（几乎有序的数组）
+        Integer[] arr3 = generateNearlyOrderedArr(100000, 0);
+        Integer[] arr4 = arr1.clone();
+        timeIt(arr3, MergeSort::sort);
+        timeIt(arr4, MergeSortOptimised::sort);  // 比普通的 MergeSort 快很多
     }
 }
