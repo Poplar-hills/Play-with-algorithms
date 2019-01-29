@@ -34,13 +34,13 @@ import static Utils.Helpers.*;
 public class InsertionSrot {
     public static void sort1(Comparable[] arr) {
         for (int i = 0; i < arr.length; i++)
-            for (int j = i; j > 0 && arr[j - 1].compareTo(arr[j]) > 0; j--)
-                swap(arr, j - 1, j);
+            for (int j = i; j > 0 && arr[j].compareTo(arr[j - 1]) < 0; j--)
+                swap(arr, j, j - 1);
     }
 
     public static void sort2(Comparable[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            Comparable e = arr[i];  // 先将元素复制一份
+            Comparable e = arr[i];  // 复制当前元素
             int j = i;              // j 表示 e 应该插入的位置
             for (; j > 0 && arr[j - 1].compareTo(e) > 0; j--)  // 如果前一个元素 > e，则将前一个元素替换当前元素
                 arr[j] = arr[j - 1];

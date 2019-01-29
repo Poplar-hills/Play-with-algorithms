@@ -6,7 +6,8 @@ import static Utils.Helpers.*;
 
 /**
  * 冒泡排序（Bubble Sort）
- * - 排序过程解释 SEE: https://algorithms.tutorialhorizon.com/optmized-bubble-sort-java-implementation/
+ * - 排序过程解释 SEE: https://algorithms.tutorialhorizon.com/optmized-bubble-sort-java-implementation/（这个是对的，
+ *   手机应用 Algorithms 上的是错的）。
  * - 插入排序是把小的元素往数组前面移动，而冒泡排序是把大的元素往数组后面移动。
  * - Pros: Very simple, all it does is compare all the adjacent elements and swap them if they are in wrong order.
  * - Cons: The complexity is O(n^2), as all the pairs are compared, even when the original array is already sorted.
@@ -17,14 +18,14 @@ import static Utils.Helpers.*;
 public class BubbleSort {
     public static void sort1(Comparable[] arr) {
         for (int i = 0; i < arr.length; i++)  // 外层循环控制排序遍数
-            for (int j = 0; j < arr.length - i - 1; j++)  // 内层循环控制一遍排序中的比较次数，图解 SEE: https://blog.csdn.net/guoweimelon/article/details/50902597
-                if (arr[j].compareTo(arr[j + 1]) > 0)
+            for (int j = 0; j < arr.length - i - 1; j++)  // 内层循环控制一遍排序中的比较次数。要减 i 是因为最后 i 个元素是已经排过序的，不需要再比较
+                if (arr[j].compareTo(arr[j + 1]) > 0)     // 比较相邻的两个元素，将大的元素往后换
                     swap(arr, j, j + 1);
     }
 
     /**
      * 在 sort1 的实现中，每一遍排序都会比较所有元素 pair，不论当时数组是否已经是有序的了（即不能提前结束）。
-     * 因此可以针对这点进行优化：提前结束的条件就是某一遍排序中是否 swap 过元素，如果没有则说明此时的数组已经是有序的了。
+     * 针对这点进行优化：提前结束的条件就是某一遍排序中是否 swap 过元素，如果没有则说明此时的数组已经是有序的了。
      */
     public static void sort2(Comparable[] arr) {
         boolean hasSwapped = true;
