@@ -1,11 +1,16 @@
 package Utils;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Consumer;
 
 public class Helpers {
     public static void log(Object content) {
         System.out.println(content);
+    }
+
+    public static void log(Object[] arr) {
+        System.out.println(Arrays.toString(arr));
     }
 
     public static void swap(Object[] arr, int i, int j) {

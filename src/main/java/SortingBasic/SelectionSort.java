@@ -24,12 +24,12 @@ public class SelectionSort {
         Integer[] arr1 = generateRandomIntArr(5);
         Character[] arr2 = generateRandomCharArr(5);
 
-        log(Arrays.toString(arr1));
+        log(arr1);
         sort(arr1);
-        log(Arrays.toString(arr1) + '\n');
+        log(arr1);
 
-        log(Arrays.toString(arr2));
+        log(arr2);
         sort(arr2);
-        log(Arrays.toString(arr2));
+        log(arr2);
     }
 }

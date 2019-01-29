@@ -62,8 +62,8 @@ public class MergeSort {
 
     public static void main(String[] args) {
         Integer[] arr = generateRandomIntArr(10);
-        log(Arrays.toString(arr));
+        log(arr);
         sort(arr);
-        log(Arrays.toString(arr));
+        log(arr);
     }
 }
