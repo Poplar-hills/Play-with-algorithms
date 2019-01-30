@@ -1,5 +1,7 @@
 package SortingAdvanced;
 
+import SortingBasic.InsertionSort;
+
 import java.util.Arrays;
 
 import static Utils.Helpers.*;
@@ -21,6 +23,11 @@ import static Utils.Helpers.*;
 *   - 有 n 个元素的数组可以进行 log(n) 次二分操作，共分出 log(n) 个层级。
 *   - 如果每层的排序和归并过程能在 O(n) 的复杂度内完成，则该算法的整体复杂度就是 O(nlogn)。
 *   注：这个思想也是所有 O(nlogn) 复杂度的算法的来源 —— 通过二分获得 log(n) 个层级，在每层内使用 O(n) 的算法来做事情。
+*
+* - 优化：
+*   在 sort 方法中，可以在 merge 之前加一个判断：如果 arr[mid] < arr[mid+1]，则说明 arr[mid+1, r] 中的所有元素都已
+*   经大于 arr[l, mid] 中的所有元素，不需要再 merge 了。这是因为当两次 sort 完成之后，arr[l, mid] 和 arr[mid+1, r]
+*   这两段区间已经各自是有序的了，此时若前者的最大值 < 后者的最小值，则说明两个区间之间已经有序。
 * */
 
 public class MergeSort {
@@ -32,9 +39,12 @@ public class MergeSort {
     private static void sort(Comparable[] arr, int l, int r) {
         if (l >= r) return;          // 异常及递归终止条件
         int mid = (r - l) / 2  + l;  // 也可以写成 (l + r) / 2，但是可能整型溢出
+
         sort(arr, l, mid);
         sort(arr, mid + 1, r);
-        merge(arr, l, mid, r);       // 递归到底后再从底往上进行合并
+
+        if (arr[mid].compareTo(arr[mid + 1]) > 0)  // 这一行判断能带来不错的性能提升
+            merge(arr, l, mid, r);   // 递归到底后再从底往上进行合并
     }
 
     // 将 arr[l, mid 和 arr[mid + 1, r] 这两部分进行归并，此时这两部分都已经各自有序了
@@ -65,5 +75,11 @@ public class MergeSort {
         log(arr);
         sort(arr);
         log(arr);
+
+        // 性能测试
+        Integer[] arr1 = generateRandomIntArr(50000);
+        Integer[] arr2 = arr1.clone();
+        timeIt(arr2, MergeSort::sort);
+        timeIt(arr1, InsertionSort::sort2);  // 对5w个随机数，归并排序比插入排序快100多倍
     }
 }

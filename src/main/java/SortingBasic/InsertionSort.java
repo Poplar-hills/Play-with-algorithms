@@ -1,8 +1,5 @@
 package SortingBasic;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static Utils.Helpers.*;
 
 /*
@@ -31,7 +28,7 @@ import static Utils.Helpers.*;
  *     数列求和，结果为 (n^2 - n) / 2，所以复杂度为 O(n^2)。
  * */
 
-public class InsertionSrot {
+public class InsertionSort {
     public static void sort1(Comparable[] arr) {
         for (int i = 0; i < arr.length; i++)
             for (int j = i; j > 0 && arr[j].compareTo(arr[j - 1]) < 0; j--)
@@ -71,7 +68,7 @@ public class InsertionSrot {
 
         // 性能测试
         Integer[] arr3 = generateRandomIntArr(50000);
-        timeIt(arr3, InsertionSrot::sort1);
-        timeIt(arr3.clone(), InsertionSrot::sort2);
+        timeIt(arr3, InsertionSort::sort1);
+        timeIt(arr3.clone(), InsertionSort::sort2);
     }
 }
