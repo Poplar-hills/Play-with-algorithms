@@ -56,5 +56,10 @@ public class QuickSort {
         log(arr);
         sort(arr);
         log(arr);
+
+        Integer[] arr1 = generateRandomIntArr(1000000);
+        Integer[] arr2 = arr1.clone();
+        timeIt(arr1, QuickSort::sort);  // 这一版的 quick sort 已经比 merge sort 快将近三分之一了
+        timeIt(arr2, MergeSort::sort);
     }
 }
