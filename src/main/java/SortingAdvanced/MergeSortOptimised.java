@@ -16,7 +16,7 @@ import static Utils.Helpers.*;
 *   置对应的是一个链表，当哈希冲突到达一定程度时，会转换成红黑树。
 * */
 
-public class MergeSortForNearlyOrderedArr {
+public class MergeSortOptimised {
     public static void sort(Comparable[] arr) {
         sort(arr, 0, arr.length - 1);
     }
@@ -65,14 +65,14 @@ public class MergeSortForNearlyOrderedArr {
         Integer[] arr1 = generateRandomIntArr(100000);
         Integer[] arr2 = arr1.clone();
         timeIt(arr1, MergeSort::sort);
-        timeIt(arr2, MergeSortForNearlyOrderedArr::sort);  // 反而比普通的 MergeSort 慢非常多
+        timeIt(arr2, MergeSortOptimised::sort);  // 反而比普通的 MergeSort 慢非常多
 
         // 性能测试（几乎有序的数组）
         Integer[] arr3 = generateNearlyOrderedArr(10000000, 0);
         Integer[] arr4 = arr3.clone();
         Integer[] arr5 = arr3.clone();
         timeIt(arr3, MergeSort::sort);
-        timeIt(arr4, MergeSortForNearlyOrderedArr::sort);  // 比普通的 MergeSort 快一些
-        timeIt(arr5, InsertionSort::sort2);  // 比 MergeSort 和 MergeSortForNearlyOrderedArr 都快
+        timeIt(arr4, MergeSortOptimised::sort);  // 比普通的 MergeSort 快一些
+        timeIt(arr5, InsertionSort::sort2);  // 比 MergeSort 和 MergeSortOptimised 都快
     }
 }
