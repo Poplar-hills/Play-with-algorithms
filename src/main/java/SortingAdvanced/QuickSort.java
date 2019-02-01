@@ -9,7 +9,7 @@ package SortingAdvanced;
 *   3. 再分别对其前面的、后面的元素进行快速排序（递归过程）
 *
 * - partition 过程：
-*      4  6  2  3  5  7  1  8   原始数组，轩第一个元素作为比较元素
+*      4  6  2  3  5  7  1  8   原始数组，选择第一个元素作为标定元素（pivot）
 *      4  6  2  3  5  7  1  8   因为 6 > 4，所以放着不动
 *      4  2  6  3  5  7  1  8   因为 2 < 4，所以对2和6进行 swap（因为6是大于4的第一个元素）
 *      4  2  3  6  5  7  1  8   因为 3 < 4，所以对3和6进行 swap
@@ -39,16 +39,14 @@ public class QuickSort {
 
     // 返回 p, 使得 arr[l...p-1] 中的元素都 < arr[p]，arr[p, r] 中的元素都 > arr[p]
     private static int partition(Comparable[] arr, int l, int r) {
-        Comparable v = arr[l];
-        int j = l;  // j 指向小于 v 的最后一个元素的位置
-
+        Comparable v = arr[l];      // 标定元素 pivot
+        int j = l;                  // j 指向小于 v 的最后一个元素的位置
         for (int i = l + 1; i <= r; i++) {
             if (arr[i].compareTo(v) < 0)
                 swap(arr, i, ++j);  // 与大于 v 的第一个元素进行 swap
         }
-
-        swap(arr, l, j);  // 将 v 放到正确的位置（j）上
-        return j;
+        swap(arr, l, j);            // 将 v 放到正确的位置（j）上
+        return j;                   // 返回 v 的索引
     }
 
     public static void main(String[] args) {
