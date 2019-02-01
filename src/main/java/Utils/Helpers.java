@@ -22,20 +22,16 @@ public class Helpers {
     public static Integer[] generateRandomIntArr(int size) {
         Random r = new Random();
         Integer[] arr = new Integer[size];
-
         for (int i = 0; i < size; i++)
             arr[i] = r.nextInt(size);
-
         return arr;
     }
 
     public static Character[] generateRandomCharArr(int size) {
         Random r = new Random();
         Character[] arr = new Character[size];
-
         for (int i = 0; i < size; i++)
             arr[i] = (char) (r.nextInt(26) + 'a');
-
         return arr;
     }
 
@@ -60,6 +56,14 @@ public class Helpers {
             swap(arr, index1, index2);
         }
 
+        return arr;
+    }
+
+    public static Integer[] generateRandomArrayFromRange(int size, int lowerBound, int upperBound) {
+        Random r = new Random();
+        Integer[] arr = new Integer[size];
+        for (int i = 0; i < arr.length; i++)
+            arr[i] = r.nextInt(upperBound - lowerBound) + lowerBound;
         return arr;
     }
 
