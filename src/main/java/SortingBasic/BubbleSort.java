@@ -5,7 +5,8 @@ import java.util.Arrays;
 import static Utils.Helpers.*;
 
 /**
- * 冒泡排序（Bubble Sort）
+ * 冒泡排序（Bubble Sort）：
+ *
  * - 排序过程解释 SEE: https://algorithms.tutorialhorizon.com/optmized-bubble-sort-java-implementation/（这个是对的，
  *   手机应用 Algorithms 上的是错的）。
  * - 插入排序是把小的元素往数组前面移动，而冒泡排序是把大的元素往数组后面移动。

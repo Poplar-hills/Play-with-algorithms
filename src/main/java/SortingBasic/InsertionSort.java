@@ -3,7 +3,8 @@ package SortingBasic;
 import static Utils.Helpers.*;
 
 /*
- * 插入排序（Insertion Sort）
+ * 插入排序（Insertion Sort）：
+ *
  * - 插入排序的两个性质：
  *   1. 可以提前终止循环（相对于选择排序来说）
  *   2. 当数据越接近有序数组时，性能优势越明显（甚至比 O(nlogn) 的算法还高）

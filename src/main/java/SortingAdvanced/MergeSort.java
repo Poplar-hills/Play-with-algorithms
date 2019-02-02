@@ -7,7 +7,8 @@ import java.util.Arrays;
 import static Utils.Helpers.*;
 
 /*
-* 归并排序（Merge Sort）
+* 归并排序（Merge Sort）：
+* 
 * - 复杂度是 O(nlogn)
 * - 归并排序递归地：
 *   1. 将数组不断进行二分，直到不能再分（从上到下的过程）；

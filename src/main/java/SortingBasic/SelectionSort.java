@@ -1,11 +1,10 @@
 package SortingBasic;
 
-import java.util.Arrays;
-
 import static Utils.Helpers.*;
 
 /*
- * 选择排序（Selection Sort）
+ * 选择排序（Selection Sort）：
+ *
  * - 复杂度：O(n^2)。这个复杂度的排序算法一般没有什么实际价值（但插入排序有点不同）。
  * */
 
