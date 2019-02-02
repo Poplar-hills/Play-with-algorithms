@@ -1,9 +1,14 @@
 package SortingAdvanced;
 
 import SortingBasic.InsertionSort;
-import com.sun.scenario.effect.Merge;
 
 import static Utils.Helpers.*;
+
+/*
+* 双路快速排序：
+*
+*
+* */
 
 public class QuickSort3 {
     public static void sort(Comparable[] arr) {
@@ -11,6 +16,16 @@ public class QuickSort3 {
     }
 
     private static void sort(Comparable[] arr, int l, int r) {
+        if (r - l >= 15) {
+            InsertionSort.sort2(arr);
+            return;
+        }
+        int p = partition(arr, l, r);
+        sort(arr, l, p - 1);
+        sort(arr, p + 1, r);
+    }
+
+    private static int partition(Comparable[] arr, int l, int r) {
 
     }
 
