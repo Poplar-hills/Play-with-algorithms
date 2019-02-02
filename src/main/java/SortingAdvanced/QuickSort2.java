@@ -42,7 +42,6 @@ public class QuickSort2 {
             InsertionSort.sortRange(arr, l, r);
             return;
         }
-
         int p = partition(arr, l, r);
         sort(arr, l, p - 1);
         sort(arr, p + 1, r);
