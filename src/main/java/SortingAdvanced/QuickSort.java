@@ -57,7 +57,7 @@ public class QuickSort {
 
         Integer[] arr1 = generateRandomIntArr(1000000);
         Integer[] arr2 = arr1.clone();
-        timeIt(arr1, QuickSort::sort);  // 比 MergeSort 快三分之一左右，原因分析见 QuickSortOptimised
+        timeIt(arr1, QuickSort::sort);  // 比 MergeSort 快三分之一左右，原因分析见 QuickSort2
         timeIt(arr2, MergeSort::sort);
     }
 }

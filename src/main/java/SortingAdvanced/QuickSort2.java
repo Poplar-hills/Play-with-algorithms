@@ -32,7 +32,7 @@ import static Utils.Helpers.*;
 *   2. 快速排序同样可以采用在数据量较少时采用插入排序的方式进行优化。
 * */
 
-public class QuickSortOptimised {
+public class QuickSort2 {
     public static void sort(Comparable[] arr) {
         sort(arr, 0, arr.length - 1);
     }
@@ -72,9 +72,9 @@ public class QuickSortOptimised {
         Integer[] arr2 = arr1.clone();
         Integer[] arr3 = arr1.clone();
         Integer[] arr4 = arr1.clone();
-        timeIt(arr1, QuickSort::sort);           // 比 MergeSortOptimised 慢几十倍
-        timeIt(arr2, QuickSortOptimised::sort);  // 比 QuickSort 快了非常多，但还比 MergeSortOptimised 慢一点
-        timeIt(arr3, MergeSortOptimised::sort);  // 第二快的
-        timeIt(arr4, InsertionSort::sort2);      // 最快的
+        timeIt(arr1, QuickSort::sort);       // 比 MergeSort2 慢几十倍
+        timeIt(arr2, QuickSort2::sort);      // 比 QuickSort 快了非常多，但还比 MergeSort2 慢一点
+        timeIt(arr3, MergeSort2::sort);      // 第二快的
+        timeIt(arr4, InsertionSort::sort2);  // 最快的
     }
 }
