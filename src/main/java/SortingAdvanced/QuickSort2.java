@@ -50,8 +50,7 @@ public class QuickSort2 {
     }
 
     private static int partition(Comparable[] arr, int l, int r) {
-        Random random = new Random();
-        int vIndex = random.nextInt(r - l + 1) + l;  // 优化1：随机选取标定元素的索引
+        int vIndex = new Random().nextInt(r - l + 1) + l;  // 优化1：随机选取标定元素的索引
         swap(arr, l, vIndex);  // 将标定元素放到最前面
         Comparable v = arr[l];
         int j = l;
