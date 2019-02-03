@@ -7,7 +7,7 @@ import java.util.Random;
 import static Utils.Helpers.*;
 
 /*
-* 随机化快速排序：
+* 随机化快速排序（Random pivot quick sort）：
 *
 * - 快速排序性能分析：
 *   - 虽然归并排序和快速排序都是 O(nlogn) 级别的，但是快速排序之所以更快是因为快速排序的那个常数更小。具体表现在：
