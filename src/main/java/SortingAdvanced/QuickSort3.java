@@ -15,9 +15,14 @@ import static Utils.Helpers.*;
 *   才进行 swqp，没有考虑 arr[i] == v 的情况，因此会导致 partition 的结果极为不平衡（arr[i] >= v 的元素过多），从而
 *   导致递归深度近乎等于数组中的数据个数 n，最终导致系统栈溢出，并且复杂度趋近 O(n^2)。
 * - 这也是大多数语言的标准库中都不会使用 naive quick sort 的原因。
-* - 二路快排和三路快排要解决的就是这个问题。
-* - 二路快排和三路快排的性能不如 naive quick sort，因为代码中有更多的判断，但是并不会慢很多。
- * */
+* - 二路快排和三路快排要解决的就是这个问题。他们的性能不如 naive quick sort，因为代码中有更多的判断，但是并不会慢很多。
+*
+* - 注意：
+*   partition 内部的两个嵌套 while 语句的条件只能是 arr[i] < v 和 arr[j] > v，而不能是 arr[i] <= v 和 arr[j] >= v。
+*   这是因为对于 [0, 1, 0, 0, 0, 0, 0, 0] 这样的数组，如果 pivot 选择的是0，则 arr[i] <= 0 和 arr[j] >= 0 会让
+*   partition 最后得到的分点靠近数组的最左端，产生极度不平衡的递归子树（类似 QuickSort2 里的图示），而 arr[i] < v 和
+*   arr[j] > v 则不会，因为得到的分点在数组中间。
+* */
 
 public class QuickSort3 {
     public static void sort(Comparable[] arr) {
@@ -29,6 +34,7 @@ public class QuickSort3 {
             InsertionSort.sortRange(arr, l, r);
             return;
         }
+        if (l >= r) return;
         int p = partition(arr, l, r);
         sort(arr, l, p - 1);
         sort(arr, p + 1, r);
@@ -44,8 +50,8 @@ public class QuickSort3 {
         while (true) {
             while (i <= r && arr[i].compareTo(v) < 0) i++;  // 当循环结束时，i 指向从左边起第一个 arr[i] > v 的元素
             while (j >= l + 1 && arr[j].compareTo(v) > 0) j--;  // 当循环结束时，j 指向从左右边起第一个 arr[j] < v 的元素
+            if (i > j) break;  // 此时本次 partition 完成，即 arr[l+1, i) 中的元素都 <= v；arr(j, r] 中的元素都 >= v
             swap(arr, i, j);
-            if (i > j) break;  // 此时 arr[l+1, i) 中的元素都 <= v；arr(j, r] 中的元素都 >= v
             i++;
             j--;
         }
@@ -54,7 +60,7 @@ public class QuickSort3 {
     }
 
     public static void main(String[] args) {
-        Integer[] arr = generateRandomIntArr(10);
+        Integer[] arr = generateRandomIntArr(20);
         log(arr);
         sort(arr);
         log(arr);
@@ -67,5 +73,6 @@ public class QuickSort3 {
         timeIt(arr2, QuickSort::sort);   // QuickSort 比 MergeSort 慢了十几倍
         timeIt(arr3, QuickSort2::sort);  // QuickSort2 也是一样慢
         timeIt(arr4, QuickSort3::sort);  // QuickSort3 的性能就非常好了
+
     }
 }

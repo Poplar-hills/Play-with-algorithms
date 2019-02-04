@@ -52,7 +52,7 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        Integer[] arr = generateRandomIntArr(10);
+        Integer[] arr = generateRandomIntArr(20);
         log(arr);
         sort(arr);
         log(arr);
