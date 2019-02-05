@@ -23,7 +23,7 @@ import static Utils.Helpers.*;
 *   arr[j] > v 则不会，因为得到的分点在数组中间。
 * */
 
-public class QuickSort3 {
+public class QuickSort2Ways {
     public static void sort(Comparable[] arr) {
         sort(arr, 0, arr.length - 1);
     }
@@ -67,6 +67,6 @@ public class QuickSort3 {
         timeIt(arr1, MergeSort::sort);
         timeIt(arr2, QuickSort::sort);   // QuickSort 比 MergeSort 慢了十几倍
         timeIt(arr3, QuickSort2::sort);  // QuickSort2 也是一样慢
-        timeIt(arr4, QuickSort3::sort);  // QuickSort3 的性能就非常好了
+        timeIt(arr4, QuickSort2Ways::sort);  // QuickSort2Ways 的性能就非常好了
     }
 }
