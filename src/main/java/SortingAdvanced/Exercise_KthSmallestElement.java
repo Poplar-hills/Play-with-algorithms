@@ -32,12 +32,12 @@ public class Exercise_KthSmallestElement {
 
         int p = partition(arr, l, r);
 
-        if (k == p)
-            return arr[k];
         if (k < p)  // 如果 k < p, 只需要在左半部分 arr[l...p-1] 中找第 k 小元素即可，而右半部分就不用管了
             return quickSelect(arr, l, p - 1, k);
-        else        // 如果 k > p, 只需要在右半部分 arr[p+1...r] 中找第 k-p-1 小元素即可，而左半部分就不用管了
+        if (k > p)  // 如果 k > p, 只需要在右半部分 arr[p+1...r] 中找第 k-p-1 小元素即可，而左半部分就不用管了
             return quickSelect(arr, p + 1, r, k);
+        else        // 如果当 partition 返回的切点 p == k 时，直接返回 arr[k] 即可，因为此时 arr[k] 已经被放到了正确的位置上
+            return arr[k];
     }
 
     // 和 QuickSort 中的 partition 一样
