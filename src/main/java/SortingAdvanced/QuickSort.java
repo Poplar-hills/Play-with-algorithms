@@ -39,10 +39,10 @@ public class QuickSort {
         sort(arr, p + 1, r);
     }
 
-    // 返回 p, 使得 arr[l...p-1] 中的元素都 < arr[p]，arr[p, r] 中的元素都 > arr[p]
+    // 返回 p, 使得 arr[l...p-1] 中的元素都 < arr[p]；arr[p+1...r] 中的元素都 > arr[p]
     private static int partition(Comparable[] arr, int l, int r) {
         Comparable v = arr[l];      // 标定元素 pivot
-        int j = l;                  // j 指向小于 v 的最后一个元素的位置
+        int j = l;                  // j 指向小于 v 的最后一个元素，即 arr[l+1...j] < v；arr[j+1...r] > v。最开始没有元素 < v，因此指向 l
         for (int i = l + 1; i <= r; i++) {
             if (arr[i].compareTo(v) < 0)
                 swap(arr, i, ++j);  // 与大于 v 的第一个元素进行 swap

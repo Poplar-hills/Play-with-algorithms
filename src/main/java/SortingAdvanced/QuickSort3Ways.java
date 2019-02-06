@@ -31,8 +31,8 @@ package SortingAdvanced;
 *        the sub-problems as base cases.
 *     3. Combine the solutions to the sub-problems into the solution for the original problem.
 * - Merge sort 和 Quick sort 都使用了分治的思想，但是他们分别代表了分治思想的两种实现方法：
-*   1. Merge sort 在"分"的问题上没有过多考虑，直接一刀切分成两部分然后递归排序。它的重点在于分完之后如何"治"，
-*      即如何将两部分 merge 起来完成排序任务。
+*   1. Merge sort 在"分"的问题上没有过多考虑，在"分"的问题上不做过多考虑，直接简单快速的进行二分。它的重点
+*      在于"治"，以及何将"治"完之后的子问题的解合并起来形成原问题的解。
 *   2. Quick sort 则是重在如何"分" —— 整个 partition 就是在寻找标定点 pivot 的过程，找到之后才开始"分"。
 *      这样分完之后在"治"（也就是合）的过程就不必做过多考虑了。
 * */
