@@ -36,7 +36,7 @@ public class Exercise_KthSmallestElement {
             return quickSelect(arr, l, p - 1, k);
         if (k > p)  // 如果 k > p, 只需要在右半部分 arr[p+1...r] 中找第 k-p-1 小元素即可，而左半部分就不用管了
             return quickSelect(arr, p + 1, r, k);
-        else        // 如果当 partition 返回的切点 p == k 时，直接返回 arr[k] 即可，因为此时 arr[k] 已经被放到了正确的位置上
+        else        // 如果当切点 p == k 时，直接返回 arr[k] 即可，因为此时 arr[k] 已经被放到了正确的位置上
             return arr[k];
     }
 
@@ -55,7 +55,10 @@ public class Exercise_KthSmallestElement {
     }
 
     public static void main(String[] args) {
-        Character[] arr1 = {4, 2, 5, 1, 3};
-        log(quickSelect(arr1, 4));
+        Integer[] arr1 = {4, 2, 5, 1, 3};
+        log(quickSelect(arr1, 2));
+
+        Character[] arr2 = {'b', 'd', 'e', 'c', 'a'};
+        log(quickSelect(arr2, 4));
     }
 }
