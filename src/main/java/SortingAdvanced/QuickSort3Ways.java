@@ -15,15 +15,27 @@ package SortingAdvanced;
 * - 如果面试中碰到"谈谈快速排序"这种题目就可以针对 1.完全随机 2.近乎有序 3.包含大量重复元素 这三种情况的数据集
 *   分别讨论每种实现的优劣。
 *
-* - 算法背后的思想：
-*   - Merge sort 和 Quick sort 都使用了分治的思想 —— 分而治之，将原问题分割成同等结构的子问题，当子问题被逐一解
-*     决后，原问题就已经被解决了。
-*   - Merge sort 和 Quick sort 都是将原问题分割成2个子问题，但是他们分别代表了分治思想的两种实现方法：
+* - 分治思想（Divide & Conquer）：
+*   - 分而治之，将原问题分解成 n 个规模较小的子问题，这些子问题互相独立且与原问题具有相同的结构，递归地解这些
+*     子问题，然后将各子问题的解合并得到原问题的解。
+*   - 分治与递归：分解出的子问题往往是原问题的较小模式，这就为使用递归提供了方便。递归地应用分治，使得最终子问
+*     题缩小到很容易直接求解，这自然导致递归过程的产生。因此分治与递归有着密不可分的关系。
+*   - 使用条件：
+*     1. 最小规模可解性 —— 该问题的规模缩小到一定程度就可以容易地解决；
+*     2. 可分性 —— 该问题可以分解为若干个规模较小的相同问题；
+*     3. 可合性 —— 该问题分解出的子问题的解可以合并为该问题的解；
+*     4. 子问题独立性 —— 该问题所分解出的各个子问题是相互独立的，即子问题之间不包含公共的子子问题。
+*   - 分治算法设计过程：
+*     1. Divide the problem into a number of sub-problems that are smaller instances of the same problem.
+*     2. Conquer the sub-problems by solving them recursively. If they are small enough, solve
+*        the sub-problems as base cases.
+*     3. Combine the solutions to the sub-problems into the solution for the original problem.
+*   - Merge sort 和 Quick sort 都使用了分治的思想，但是他们分别代表了分治思想的两种实现方法：
 *     1. Merge sort 在"分"的问题上没有过多考虑，直接一刀切分成两部分然后递归排序。它的重点在于分完之后如何"治"，
 *        即如何将两部分 merge 起来完成排序任务。
-*     2. Quick sort 则是重在如何"分" —— 整个 partition 就是在寻找标定点 pivot 的过程，找到之后才开始"分"。这样
-*        分完之后在"治"（也就是合）的过程就不必做过多考虑了。
- * */
+*     2. Quick sort 则是重在如何"分" —— 整个 partition 就是在寻找标定点 pivot 的过程，找到之后才开始"分"。
+*        这样分完之后在"治"（也就是合）的过程就不必做过多考虑了。
+* */
 
 import java.util.Random;
 
