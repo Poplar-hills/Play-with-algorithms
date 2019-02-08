@@ -37,6 +37,22 @@ public class MaxHeap<E extends Comparable<E>> {
         }
     }
 
+    private void siftDown(int k) {
+        while (getLeftChildIndex(k) < data.size()) {  // 只要左孩子的索引 < 元素个数，则说明还没到达叶子节点，可以继续循环
+            // 找到位于 k 的节点的左右孩子中较大的那个的索引
+            int i = getLeftChildIndex(k);
+            if (i + 1 < data.size() && data.get(i).compareTo(data.get(i + 1)) < 0)  // i 是左孩子的索引，i + 1 即为右孩子的索引
+                i += 1;  // i 保存了左右孩子中值较大的那个的索引
+
+            // 用较大的那个与父节点比较，如果父节点大，则 break loop，否则 swap
+            if (data.get(k).compareTo(data.get(i)) >= 0)
+                break;
+
+            swap(data, k, i);
+            k = i;
+        }
+    }
+
     private void swap(List<E> list, int i, int j) {
         E temp = list.get(i);
         list.set(i, list.get(j));
@@ -49,14 +65,15 @@ public class MaxHeap<E extends Comparable<E>> {
     }
 
     public E extractMax() {
-        E extracted = data.get(0);
-        swap(data, 0, data.size() - 1);
-        siftDown();
-        return extracted;
+        E ret = data.get(0);  // 先保存最大值
+        int lastIndex = data.size() - 1;
+        data.set(0, data.get(lastIndex));  // 取数组的最后一个元素覆盖第一个元素
+        data.remove(0);
+        siftDown(0);  // 对新的第一个元素进行下沉操作
+        return ret;
     }
 
-    private void siftDown() {
-    }
+    public int getSize() { return data.size(); }
 
     @Override
     public String toString() {
@@ -66,15 +83,15 @@ public class MaxHeap<E extends Comparable<E>> {
     public static void main(String[] args) {
         MaxHeap<Integer> heap = new MaxHeap<>();
         Integer[] inputSeq = {3, 10, 6, 4, 8, 7, 1, 5, 2, 9};
-        log(inputSeq);
 
         for (int e : inputSeq) {
             heap.add(e);
-            log("add " + e + ":");
-            log(heap);
+            log("add " + e + " -> " + heap.toString());
         }
 
-        heap.extractMax();
-
+        while (heap.getSize() > 0) {
+            int max = heap.extractMax();
+            log("extract " + max + " -> " + heap.toString());
+        }
     }
 }
