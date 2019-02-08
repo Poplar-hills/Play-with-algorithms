@@ -75,6 +75,8 @@ public class MaxHeap<E extends Comparable<E>> {
 
     public int getSize() { return data.size(); }
 
+    public boolean isEmpty() { return getSize() == 0; }
+
     @Override
     public String toString() {
         return data.toString();
@@ -89,7 +91,7 @@ public class MaxHeap<E extends Comparable<E>> {
             log("add " + e + " -> " + heap.toString());
         }
 
-        while (heap.getSize() > 0) {
+        while (!heap.isEmpty()) {
             int max = heap.extractMax();
             log("extract " + max + " -> " + heap.toString());
         }
