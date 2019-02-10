@@ -16,6 +16,14 @@ public class MaxHeap<E extends Comparable<E>> {
         data = new ArrayList<>();
     }
 
+    public MaxHeap(E[] arr) {
+        data = heapify(arr);
+    }
+
+    private List<E> heapify(E[] arr) {
+
+    }
+
     private int getLeftChildIndex(int index) {
         return index * 2 + 1;
     }
@@ -44,12 +52,12 @@ public class MaxHeap<E extends Comparable<E>> {
             if (i + 1 < data.size() && data.get(i).compareTo(data.get(i + 1)) < 0)  // i 是左孩子的索引，i + 1 即为右孩子的索引
                 i += 1;  // i 保存了左右孩子中值较大的那个的索引
 
-            // 用较大的那个与父节点比较，如果父节点大，则 break loop，否则 swap
+            // 用较大的那个与父节点比较，如果父节点大则 break loop，否则 swap（只有用较大的子节点跟父节点比才能保证 swap 之后换上来的新父节点比两个子节点都大，保证最大堆性质不被破坏）
             if (data.get(k).compareTo(data.get(i)) >= 0)
                 break;
 
             swap(data, k, i);
-            k = i;
+            k = i;  // 记得最后要让 while 循环进入下一轮
         }
     }
 
@@ -68,7 +76,7 @@ public class MaxHeap<E extends Comparable<E>> {
         E ret = data.get(0);  // 先保存最大值
         int lastIndex = data.size() - 1;
         data.set(0, data.get(lastIndex));  // 取数组的最后一个元素覆盖第一个元素
-        data.remove(0);
+        data.remove(0);  // 移除最大值元素
         siftDown(0);  // 对新的第一个元素进行下沉操作
         return ret;
     }
