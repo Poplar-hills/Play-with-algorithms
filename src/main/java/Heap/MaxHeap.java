@@ -17,11 +17,12 @@ public class MaxHeap<E extends Comparable<E>> {
     }
 
     public MaxHeap(E[] arr) {
-        data = heapify(arr);
-    }
-
-    private List<E> heapify(E[] arr) {
-
+        data = new ArrayList<>();
+        for (E e : arr)
+            data.add(e);
+        int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);
+        while (lastNonLeafNodeIndex >= 0)
+            siftDown(lastNonLeafNodeIndex--);
     }
 
     private int getLeftChildIndex(int index) {
@@ -94,14 +95,19 @@ public class MaxHeap<E extends Comparable<E>> {
         MaxHeap<Integer> heap = new MaxHeap<>();
         Integer[] inputSeq = {3, 10, 6, 4, 8, 7, 1, 5, 2, 9};
 
+        // test add
         for (int e : inputSeq) {
             heap.add(e);
             log("add " + e + " -> " + heap.toString());
         }
 
+        // test extractMax
         while (!heap.isEmpty()) {
             int max = heap.extractMax();
             log("extract " + max + " -> " + heap.toString());
         }
+
+        // test heapify
+        log(new MaxHeap<>(inputSeq));
     }
 }
