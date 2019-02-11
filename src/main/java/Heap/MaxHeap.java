@@ -47,10 +47,10 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
     }
 
     private void siftDown(int k) {
-        while (getLeftChildIndex(k) < data.size()) {  // 只要左孩子的索引 < 元素个数，则说明还没到达叶子节点，可以继续循环
+        while (getLeftChildIndex(k) < data.size()) {  // 只要左孩子的索引 < 元素个数就说明还没到达叶子节点，可以继续循环
             // 找到位于 k 的节点的左右孩子中较大的那个的索引
             int i = getLeftChildIndex(k);
-            if (i + 1 < data.size() && data.get(i).compareTo(data.get(i + 1)) < 0)  // i 是左孩子的索引，i + 1 即为右孩子的索引
+            if (i + 1 < data.size() && data.get(i + 1).compareTo(data.get(i)) > 0)  // i 是左孩子的索引，i + 1 即为右孩子的索引
                 i += 1;  // i 保存了左右孩子中值较大的那个的索引
 
             // 用父节点与较大的那个比，如果父节点大则 break loop，否则 swap（只有用较大的子节点跟父节点比才能保证 swap 之后换上来的新父节点比两个子节点都大，保证最大堆性质不被破坏）
