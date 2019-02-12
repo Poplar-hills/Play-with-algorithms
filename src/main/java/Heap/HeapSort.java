@@ -2,8 +2,31 @@ package Heap;
 
 import static Utils.Helpers.*;
 
+/*
+* 堆排序（Heap Sort）：
+*
+* - 堆排序的3种实现方式：
+*   1. add + extractMax：
+*      - 先往一个空堆中不断 add 元素，再逐一 extractMax 并放入数组。
+*      - 两者都是 O(n * logn) 的操作，因此整体复杂度是 O(nlogn)。
+*   2. heapify + extractMax：
+*      - 先 heapify 生成最大堆，再逐一 extractMax 并放入数组。
+*      - 时间复杂度：O(n) + O(n * logn) = O(n + nlogn)；因为 nlogn > n，因此是总体是 O(nlogn) 级别。
+*   3. 原地 heapify + swap + siftDown：
+*      - 先原地 heapify 生成最大堆，再逐一将最大值与换到数组末尾正确的位置上，并对换到头部的元素 siftDown。
+*      - 时间复杂度：O(n) + O(n * 1) + O(n * logn) = O(n + nlogn) = O(nlogn)。
+*      - 演示 SEE：https://coding.imooc.com/lesson/71.html#mid=1468（0'28''）
+*
+*   - 前两种实现的思路都是先 new 出一个最大堆（不管是通过 add 还是通过 heapify），然后不断 extractMax 来实现排序。
+*     因为要通过 new 来新开辟 n 的空间，因此空间复杂度是 O(n)。而第3种不需要 new（不用额外空间），仅凭原地对数组元
+*     素进行交换就实现了排序，因此空间复杂度是 O(1)，同时还省去了开辟新空间、往新空间里赋值的时间成本。
+*
+* - 性能上来说，不管哪种实现，heap sort 都要慢于 merge sort 和 quick sort，因此很少用于系统级别的排序算法。堆这种
+*   数据结构更多的还是用于动态数据的维护，这是堆的"本职工作"。
+* */
+
 public class HeapSort {
-    public static void sort1(Comparable[] arr) {  // 通过往一个空堆中 add 元素，再 extractMax 实现排序
+    public static void sort1(Comparable[] arr) {  // 第一种实现
         MaxHeap<Comparable> heap = new MaxHeap<>(arr.length);
         for (int i = 0; i < arr.length; i++)
             heap.add(arr[i]);
@@ -11,13 +34,13 @@ public class HeapSort {
             arr[i] = heap.extractMax();
     }
 
-    public static void sort2(Comparable[] arr) {  // 通过 heapify 数组来生成堆，再 extractMax 实现排序
+    public static void sort2(Comparable[] arr) {  // 第二种实现
         MaxHeap<Comparable> heap = new MaxHeap<>(arr);
         for (int i = arr.length - 1; i >= 0; i--)
             arr[i] = heap.extractMax();
     }
 
-    public static void sort3(Comparable[] arr) {  // 不 new MaxHeap，而是原地进行堆排序
+    public static void sort3(Comparable[] arr) {  // 第三种实现
         int n = arr.length;
         int lastNonLeafNodeIndex = (n - 1) / 2;
 
@@ -32,7 +55,7 @@ public class HeapSort {
 
     // 比 MaxHeap 中的 siftDown 多了一个参数 n，用于控制下沉的范围
     private static void siftDown2(Comparable[] arr, int n, int k) {  // 对第 k 个元素在前 n 个元素的范围内进行下沉，n 之后是已经排好序的元素
-        while (k * 2 + 1 < n) {  //
+        while (k * 2 + 1 < n) {  // 注意这里是 < n
             int i = k * 2 + 1;
             if (i + 1 < n && arr[i + 1].compareTo(arr[i]) > 0)
                 i += 1;

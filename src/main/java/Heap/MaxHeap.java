@@ -20,6 +20,8 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
         data = new ArrayList<>();
         for (E e : arr)
             data.add(e);
+
+        // heapify
         int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);
         while (lastNonLeafNodeIndex >= 0)
             siftDown(lastNonLeafNodeIndex--);
