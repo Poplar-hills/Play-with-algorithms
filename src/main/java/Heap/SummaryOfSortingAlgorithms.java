@@ -32,5 +32,6 @@ package Heap;
 *     - 理论上存在，但是现实中还没找到。
 * */
 
-public class ComparisonOfDifferentSortings {
+public class SummaryOfSortingAlgorithms {
+    /* No content */
 }
