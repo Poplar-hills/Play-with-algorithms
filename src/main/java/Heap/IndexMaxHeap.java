@@ -1,5 +1,8 @@
 package Heap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
 * 索引堆（Index Heap）：
 *
@@ -17,9 +20,47 @@ package Heap;
 *         初始堆数据： [15, 17, 19, 13, 22, 20]    ----->    堆数据： [15, 17, 19, 13, 22, 20]
 *         初始堆索引：  0   1   2   3   4   5                堆索引：  4   1   5   3   0   2
 *   - 可见在生成完堆之后，堆中数据的位置（即数组索引）是不变的，变的只是堆索引，这样做：
-*     1. 交换的只是索引，数据结构简单，不会有性能问题。
-*     2.
+*     1. 因为交换的是堆索引，而堆索引只是 int，数据结构简单，不会有性能问题。
+*     2. 因为交换的是堆索引，而堆中元素的数组索引不变，因此语义不会丢失，任然可以通过随机访问取到对应的元素。
+*
+* - 索引堆的实现：
+*   1. 在普通堆的基础上添加堆索引。
+*   2. 在比较的时候仍然比较的是元素，但交换的时候只交换堆索引。
 * */
 
-public class IndexMaxHeap {
+public class IndexMaxHeap<E extends Comparable> {
+    List<E> data;
+
+    public IndexMaxHeap(int capacity) {
+        data = new ArrayList<>(capacity);
+    }
+
+    public IndexMaxHeap() {
+        data = new ArrayList<>();
+    }
+
+    public IndexMaxHeap(E[] arr) {
+        data = new ArrayList<>(arr.length);
+        for (E e : arr)
+            data.add(e);
+        int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);
+    }
+
+    private int getParentIndex(int index) {
+        if (index <= 0)
+            throw new IllegalArgumentException("getParentIndex failed.");
+        return (index - 1) / 2;
+    }
+
+    private int getLeftChildIndex(int index) {
+        return index * 2 + 1;
+    }
+
+    private void siftUp(int k) {
+
+    }
+
+    private void siftDown(int k) {
+        
+    }
 }

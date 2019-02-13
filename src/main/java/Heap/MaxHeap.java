@@ -31,10 +31,6 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
         return index * 2 + 1;
     }
 
-    private int getRightChildIndex(int index) {
-        return getLeftChildIndex(index) + 1;
-    }
-
     private int getParentIndex(int index) {
         if (index <= 0)
             throw new IllegalArgumentException("getParentIndex failed.");
