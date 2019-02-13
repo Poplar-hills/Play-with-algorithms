@@ -3,7 +3,8 @@ package Heap;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Utils.Helpers.*;
+import static Utils.Helpers.log;
+import static java.util.Collections.swap;
 
 public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E extends Comparable<E>>？？？
     private List<E> data;
@@ -60,23 +61,17 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
         }
     }
 
-    private void swap(List<E> list, int i, int j) {
-        E temp = list.get(i);
-        list.set(i, list.get(j));
-        list.set(j, temp);
-    }
-
     public void add(E e) {
         data.add(e);
         siftUp(data.size() - 1);
     }
 
     public E extractMax() {
-        E ret = data.get(0);  // 先保存最大值
+        E ret = data.get(0);     // 先保存最大值
         int lastIndex = data.size() - 1;
         data.set(0, data.get(lastIndex));  // 取数组的最后一个元素覆盖第一个元素
         data.remove(lastIndex);  // 移除最大值元素
-        siftDown(0);  // 对新的第一个元素进行下沉操作
+        siftDown(0);          // 对新的第一个元素进行下沉操作
         return ret;
     }
 

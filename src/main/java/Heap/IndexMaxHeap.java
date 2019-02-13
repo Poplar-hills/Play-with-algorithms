@@ -3,6 +3,8 @@ package Heap;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.swap;
+
 /*
 * 索引堆（Index Heap）：
 *
@@ -25,7 +27,7 @@ import java.util.List;
 *
 * - 索引堆的实现：
 *   1. 在普通堆的基础上添加堆索引。
-*   2. 在比较的时候仍然比较的是元素，但交换的时候只交换堆索引。
+*   2. 在 shiftUp、shiftDown 时，比较的仍然是元素，但交换的是堆索引。
 * */
 
 public class IndexMaxHeap<E extends Comparable> {
@@ -57,10 +59,35 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     private void siftUp(int k) {
-
+        while (k > 0 && data.get(getParentIndex(k)).compareTo(data.get(k)) < 0) {
+            swap(data, k, getParentIndex(k));
+            k = getParentIndex(k);
+        }
     }
 
     private void siftDown(int k) {
-        
+        while (getLeftChildIndex(k) < data.size()) {
+            int i = getLeftChildIndex(k);
+            if (i + 1 < data.size() && data.get(i).compareTo(data.get(i + 1)) < 0)
+                i += 1;
+            if (data.get(k).compareTo(data.get(i)) >= 0)
+                break;
+            swap(data, k, i);
+            k = i;
+        }
+    }
+
+    public void add(E e) {
+        data.add(e);
+        siftUp(data.size() - 1);
+    }
+
+    public E extractMax() {
+        E ret = data.get(0);
+        int lastIndex = data.size() - 1;
+        data.set(0, data.get(lastIndex));
+        data.remove(lastIndex);
+        siftDown(0);
+        return ret;
     }
 }
