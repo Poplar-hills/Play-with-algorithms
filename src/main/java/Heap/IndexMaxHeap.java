@@ -119,10 +119,10 @@ public class IndexMaxHeap<E extends Comparable> {
         return ret;
     }
 
-    public void change(int i, E newE) {  // 修改堆中元素（最差情况下复杂度为 O(n + logn) = O(n)，并不理想，在下个版本中优化）
-        // 更新 data 中的元素
+    public void change(int i, E newE) {  // 修改堆中元素（最差情况下为 O(n + logn) = O(n)，相对于其他操作 O(logn) 来说并不理想，在下个版本中优化）
+        // 修改 data 中的元素
         data.set(i, newE);
-        // 更新 indexes 中的该元素的索引位置
+        // 修改 indexes 中的该元素的索引位置
         for (int j = 0; j < indexes.size(); j++)
             if (indexes.get(j) == i) {
                 siftUp(j);
