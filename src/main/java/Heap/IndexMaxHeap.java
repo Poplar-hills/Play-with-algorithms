@@ -119,6 +119,18 @@ public class IndexMaxHeap<E extends Comparable> {
         return ret;
     }
 
+    public void change(int i, E newE) {  // 修改堆中元素（最差情况下复杂度为 O(n + logn) = O(n)，并不理想，在下个版本中优化）
+        // 更新 data 中的元素
+        data.set(i, newE);
+        // 更新 indexes 中的该元素的索引位置
+        for (int j = 0; j < indexes.size(); j++)
+            if (indexes.get(j) == i) {
+                siftUp(j);
+                siftDown(j);
+                return;
+            }
+    }
+
     public boolean isEmpty() {
         return indexes.size() == 0;
     }
@@ -137,6 +149,9 @@ public class IndexMaxHeap<E extends Comparable> {
         for (int n : inputSeq)
             heap2.add(n);
         log(heap2);  // 生成的 indexes 堆可能与 heap1 中的不同，因为生成机制不同
+
+        heap2.change(2, 999);
+        log(heap2);
 
         while (!heap2.isEmpty()) {
             log("Extracted: " + heap2.extractMax());
