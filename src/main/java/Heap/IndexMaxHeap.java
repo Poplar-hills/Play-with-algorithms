@@ -122,8 +122,9 @@ public class IndexMaxHeap<E extends Comparable> {
 
     public E extractMax() {
         E ret = getElement(0);
-        indexes.set(0, indexes.get(indexes.size() - 1));
-        indexes.remove(indexes.size() - 1);  // 去掉 indexes 中的最后一个元素，而 data 不变
+        int last = indexes.size() - 1;
+        indexes.set(0, indexes.get(last));
+        indexes.remove(last);  // 去掉 indexes 中的最后一个元素，而 data 不变
         siftDown(0);  // 对第一个元素进行下沉
         return ret;
     }
@@ -156,8 +157,7 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     public static void main(String[] args) {
-        // 测试通过 heapify 生成索引堆
-        log("---- Testing by heapifying ----");
+        log("---- Generating IndexMaxHeap by heapifying ----");
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
         IndexMaxHeap<Integer> heap1 = new IndexMaxHeap<>(inputSeq);
         log(heap1);
@@ -165,8 +165,8 @@ public class IndexMaxHeap<E extends Comparable> {
         while (!heap1.isEmpty())
             log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
 
-        // 测试通过 add 生成索引堆
-        log("\n---- Testing by adding ----");
+
+        log("\n---- Generating IndexMaxHeap by adding ----");
         IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>();
         for (int n : inputSeq)
             heap2.add(n);
