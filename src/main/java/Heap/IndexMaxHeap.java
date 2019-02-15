@@ -143,7 +143,7 @@ public class IndexMaxHeap<E extends Comparable> {
     public E getItem(int i) {  // 查询堆中任意一个元素
         if (i < 0 || i >= data.size())
             throw new IllegalArgumentException("getItem failed.");
-        return data.get(i);
+        return data.get(i);  // 因为 data 不变，元素的索引语义不变，所以可以随时查询到。
     }
 
     public boolean isEmpty() {
