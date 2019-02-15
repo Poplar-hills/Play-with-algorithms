@@ -1,5 +1,7 @@
 package Heap;
 
+import sun.awt.util.IdentityLinkedList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +20,13 @@ import static java.util.Collections.swap;
  *            data: [15, 17, 19, 13, 22, 20]
  *         indexes: [4,  2,  5,  3,  0,  1]   -- 维护 data 中每个元素在最大堆中的位置
  *         reverse: [4,  5,  1,  3,  0,  2]   -- 维护 data 中每个元素的索引在 indexes 中的位置
- *   - 由此可推导：
- *     1. 若让 indexes[i] = j，则需让 reverse[j] = i；
- *        比如要 swap indexes 中的5和0，即让 indexes[2] = 0、indexes[4] = 2，则需让 reverse[0] = 2、reverse[2] = 4。
- *     2. 若让 indexes[reverse[i]] = i，则需让 reverse[indexes[i]] = i
+ *   - 由此可推导，因为 revers[i] 表示索引 i 在 indexes 中的位置：
+ *     1. 若 j = indexes[i]，则 reverse[j] = i
+ *        比如要让 indexes[2] = 0，即索引0在 indexes 中的位置发生了变化，此时需要维护 reverse[0] = 2。
+ *     2. indexes[reverse[i]] == i
+ *        因为 reverse[i] 表示索引 i 在 indexes 中的位置，所以 indexes 中 reverse[i] 位置上的元素就是 i。
+ *     3. reverse[indexes[i]] == i
+ *        结合1、2两条性质得到。
  * */
 
 public class IndexMaxHeapOptimised<E extends Comparable> {
@@ -73,12 +78,16 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
         return data.get(indexes.get(i));
     }
 
+    private void swapIndexes(int i, int j) {
+        swap(indexes, i, j);  // indexes 中索引 i 和 j 上的值发生了变化
+        reverse.set(indexes.get(i), i);  // 修改 indexes 之后要对应地维护 reverse
+        reverse.set(indexes.get(j), j);
+    }
+
     private void siftUp(int k) {
         while (k > 0 && getElement(getParentIndex(k)).compareTo(getElement(k)) < 0) {
             int p = getParentIndex(k);
-            swap(indexes, k, p);
-            reverse.set(indexes.get(k), k);
-            reverse.set(indexes.get(p), p);
+            swapIndexes(k, p);
             k = p;
         }
     }
@@ -90,11 +99,13 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
                 i += 1;
             if (getElement(k).compareTo(getElement(i)) >= 0)
                 break;
-            swap(indexes, k, i);
-            reverse.set(indexes.get(k), k);
-            reverse.set(indexes.get(i), i);
+            swapIndexes(k, i);
             k = i;
         }
+    }
+
+    private boolean contains(int i) {
+        return i >= 0 && i < indexes.size();
     }
 
     public void add(E e) {
@@ -109,20 +120,25 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
         int last = indexes.size() - 1;
         int lastIndex = indexes.get(last);
         indexes.set(0, lastIndex);
-        reverse.set(lastIndex, 0);
+        reverse.set(lastIndex, 0);  // 修改 indexes 之后对应地维护 reverse
         indexes.remove(last);
         siftDown(0);
         return ret;
     }
 
     public void change(int i, E newE) {
+        if (!contains(i))
+            throw new IllegalArgumentException("change failed.");
         data.set(i, newE);
-        for (int j = 0; j < indexes.size(); j++)
-            if (indexes.get(j) == i) {
-                siftUp(j);
-                siftDown(j);
-                return;
-            }
+        int j = reverse.get(i);  // 不再需要遍历，以 O(1) 的复杂度获得 i 在 indexes 中的索引
+        siftUp(j);
+        siftDown(j);
+    }
+
+    public E getItem(int i) {
+        if (!contains(i))
+            throw new IllegalArgumentException("getItem failed.");
+        return data.get(i);
     }
 
     public boolean isEmpty() {
@@ -142,6 +158,9 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
             heap1.add(n);
         log(heap1);
 
+        log("\n---- Testing change ----");
+        heap1.change(2, 999);
+        log(heap1);
 
         log("\n---- Testing extractMax ----");
         while (!heap1.isEmpty())
