@@ -14,6 +14,7 @@ import static java.util.Collections.swap;
  * - 问题：
  *   - IndexMaxHeap 的实现中，add、extractMax 方法的复杂度为 O(logn)，而 change 为 O(n)，成了堆操作的性能短板。
  *   - 具体来说，在 change 过程中，需要通过遍历找到指定元素的索引 i 在 indexes 中的位置，这个过程是 O(n) 的复杂度。
+ *
  * - 优化：
  *   - 如果采用空间换时间的思想，将要查找的结果提前维护在一个数组中，这样在需要用的时候就可以以 O(1) 的复杂度来查找了。
  *   - 具体来说，建立"反向索引" reverse 数组：
