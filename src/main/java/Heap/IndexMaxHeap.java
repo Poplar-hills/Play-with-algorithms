@@ -19,34 +19,43 @@ import static java.util.Collections.swap;
 *   题可以通过索引堆来解决。
 *
 * - 索引堆的原理：
-*   - 在普通堆的基础上另外维护一组"堆索引"（即每个元素在堆中的索引），在生成堆的过程中交换的是不再是堆元素而是堆索引：
-*          初始堆数据： [15, 17, 19, 13, 22, 20]
-*          初始堆索引：  0   1   2   3   4   5
-*     在将这个数组通过 heapify 整理为最大堆的过程中：
-*       1. 画出堆索引的树结构
-*       2. 找到最后一个非叶子节点2，对其进行 siftDown，比较2与其子节点5的大小
-*       3. 因为数据中第2个元素19 < 第5个元素20，因此交换2和5在堆索引中的位置：
+*   - 在数据集 data 之外构建一个"堆索引"数组 indexes，用于保存数据集中各个元素的索引：
+*          data：    [15, 17, 19, 13, 22, 20]
+*          indexes： [0,  1,  2,  3,  4,  5]
+*     在将该数据集通过 heapify 整理为最大堆的过程中：
+*       1. 画出初始 indexes 的树结构
+*       2. 找到最后一个非叶子节点2，对其进行 siftDown
+*       3. siftDown 过程中，因为 data 中索引为2的元素19 < 索引为5的元素20，因此交换2和5在 indexes 中的位置：
 *                    0                     0
 *                 /    \                /    \
 *                1     2    ------>    1     5
 *              /  \   /              /  \   /
 *             3   4  5              3   4  2
 *       4. 再对下一个非叶子节点1进行 siftDown，并如此往复直到整理完成（自己画一下这个过程）：
-*          堆数据： [15, 17, 19, 13, 22, 20]
-*          堆索引：  4   1   5   3   0   2
+*          data：    [15, 17, 19, 13, 22, 20]
+*          indexes： [4,  1,  5,  3,  0,  2]
 *
-*   - 可见在整理完成之后，堆数据丝毫不变，变的只是堆索引，这样做：
-*     1. 因为交换的是堆索引，而堆索引只是 int，数据结构简单，不会有性能问题。
-*     2. 因为交换的是堆索引，而堆数据本身的数组索引不变，因此语义不会丢失，任然可以通过随机访问取到对应的元素。
+*   - 可见在整理完成之后：
+*     1. data 数组丝毫不变，变的只是 indexes 中元素的顺序。
+*     2. 无论是 data，还是 indexes 都不构成堆，真正构成堆的是这个数组：
+*        data[indexes[1]], data[indexes[2]], data[indexes[3]], ..., data[indexes[n]]
+*        换句话说，我们可以这样理解 indexes —— 将 data 整理成一个最大堆后，把堆中的每个元素用它们在 data 中的索引值来替换，
+*        这样构成的数组就是 indexes，最后再让 data 的内容再恢复到最初状态。
+*
+*   - 这样构建出来的索引堆具有以下优势：
+*     1. 因为交换的是 indexes 中的元素，数据结构简单（只是单纯的 int），不会有性能问题。
+*     2. 因为交换的是 indexes 中的元素，而 data 中元素的索引不变，因此语义不会丢失，仍然可以通过随机访问取到对应的元素。
+*     3. 另外，索引堆比普通堆在功能上更强大 —— 能够修改、查询堆中指定元素的值（change, getItem 方法）。因为普通堆只能取到堆
+*        顶元素，而对堆中的其他元素都失去了控制。但是索引堆依靠索引，可以随时查询、修改堆中的任意元素，这也是索引堆的意义所在。
 *
 * - 索引堆的实现：
 *   1. 在普通堆的基础上添加堆索引。
-*   2. 在 shiftUp、shiftDown 时，比较的仍然是元素，但交换的是堆索引。
+*   2. 在 shiftUp、shiftDown 时，比较的仍然是数据集中的元素，但交换的是堆索引中的元素。
 * */
 
 public class IndexMaxHeap<E extends Comparable> {
     List<E> data;
-    List<Integer> indexes;  // 堆索引（其元素个数 <= data.size()，因为 data 不变，变的是 indexes），理解这里就理解了索引堆
+    List<Integer> indexes;  // 堆索引（其元素个数 <= data.size()，因为 data 不变，变的是 indexes）
 
     public IndexMaxHeap(int capacity) {
         data = new ArrayList<>(capacity);
@@ -108,18 +117,18 @@ public class IndexMaxHeap<E extends Comparable> {
     public void add(E e) {
         data.add(e);
         indexes.add(indexes.size());
-        siftUp(indexes.size() - 1);  // 对 indexes 的最后一个元素进行上浮
+        siftUp(indexes.size() - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
     }
 
     public E extractMax() {
         E ret = getElement(0);
         indexes.set(0, indexes.get(indexes.size() - 1));
-        indexes.remove(indexes.size() - 1);  // 去掉 indexes 的最后一个元素，而 data 不变
-        siftDown(0);  // 对 indexes 的第一个元素进行下沉
+        indexes.remove(indexes.size() - 1);  // 去掉 indexes 中的最后一个元素，而 data 不变
+        siftDown(0);  // 对第一个元素进行下沉
         return ret;
     }
 
-    public void change(int i, E newE) {  // 修改堆中元素（最差情况下为 O(n + logn) = O(n)，相对于其他操作 O(logn) 来说并不理想，在下个版本中优化）
+    public void change(int i, E newE) {  // 修改堆中任意一个元素（最差情况下为 O(n + logn) = O(n)，相对于其他操作 O(logn) 来说并不理想，在下个版本中优化）
         // 修改 data 中的元素
         data.set(i, newE);
         // 修改 indexes 中的该元素的索引位置
@@ -129,6 +138,12 @@ public class IndexMaxHeap<E extends Comparable> {
                 siftDown(j);
                 return;
             }
+    }
+
+    public E getItem(int i) {  // 查询堆中任意一个元素
+        if (i < 0 || i >= data.size())
+            throw new IllegalArgumentException("getItem failed.");
+        return data.get(i);
     }
 
     public boolean isEmpty() {
@@ -141,21 +156,25 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     public static void main(String[] args) {
+        // 测试通过 heapify 生成索引堆
+        log("---- Testing by heapifying ----");
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
         IndexMaxHeap<Integer> heap1 = new IndexMaxHeap<>(inputSeq);
         log(heap1);
 
+        while (!heap1.isEmpty())
+            log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
+
+        // 测试通过 add 生成索引堆
+        log("\n---- Testing by adding ----");
         IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>();
         for (int n : inputSeq)
             heap2.add(n);
-        log(heap2);  // 生成的 indexes 堆可能与 heap1 中的不同，因为生成机制不同
+        log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
 
-        heap2.change(2, 999);
-        log(heap2);
+        heap2.change(2, 999);  // 修改中间元素
 
-        while (!heap2.isEmpty()) {
-            log("Extracted: " + heap2.extractMax());
-            log(heap2);
-        }
+        while (!heap2.isEmpty())
+            log("Extracted: " + heap2.extractMax() + "; " + heap2.toString());
     }
 }
