@@ -6,6 +6,8 @@ package BST;
 * - SEE: DataStructure 中的 BST
 * */
 
+import static Utils.Helpers.log;
+
 public class BST<K extends Comparable<K>, V> {
     private Node root;
     private int size;
@@ -20,6 +22,9 @@ public class BST<K extends Comparable<K>, V> {
             this.value = value;
             left = right = null;
         }
+
+        @Override
+        public String toString() { return key.toString() + ": " + value.toString(); }
     }
 
     public BST() {
@@ -51,14 +56,29 @@ public class BST<K extends Comparable<K>, V> {
 
     @Override
     public String toString() {
-        return "";
+        StringBuilder s = new StringBuilder();
+        toString(root, s, 0);
+        return s.toString();
+    }
+
+    private void toString(Node node, StringBuilder s, int depth) {
+        if (node == null) return;
+
+        for (int i = 0; i < depth; i++)
+            s.append("--");
+        s.append(node.toString());
+
+        toString(node.left, s, depth + 1);
+        toString(node.right, s, depth + 1);
     }
 
     public static void main(String[] args) {
          Integer[] arr = {5, 2, 7, 3, 1, 6, 7, 8};
-         BST<Integer> bst = new BST();
+         BST<Integer, Integer> bst = new BST<Integer, Integer>();
 
-         for (int n : arr)
-            bst.add(n);
+         for (int e : arr)
+            bst.add(e, e * 2);
+
+         log(bst);
     }
 }
