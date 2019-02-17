@@ -8,6 +8,7 @@ package BST;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.function.Consumer;
 
 import static Utils.Helpers.log;
@@ -105,7 +106,17 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public void preOrderTraverseNR(Consumer handler) {
-
+        Stack<Node> stack = new Stack<>();
+        if (root == null) return;
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node node = stack.pop();
+            handler.accept(node);
+            if (node.right != null)
+                stack.push(node.right);
+            if (node.left != null)
+                stack.push(node.left);
+        }
     }
 
     public void inOrderTraverse(Consumer handler) {
@@ -152,15 +163,15 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public void levelOrderTraverseNR(Consumer handler) {
-        Queue<Node> q = new LinkedList<>();
-        q.add(root);
-        while (!q.isEmpty()) {
-            Node curr = q.remove();
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            Node curr = queue.remove();
             handler.accept(curr);
             if (curr.left != null)
-                q.add(curr.left);
+                queue.add(curr.left);
             if (curr.right != null)
-                q.add(curr.right);
+                queue.add(curr.right);
         }
     }
 
@@ -198,6 +209,8 @@ public class BST<K extends Comparable<K>, V> {
 
         log(bst);
 
-        bst.levelOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
+//        bst.levelOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
+
+        bst.preOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
     }
 }
