@@ -6,6 +6,8 @@ package BST;
 * - SEE: DataStructure 中的 BST
 * */
 
+import java.util.function.Consumer;
+
 import static Utils.Helpers.log;
 
 public class BST<K extends Comparable<K>, V> {
@@ -32,10 +34,9 @@ public class BST<K extends Comparable<K>, V> {
         size = 0;
     }
 
-    public int getSize() { return size; }
-
-    public boolean isEmpty() { return size == 0; }
-
+    /*
+    * 增操作
+    * */
     public void add(K key, V value) {
         root = add(root, key, value);
     }
@@ -54,6 +55,79 @@ public class BST<K extends Comparable<K>, V> {
         return node;
     }
 
+    /*
+     * 查操作
+     * */
+    public V search(K key) {  // 在 BST 中查找 key 所对应的 value
+        return search(root, key);
+    }
+
+    private V search(Node node, K key) {
+        if (node == null)
+            return null;
+        if (key.compareTo(node.key) < 0)
+            return search(node.left, key);
+        if (key.compareTo(node.key) > 0)
+            return search(node.right, key);
+        return node.value;
+    }
+
+    public boolean contains(K key) {
+        return contains(root, key);
+    }
+
+    private boolean contains(Node node, K key) {
+        if (node == null)
+            return false;
+        if (key.compareTo(node.key) < 0)
+            return contains(node.left, key);
+        if (key.compareTo(node.key) > 0)
+            return contains(node.right, key);
+        return true;
+    }
+
+    public int getSize() { return size; }
+
+    public boolean isEmpty() { return size == 0; }
+
+    /*
+    * Traverse
+    * */
+
+    public void preOrderTraverse(Consumer handler) { preOrderTraverse(root, handler); }
+
+    private void preOrderTraverse(Node node, Consumer handler) {
+        if (node == null) return;
+        handler.accept(node);
+        preOrderTraverse(node.left, handler);
+        preOrderTraverse(node.right, handler);
+    }
+
+    public void inOrderTraverse(Consumer handler) {
+        inOrderTraverse(root, handler);
+    }
+
+    private void inOrderTraverse(Node node, Consumer handler) {
+        if (node == null) return;
+        inOrderTraverse(node.left, handler);
+        handler.accept(node);
+        inOrderTraverse(node.right, handler);
+    }
+
+    public void postOrderTraverse(Consumer handler) {
+        postOrderTraverse(root, handler);
+    }
+
+    private void postOrderTraverse(Node node, Consumer handler) {
+        if (node == null) return;
+        inOrderTraverse(node.left, handler);
+        inOrderTraverse(node.right, handler);
+        handler.accept(node);
+    }
+
+    /*
+    * Misc
+    * */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -80,6 +154,8 @@ public class BST<K extends Comparable<K>, V> {
          for (int e : arr)
             bst.add(e, e * 2);
 
-         log(bst);
+        log(bst);
+
+        bst.preOrderTraverse(node -> System.out.println("-> " + node.toString()));
     }
 }
