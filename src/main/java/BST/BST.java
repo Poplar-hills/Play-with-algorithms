@@ -89,6 +89,26 @@ public class BST<K extends Comparable<K>, V> {
         return true;
     }
 
+    public Node getMin() {
+        if (size == 0)
+            throw new IllegalArgumentException("getMin failed.");
+        return getMin(root);
+    }
+
+    private Node getMin(Node node) {
+         return node.left != null ? getMin(node.left) : node;
+    }
+
+    public Node getMax() {
+        if (size == 0)
+            throw new IllegalArgumentException("getMax failed.");
+        return getMax(root);
+    }
+
+    private Node getMax(Node node) {
+        return node.right != null ? getMax(node.right) : node;
+    }
+
     public int getSize() { return size; }
 
     public boolean isEmpty() { return size == 0; }
@@ -209,8 +229,9 @@ public class BST<K extends Comparable<K>, V> {
 
         log(bst);
 
-//        bst.levelOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
-
         bst.preOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
+
+        log(bst.getMin());
+        log(bst.getMax());
     }
 }
