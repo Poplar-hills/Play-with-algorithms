@@ -102,6 +102,10 @@ public class BST<K extends Comparable<K>, V> {
         preOrderTraverse(node.right, handler);
     }
 
+    public void preOrderTraverseNR(Consumer handler) {
+
+    }
+
     public void inOrderTraverse(Consumer handler) {
         inOrderTraverse(root, handler);
     }
@@ -111,6 +115,10 @@ public class BST<K extends Comparable<K>, V> {
         inOrderTraverse(node.left, handler);
         handler.accept(node);
         inOrderTraverse(node.right, handler);
+    }
+
+    public void inOrderTraverseNR(Consumer handler) {
+        
     }
 
     public void postOrderTraverse(Consumer handler) {
@@ -139,6 +147,10 @@ public class BST<K extends Comparable<K>, V> {
             levelOrderTraverse(node.left, handler);
         if (node.right != null)
             levelOrderTraverse(node.right, handler);
+    }
+
+    public void levelOrderTraverseNT(Consumer handler) {
+
     }
 
     /*
