@@ -6,6 +6,8 @@ package BST;
 * - SEE: DataStructure 中的 BST
 * */
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.function.Consumer;
 
 import static Utils.Helpers.log;
@@ -118,7 +120,7 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public void inOrderTraverseNR(Consumer handler) {
-        
+
     }
 
     public void postOrderTraverse(Consumer handler) {
@@ -149,8 +151,17 @@ public class BST<K extends Comparable<K>, V> {
             levelOrderTraverse(node.right, handler);
     }
 
-    public void levelOrderTraverseNT(Consumer handler) {
-
+    public void levelOrderTraverseNR(Consumer handler) {
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node curr = q.remove();
+            handler.accept(curr);
+            if (curr.left != null)
+                q.add(curr.left);
+            if (curr.right != null)
+                q.add(curr.right);
+        }
     }
 
     /*
@@ -187,6 +198,6 @@ public class BST<K extends Comparable<K>, V> {
 
         log(bst);
 
-        bst.levelOrderTraverse(node -> System.out.println("-> " + node.toString()));
+        bst.levelOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
     }
 }
