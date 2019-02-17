@@ -37,7 +37,7 @@ public class BST<K extends Comparable<K>, V> {
     public boolean isEmpty() { return size == 0; }
 
     public void add(K key, V value) {
-        add(root, key, value);
+        root = add(root, key, value);
     }
 
     private Node add(Node node, K key, V value) {
@@ -64,8 +64,9 @@ public class BST<K extends Comparable<K>, V> {
     private void toString(Node node, StringBuilder s, int depth) {
         if (node == null) return;
 
+        s.append("\n");
         for (int i = 0; i < depth; i++)
-            s.append("--");
+            s.append("---");
         s.append(node.toString());
 
         toString(node.left, s, depth + 1);
