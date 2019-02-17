@@ -93,7 +93,6 @@ public class BST<K extends Comparable<K>, V> {
     /*
     * Traverse
     * */
-
     public void preOrderTraverse(Consumer handler) { preOrderTraverse(root, handler); }
 
     private void preOrderTraverse(Node node, Consumer handler) {
@@ -125,6 +124,23 @@ public class BST<K extends Comparable<K>, V> {
         handler.accept(node);
     }
 
+    public void levelOrderTraverse(Consumer handler) {
+        if (root == null) return;
+        handler.accept(root);
+        levelOrderTraverse(root, handler);
+    }
+
+    private void levelOrderTraverse(Node node, Consumer handler) {
+        if (node.left != null)
+            handler.accept(node.left);
+        if (node.right != null)
+            handler.accept(node.right);
+        if (node.left != null)
+            levelOrderTraverse(node.left, handler);
+        if (node.right != null)
+            levelOrderTraverse(node.right, handler);
+    }
+
     /*
     * Misc
     * */
@@ -147,6 +163,9 @@ public class BST<K extends Comparable<K>, V> {
         toString(node.right, s, depth + 1);
     }
 
+    /*
+    * main
+    * */
     public static void main(String[] args) {
          Integer[] arr = {5, 2, 7, 3, 1, 6, 7, 8};
          BST<Integer, Integer> bst = new BST<Integer, Integer>();
@@ -156,6 +175,6 @@ public class BST<K extends Comparable<K>, V> {
 
         log(bst);
 
-        bst.preOrderTraverse(node -> System.out.println("-> " + node.toString()));
+        bst.levelOrderTraverse(node -> System.out.println("-> " + node.toString()));
     }
 }
