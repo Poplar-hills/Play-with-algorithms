@@ -190,24 +190,46 @@ public class BST<K extends Comparable<K>, V> {
         return node.right != null ? getMax(node.right) : node;
     }
 
-//    public K ceil(K key) {
-//
-//    }
+    public K floor(K key) {
+        if (size == 0 || key.compareTo(getMin(root).key) < 0)  // 如果不存在 key 的 floor 值（树为空或 key 比树中的最小值还小）
+            return null;
+        return floor(root, key).key;
+    }
 
-//    public K floor(K key) {
-//        if (size == 0 || key.compareTo(getMin(root).key) < 0)  // 如果不存在 key 的 floor 值（树为空或 key 比树中的最小值还小）
-//            return null;
-//        return floor(root, key).key;
-//    }
+    private Node floor(Node node, K key) {
+        if (node == null)
+            return null;
+        if (key.compareTo(node.key) == 0)  // 如果 key == node.key，则该 node 就是 key 的 floor 节点
+            return node;
+        if (key.compareTo(node.key) < 0)  // 如果 key < node.key，则 key 的 floor 节点一定在 node 的左子树中（因为 floor 一定小于 key）
+            return floor(node.left, key);
+        // 如果 key > node.key，则 node 可能是 key 的 floor 节点，也可能不是，需要尝试在 node 的右子树中寻找。
+        // 因为右子树中的节点一定都 > node，因此如果其中有 < key 的节点就一定是 floor。
+        Node potentialFloor = floor(node.right, key);
+        return potentialFloor != null
+                ? potentialFloor
+                : node;
+    }
 
-//    private Node floor(Node node, K key) {
-//        if (node == null)
-//            return null;
-//        if (key.compareTo(node.key) == 0)
-//            return node;
-//        if (key.compareTo(node.key) < 0)
-//            return floor(node.left, key);
-//    }
+    public K ceil(K key) {
+        if (size == 0 || key.compareTo(getMax(root).key) > 0)  // 如果不存在 key 的 ceil 值（树为空或 key 比树中的最大值还大）
+            return null;
+        return ceil(root, key).key;
+    }
+
+    private Node ceil(Node node, K key) {  // 与 floor 非常类似
+        if (node == null)
+            return null;
+        if (key.compareTo(node.key) == 0)
+            return node;
+        if (key.compareTo(node.key) > 0)
+            return ceil(node.right, key);
+
+        Node potentialCeil = ceil(node.left, key);
+        return potentialCeil != null
+                ? potentialCeil
+                : node;
+    }
 
     public int getSize() { return size; }
 
@@ -225,7 +247,7 @@ public class BST<K extends Comparable<K>, V> {
         preOrderTraverse(node.right, handler);
     }
 
-    public void preOrderTraverseNR(Consumer handler) {
+    public void preOrderTraverseNR(Consumer handler) { // 使用 stack 实现（对比 levelOrderTraverse）
         Stack<Node> stack = new Stack<>();
         if (root == null) return;
         stack.push(root);
@@ -271,7 +293,7 @@ public class BST<K extends Comparable<K>, V> {
         levelOrderTraverse(root, handler);
     }
 
-    private void levelOrderTraverse(Node node, Consumer handler) {
+    private void levelOrderTraverse(Node node, Consumer handler) {  // 使用 queue 实现（对比 preOrderTraverseNR）
         if (node.left != null)
             handler.accept(node.left);
         if (node.right != null)
@@ -322,15 +344,15 @@ public class BST<K extends Comparable<K>, V> {
     * main
     * */
     public static void main(String[] args) {
-         Integer[] arr = {6, 2, 7, 9, 0, 4, 4, 5, 3};
+         Integer[] arr = {7, 2, 8, 9, 10, 4, 4, 5, 3};
          BST<Integer, Integer> bst = new BST<Integer, Integer>();
 
          for (int e : arr)
             bst.add(e, e * 2);
-         log(bst);
+        log(bst);;
 
         bst.remove(2);
-        bst.remove(6);
+        bst.remove(7);
         bst.remove(0);
         log(bst);
     }
