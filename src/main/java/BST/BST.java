@@ -61,7 +61,6 @@ public class BST<K extends Comparable<K>, V> {
     /*
     * 删操作
     * */
-
     public V remove(K key) {
         V retValue = search(key);
         root = remove(root, key);
@@ -71,11 +70,11 @@ public class BST<K extends Comparable<K>, V> {
     private Node remove(Node node, K key) {
         if (node == null)
             return null;
-        if (node.key.compareTo(key) < 0) {
+        if (key.compareTo(node.key) < 0) {
             node.left = remove(node.left, key);
             return node;
         }
-        else if (node.key.compareTo(key) > 0) {
+        else if (key.compareTo(node.key) > 0) {
             node.right = remove(node.right, key);
             return node;
         }
@@ -93,11 +92,11 @@ public class BST<K extends Comparable<K>, V> {
                 return rightChild;
             }
 
-            Node predecessor = getMax(node.left);
-            predecessor.left = removeMax(node.left);
-            predecessor.right = node.right;
+            Node successor = getMin(node.right);
+            successor.right = removeMin(node.right);
+            successor.left = node.left;
             node.left = node.right = null;
-            return predecessor;
+            return successor;
         }
 
     }
@@ -190,6 +189,25 @@ public class BST<K extends Comparable<K>, V> {
     private Node getMax(Node node) {
         return node.right != null ? getMax(node.right) : node;
     }
+
+//    public K ceil(K key) {
+//
+//    }
+
+//    public K floor(K key) {
+//        if (size == 0 || key.compareTo(getMin(root).key) < 0)  // 如果不存在 key 的 floor 值（树为空或 key 比树中的最小值还小）
+//            return null;
+//        return floor(root, key).key;
+//    }
+
+//    private Node floor(Node node, K key) {
+//        if (node == null)
+//            return null;
+//        if (key.compareTo(node.key) == 0)
+//            return node;
+//        if (key.compareTo(node.key) < 0)
+//            return floor(node.left, key);
+//    }
 
     public int getSize() { return size; }
 
@@ -284,6 +302,7 @@ public class BST<K extends Comparable<K>, V> {
     public String toString() {
         StringBuilder s = new StringBuilder();
         toString(root, s, 0);
+        s.append(String.format("\nSize: %d, Min: %d, Max: %d", getSize(), getMin().key, getMax().key));
         return s.toString();
     }
 
@@ -303,21 +322,16 @@ public class BST<K extends Comparable<K>, V> {
     * main
     * */
     public static void main(String[] args) {
-         Integer[] arr = {5, 2, 7, 3, 1, 6, 7, 8};
+         Integer[] arr = {6, 2, 7, 9, 0, 4, 4, 5, 3};
          BST<Integer, Integer> bst = new BST<Integer, Integer>();
 
          for (int e : arr)
             bst.add(e, e * 2);
+         log(bst);
 
-        log(bst);
-
-//        bst.preOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
-
-        log("Min: " + bst.getMin());
-        log("Max: " + bst.getMax());
-
-        bst.remove(5);
-
+        bst.remove(2);
+        bst.remove(6);
+        bst.remove(0);
         log(bst);
     }
 }
