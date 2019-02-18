@@ -59,6 +59,54 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     /*
+    * 删操作
+    * */
+
+    public V remove(K key) {
+        V retValue = search(key);
+        root = remove(root, key);
+        return retValue;
+    }
+
+    private Node remove(Node node, K key) {
+        if (node == null)
+            return null;
+        if (node.key.compareTo(key) < 0) {
+            node.left = remove(node.left, key);
+            return node;
+        }
+        else if (node.key.compareTo(key) > 0) {
+            node.right = remove(node.right, key);
+            return node;
+        }
+        else {
+            if (node.right == null) {
+                Node leftchild = node.left;
+                node.left = null;
+                size--;
+                return leftchild;
+            }
+            if (node.left == null) {
+                Node rightChild = node.right;
+                node.right = null;
+                size--;
+                return rightChild;
+            }
+
+            Node predecessor = getMax(node.left);
+            predecessor.left = removeMax(node.left);
+            predecessor.right = node.right;
+            node.left = node.right = null;
+            return predecessor;
+        }
+
+    }
+
+    private Node removeMax(Node node) {
+        
+    }
+
+    /*
      * 查操作
      * */
     public V search(K key) {  // 在 BST 中查找 key 所对应的 value
