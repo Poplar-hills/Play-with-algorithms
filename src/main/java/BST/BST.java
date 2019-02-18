@@ -103,7 +103,41 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     private Node removeMax(Node node) {
-        
+        if (node.right == null) {
+            Node leftChild = node.left;
+            node.left = null;
+            size--;
+            return leftChild;
+        }
+        node.right = removeMax(node.right);
+        return node;
+    }
+
+    private Node removeMin(Node node) {
+        if (node.left == null) {
+            Node rightChild = node.right;
+            node.right = null;
+            size--;
+            return rightChild;
+        }
+        node.left = removeMin(node.left);
+        return node;
+    }
+
+    public V removeMax() {
+        if (root == null)
+            throw new IllegalArgumentException("removeMax failed");
+        Node maxNode = getMax(root);
+        root = removeMax(root);
+        return maxNode.value;
+    }
+
+    public V removeMin() {
+        if (root == null)
+            throw new IllegalArgumentException("removeMin failed");
+        Node minNode = getMin(root);
+        root = removeMin(root);
+        return minNode.value;
     }
 
     /*
@@ -277,9 +311,13 @@ public class BST<K extends Comparable<K>, V> {
 
         log(bst);
 
-        bst.preOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
+//        bst.preOrderTraverseNR(node -> System.out.println("-> " + node.toString()));
 
-        log(bst.getMin());
-        log(bst.getMax());
+        log("Min: " + bst.getMin());
+        log("Max: " + bst.getMax());
+
+        bst.remove(5);
+
+        log(bst);
     }
 }
