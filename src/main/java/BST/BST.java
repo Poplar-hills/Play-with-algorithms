@@ -191,7 +191,7 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public K floor(K key) {
-        if (size == 0 || key.compareTo(getMin(root).key) < 0)  // 如果不存在 key 的 floor 值（树为空或 key 比树中的最小值还小）
+        if (size == 0 || key.compareTo(getMin(root).key) < 0)
             return null;
         return floor(root, key).key;
     }
@@ -199,12 +199,11 @@ public class BST<K extends Comparable<K>, V> {
     private Node floor(Node node, K key) {
         if (node == null)
             return null;
-        if (key.compareTo(node.key) == 0)  // 如果 key == node.key，则该 node 就是 key 的 floor 节点
+        if (key.compareTo(node.key) == 0)
             return node;
-        if (key.compareTo(node.key) < 0)  // 如果 key < node.key，则 key 的 floor 节点一定在 node 的左子树中（因为 floor 一定小于 key）
+        if (key.compareTo(node.key) < 0)
             return floor(node.left, key);
-        // 如果 key > node.key，则 node 可能是 key 的 floor 节点，也可能不是，需要尝试在 node 的右子树中寻找。
-        // 因为右子树中的节点一定都 > node，因此如果其中有 < key 的节点就一定是 floor。
+
         Node potentialFloor = floor(node.right, key);
         return potentialFloor != null
                 ? potentialFloor
@@ -212,12 +211,12 @@ public class BST<K extends Comparable<K>, V> {
     }
 
     public K ceil(K key) {
-        if (size == 0 || key.compareTo(getMax(root).key) > 0)  // 如果不存在 key 的 ceil 值（树为空或 key 比树中的最大值还大）
+        if (size == 0 || key.compareTo(getMax(root).key) > 0)
             return null;
         return ceil(root, key).key;
     }
 
-    private Node ceil(Node node, K key) {  // 与 floor 非常类似
+    private Node ceil(Node node, K key) {
         if (node == null)
             return null;
         if (key.compareTo(node.key) == 0)
@@ -247,7 +246,7 @@ public class BST<K extends Comparable<K>, V> {
         preorderTraverse(node.right, handler);
     }
 
-    public void preorderTraverseNR(Consumer handler) { // 使用 stack 实现（对比 levelOrderTraverse）
+    public void preorderTraverseNR(Consumer handler) {
         Stack<Node> stack = new Stack<>();
         if (root == null) return;
         stack.push(root);
