@@ -3,7 +3,7 @@ package BST;
 /*
 * 二分搜索树（Binary Search Tree）
 *
-* - SEE: DataStructure 中的 BST
+* - SEE: play-with-data-structure/BST
 * */
 
 import java.util.LinkedList;
