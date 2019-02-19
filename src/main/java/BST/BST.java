@@ -238,16 +238,16 @@ public class BST<K extends Comparable<K>, V> {
     /*
     * Traverse
     * */
-    public void preOrderTraverse(Consumer handler) { preOrderTraverse(root, handler); }
+    public void preorderTraverse(Consumer handler) { preorderTraverse(root, handler); }
 
-    private void preOrderTraverse(Node node, Consumer handler) {
+    private void preorderTraverse(Node node, Consumer handler) {
         if (node == null) return;
         handler.accept(node);
-        preOrderTraverse(node.left, handler);
-        preOrderTraverse(node.right, handler);
+        preorderTraverse(node.left, handler);
+        preorderTraverse(node.right, handler);
     }
 
-    public void preOrderTraverseNR(Consumer handler) { // 使用 stack 实现（对比 levelOrderTraverse）
+    public void preorderTraverseNR(Consumer handler) { // 使用 stack 实现（对比 levelOrderTraverse）
         Stack<Node> stack = new Stack<>();
         if (root == null) return;
         stack.push(root);
@@ -261,19 +261,33 @@ public class BST<K extends Comparable<K>, V> {
         }
     }
 
-    public void inOrderTraverse(Consumer handler) {
-        inOrderTraverse(root, handler);
+    public void inorderTraverse(Consumer handler) {
+        inorderTraverse(root, handler);
     }
 
-    private void inOrderTraverse(Node node, Consumer handler) {
+    private void inorderTraverse(Node node, Consumer handler) {
         if (node == null) return;
-        inOrderTraverse(node.left, handler);
+        inorderTraverse(node.left, handler);
         handler.accept(node);
-        inOrderTraverse(node.right, handler);
+        inorderTraverse(node.right, handler);
     }
 
-    public void inOrderTraverseNR(Consumer handler) {
+    public void inorderTraverseNR(Consumer handler) {
+        if (root == null)
+            throw new IllegalArgumentException("inorderTraverse failed.");
 
+        Stack<Node> stack = new Stack();
+        Node curr = root;
+
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+            handler.accept(curr);
+            curr = curr.right;
+        }
     }
 
     public void postOrderTraverse(Consumer handler) {
@@ -282,8 +296,8 @@ public class BST<K extends Comparable<K>, V> {
 
     private void postOrderTraverse(Node node, Consumer handler) {
         if (node == null) return;
-        inOrderTraverse(node.left, handler);
-        inOrderTraverse(node.right, handler);
+        inorderTraverse(node.left, handler);
+        inorderTraverse(node.right, handler);
         handler.accept(node);
     }
 
@@ -293,7 +307,7 @@ public class BST<K extends Comparable<K>, V> {
         levelOrderTraverse(root, handler);
     }
 
-    private void levelOrderTraverse(Node node, Consumer handler) {  // 使用 queue 实现（对比 preOrderTraverseNR）
+    private void levelOrderTraverse(Node node, Consumer handler) {
         if (node.left != null)
             handler.accept(node.left);
         if (node.right != null)
@@ -344,12 +358,15 @@ public class BST<K extends Comparable<K>, V> {
     * main
     * */
     public static void main(String[] args) {
-         Integer[] arr = {7, 2, 8, 9, 10, 4, 4, 5, 3};
-         BST<Integer, Integer> bst = new BST<Integer, Integer>();
+        Integer[] arr = {7, 2, 0, 8, 9, 4, 4, 5, 3};
+//        Integer[] arr = {4, 8, 9, 6, 10, 5};
+        BST<Integer, Integer> bst = new BST<Integer, Integer>();
 
-         for (int e : arr)
+        for (int e : arr)
             bst.add(e, e * 2);
-        log(bst);;
+        log(bst);
+
+        bst.inorderTraverseNR(System.out::println);
 
         bst.remove(2);
         bst.remove(7);
