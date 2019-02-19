@@ -359,7 +359,6 @@ public class BST<K extends Comparable<K>, V> {
     * */
     public static void main(String[] args) {
         Integer[] arr = {7, 2, 0, 8, 9, 4, 4, 5, 3};
-//        Integer[] arr = {4, 8, 9, 6, 10, 5};
         BST<Integer, Integer> bst = new BST<Integer, Integer>();
 
         for (int e : arr)
