@@ -27,7 +27,7 @@ public class DenseGraph {
         if (i < 0 || i >= n || j < 0 || j >= m)
             throw new IllegalArgumentException("addEdge failed. Vertex index is out of boundary");
 
-        if (hasEdge(i, j))
+        if (hasEdge(i, j))  // 两点之间是否已存在边（该实现中不允许平行边）
             return;
 
         graph[i][j] = true;
@@ -40,7 +40,7 @@ public class DenseGraph {
      * 查操作
      * */
     public boolean hasEdge(int i, int j) {
-        if (i < 0 || i >= n || j < 0 || j >= m)
+        if (i < 0 || i >= n || j < 0 || j >= n)
             throw new IllegalArgumentException("hasEdge failed. Vertex index is out of boundary");
         return graph[i][j];
     }
