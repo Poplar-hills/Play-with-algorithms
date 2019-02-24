@@ -30,26 +30,26 @@ public class SparseGraph {
     /*
      * 增操作
      * */
-    public void add(int i, int j) {  // 在顶点 i 和 j 之间建立一条边
-        if (i < 0 || i >= n || j < 0 || j >= n)
+    public void add(int v, int w) {  // 在顶点 v 和 w 之间建立一条边
+        if (v < 0 || v >= n || w < 0 || w >= n)
             throw new IllegalArgumentException("hasEdge failed. Vertex index is out of boundary");
 
-        if (hasEdge(i, j))  // 该实现中不允许平行边
+        if (hasEdge(v, w))  // 该实现中不允许平行边
             return;
 
-        graph[i].add(j);
-        if (i != j && !directed)  // 该实现中允许自环边，但不能重复添加自环边
-            graph[j].add(i);
+        graph[v].add(w);
+        if (v != w && !directed)  // 该实现中允许自环边，但不能重复添加自环边
+            graph[w].add(v);
         m++;
     }
 
     /*
      * 查操作
      * */
-    public boolean hasEdge(int i, int j) {
-        if (i < 0 || i >= n || j < 0 || j >= n)
+    public boolean hasEdge(int v, int w) {
+        if (v < 0 || v >= n || w < 0 || w >= n)
             throw new IllegalArgumentException("hasEdge failed. Vertex index is out of boundary");
-        return graph[i].contains(j);  // contains 会遍历列表，因此是 O(n) 复杂度
+        return graph[v].contains(w);  // contains 会遍历列表，因此是 O(n) 复杂度
     }
 
     public int getVertexCount() { return n; }
