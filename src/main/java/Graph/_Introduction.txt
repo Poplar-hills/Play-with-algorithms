@@ -12,11 +12,18 @@ Graph Theory 中的一些术语
 
 - 图的连通性：并不是所有的节点都会被连在一起，可能有小群体
 
-- Simple graph（简单图）
-  - Self-loop（自环边）
-  - Parallel-edges（平行边）
+
+- Self-loop（自环边，即自己指向自己的边）
+- Parallel-edges（平行边，即两节点之间的多条边）
+- Simple graph（简单图，即不考虑自环边和平行边的图）
 
 - 图的表示：
+  - 同样一副 graph 可以用两种方式表示：邻接矩阵、邻接表
+         0 --- 1
+             / |
+           /   |
+         3 --- 2
+
   - Adjacency Matrix（邻接矩阵）：矩阵表示图，graph[i][j] 表示节点 i 与节点 j 是否相连：
              0  1  2  3
            +-----------
@@ -31,6 +38,6 @@ Graph Theory 中的一些术语
          2 | 1  3          - 节点2与节点1、3相连
          3 | 1  2          - 节点3与节点1、2相连
 
-  - 邻接矩阵与邻接表都可以表达一幅 graph，但可以遵循的选取原则：
-    - 邻接矩阵适合表示 dense graph（稠密图）
-    - 邻接表适合表示 sparse graph（稀疏图）
+  - 选取原则：
+    - 邻接矩阵更适合表示 dense graph（稠密图）
+    - 邻接表适更合表示 sparse graph（稀疏图）
