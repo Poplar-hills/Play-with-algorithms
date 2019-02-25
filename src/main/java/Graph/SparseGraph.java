@@ -9,7 +9,11 @@ package Graph;
 *   - 因为处理平行边的效率是邻接表的一个劣势，所以常见的邻接表的实现中会允许存在平行边，而在所有边都添加完之后再统一去除平行边。
 * */
 
+import com.sun.tools.javac.util.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static Utils.Helpers.log;
 
@@ -52,6 +56,15 @@ public class SparseGraph implements Graph {
         return graph[v].contains(w);  // contains 会遍历列表，因此是 O(n) 复杂度
     }
 
+    // 读取一个顶点的所有邻边
+    // ∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器（或者不使用迭代器，直接返回所有相邻接点也可以）
+    // 在 java 中返回迭代器和返回所有相邻接点是一样的（都是返回 graph[v]，只是返回值类型不同）
+    public Iterable<Integer> adjIterator(int v) {
+        if (v < 0 || v >= n)
+            throw new IllegalArgumentException("adjIterator failed. Vertex index is out of boundary");
+        return graph[v];  // ArrayList 实现了 List，List 继承了 Collection，Collection 继承了 Iterable
+    }
+
     public int getVertexCount() { return n; }
 
     public int getEdgeCount() { return m; }
@@ -59,25 +72,34 @@ public class SparseGraph implements Graph {
     /*
      * Misc
      * */
-    public Iterable<Integer> adjIterator(int v) {  // 读取一个顶点的所有邻边（∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器）
-        if (v < 0 || v >= n)
-            throw new IllegalArgumentException("adjIterator failed. Vertex index is out of boundary");
-        return graph[v];  // ArrayList 实现了 List，List 继承了 Collection，Collection 继承了 Iterable
-    }
-
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            for (Integer n : graph[i])
-                s.append(n);
+            s.append(i + " | ");
+            s.append(graph[i].stream()
+                    .map(Object::toString)
+                    .collect(Collectors.joining(" ")));
             s.append("\n");
         }
         return s.toString();
     }
 
     public static void main(String[] args) {
-        SparseGraph g = new SparseGraph(4, false);
+        // 测试 addEdge
+        SparseGraph g = new SparseGraph(4, false);  // 无向图
+        g.addEdge(0, 1);
+        g.addEdge(1, 2);
+        g.addEdge(2, 3);
+        g.addEdge(3, 1);
         log(g);
+
+        // 测试 hasEdge
+        log(g.hasEdge(3, 0));
+        log(g.hasEdge(3, 1));
+
+        // 测试 adjIterator
+        for (int n : g.adjIterator(2))
+            log(n);
     }
 }

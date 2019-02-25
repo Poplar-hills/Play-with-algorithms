@@ -29,7 +29,7 @@ public class DenseGraph implements Graph {
      * 增操作
      * */
     public void addEdge(int v, int w) {  // 在顶点 v 和 w 之间建立一条边
-        if (v < 0 || v >= n || w < 0 || w >= m)
+        if (v < 0 || v >= n || w < 0 || w >= n)
             throw new IllegalArgumentException("addEdge failed. Vertex index is out of boundary");
 
         if (hasEdge(v, w))  // 两点之间是否已存在边（该实现中不允许平行边）
@@ -71,16 +71,37 @@ public class DenseGraph implements Graph {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
+        s.append("    ");
+        for (int i = 0; i < n; i++)
+            s.append(i + "  ");
+        s.append("\n  +");
+        for (int i = 0; i < n; i++)
+            s.append("---");
+        s.append("\n");
         for (int i = 0; i < n; i++) {
+            s.append(i + " | ");
             for (int j = 0; j < n; j++)
-                s.append(graph[i][j]);
+                s.append((graph[i][j] ? 1 : 0) + "  ");
             s.append("\n");
         }
         return s.toString();
     }
 
     public static void main(String[] args) {
-        DenseGraph g = new DenseGraph(4, false);
+        // 测试 addEdge
+        DenseGraph g = new DenseGraph(4, true);  // 有向图
+        g.addEdge(0, 1);
+        g.addEdge(1, 2);
+        g.addEdge(2, 3);
+        g.addEdge(3, 1);
         log(g);
+
+        // 测试 hasEdge
+        log(g.hasEdge(3, 0));
+        log(g.hasEdge(3, 1));
+
+        // 测试 adjIterator
+        for (int n : g.adjIterator(2))
+            log(n);
     }
 }
