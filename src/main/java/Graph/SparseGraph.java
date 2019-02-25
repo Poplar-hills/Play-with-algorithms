@@ -62,7 +62,7 @@ public class SparseGraph implements Graph {
     public Iterable<Integer> adjIterator(int v) {  // 读取一个顶点的所有邻边（∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器）
         if (v < 0 || v >= n)
             throw new IllegalArgumentException("adjIterator failed. Vertex index is out of boundary");
-        return graph[v];
+        return graph[v];  // ArrayList 实现了 List，List 继承了 Collection，Collection 继承了 Iterable
     }
 
     @Override
