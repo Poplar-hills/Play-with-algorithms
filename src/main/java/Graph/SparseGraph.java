@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import static Utils.Helpers.log;
 
-public class SparseGraph {
+public class SparseGraph implements Graph {
     private int n, m;  // n 为节点数，m 为边数
     private boolean directed;  // 该图是否为有向图
     private ArrayList<Integer>[] graph;  // 图的结构是 ArrayList 数组，不同于 DenseGraph 中的二维数组，SparseGraph 中的内层需要 ArrayList 的动态扩容功能来提高空间使用效率。
@@ -30,7 +30,7 @@ public class SparseGraph {
     /*
      * 增操作
      * */
-    public void add(int v, int w) {  // 在顶点 v 和 w 之间建立一条边
+    public void addEdge(int v, int w) {  // 在顶点 v 和 w 之间建立一条边
         if (v < 0 || v >= n || w < 0 || w >= n)
             throw new IllegalArgumentException("hasEdge failed. Vertex index is out of boundary");
 
@@ -59,6 +59,12 @@ public class SparseGraph {
     /*
      * Misc
      * */
+    public Iterable<Integer> adjIterator(int v) {  // 读取一个顶点的所有邻边（∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器）
+        if (v < 0 || v >= n)
+            throw new IllegalArgumentException("adjIterator failed. Vertex index is out of boundary");
+        return graph[v];
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
