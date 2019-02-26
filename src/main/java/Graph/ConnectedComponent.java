@@ -1,7 +1,6 @@
-package Graph.GraphReader;
+package Graph;
 
-import Graph.Graph;
-import Graph.SparseGraph;
+import Graph.GraphReader.GraphReader;
 
 import java.util.Iterator;
 
