@@ -31,7 +31,7 @@ public class GraphReader {
         if (filename == null)
             throw new IllegalArgumentException("filename cannot be empty.");
 
-        try {
+        try {  // 不使用 try-with-resource 是因为它运行完后会关闭 Scanner，但后面的代码中还需要使用
             File file = new File(filename);
             scanner = new Scanner(file, "UTF-8");
             scanner.useLocale(Locale.ENGLISH);
