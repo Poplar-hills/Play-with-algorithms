@@ -9,16 +9,13 @@ package Graph;
 *   - 因为处理平行边的效率是邻接表的一个劣势，所以常见的邻接表的实现中会允许存在平行边，而在所有边都添加完之后再统一去除平行边。
 * */
 
-import com.sun.tools.javac.util.StringUtils;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import static Utils.Helpers.log;
 
 public class SparseGraph implements Graph {
-    private int n, m;  // n 为节点数，m 为边数
+    private int n, m;  // n 为顶点数，m 为边数
     private boolean directed;  // 该图是否为有向图
     private ArrayList<Integer>[] graph;  // 图的结构是 ArrayList 数组，不同于 DenseGraph 中的二维数组，SparseGraph 中的内层需要 ArrayList 的动态扩容功能来提高空间使用效率。
 
@@ -40,7 +37,6 @@ public class SparseGraph implements Graph {
 
         if (hasEdge(v, w))  // 该实现中不允许平行边
             return;
-
         graph[v].add(w);
         if (v != w && !directed)  // 该实现中允许自环边，但不能重复添加自环边
             graph[w].add(v);

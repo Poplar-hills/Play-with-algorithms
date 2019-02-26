@@ -1,9 +1,6 @@
 package Graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static Utils.Helpers.*;
 
@@ -12,7 +9,7 @@ import static Utils.Helpers.*;
 * */
 
 public class DenseGraph implements Graph {
-    private int n, m;  // n 为节点数，m 为边数
+    private int n, m;  // n 为顶点数，m 为边数
     private boolean directed;  // 该图是否为有向图
     private boolean[][] graph;  // 图的结构是二维布尔数组，graph[i][j] 表示顶点 i 与顶点 j 是否相连
 
@@ -34,7 +31,6 @@ public class DenseGraph implements Graph {
 
         if (hasEdge(v, w))  // 两点之间是否已存在边（该实现中不允许平行边）
             return;
-
         graph[v][w] = true;
         if (!directed)
             graph[w][v] = true;
