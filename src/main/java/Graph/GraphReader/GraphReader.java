@@ -59,9 +59,9 @@ public class GraphReader {
             }
         } catch (InputMismatchException e) {
             String token = scanner.next();
-            throw new InputMismatchException("attempts to read an 'int' value from input stream, but the next token is \"" + token + "\"");
+            throw new InputMismatchException("attempts to read an 'int' value from stream, but the next token is \"" + token + "\"");
         } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("attemps to read an 'int' value from input stream, but there are no more tokens available");
+            throw new NoSuchElementException("attemps to read an 'int' value from stream, but there are no more tokens available");
         }
     }
 
