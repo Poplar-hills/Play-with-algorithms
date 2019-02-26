@@ -5,13 +5,19 @@ import Graph.DenseGraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static Utils.Helpers.log;
+
+/*
+* GraphReader 根据文件中的参数构建传入的 graph 实例
+*
+* - 文件中的第一行是：顶点数、边数
+* - 文件中的顶点数必须等于传入的 graph 实例的顶点数
+* */
 
 public class GraphReader {
     private Scanner scanner;
