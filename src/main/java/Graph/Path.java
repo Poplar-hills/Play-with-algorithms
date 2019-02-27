@@ -17,12 +17,12 @@ import static Utils.Helpers.log;
 public class Path {
     private Graph graph;
     private boolean[] visited;
-    private int[] from;  // 每个顶点在路径中的上一跳顶点
+    private int[] from;  // 记录每个顶点在路径中的上一跳顶点
     private int source;  // 源顶点
 
     public Path(Graph graph, int source) {
-        if (source >= graph.getVertexCount())
-            throw new IllegalArgumentException("Failed to initiate Path. The source is out of the boundary of the graph");
+        if (source < 0 || source >= graph.getVertexCount())
+            throw new IllegalArgumentException("Failed to initiate. The source is out of the boundary of the graph");
 
         this.graph = graph;
         this.source = source;
@@ -35,8 +35,7 @@ public class Path {
             from[i] = -1;
         }
 
-        // 寻路
-        depthFirstSearch(source);
+        depthFirstSearch(source);  // 对 source 进行寻路，记录在 from 数组中
     }
 
     private void depthFirstSearch(int v) {
@@ -44,13 +43,10 @@ public class Path {
             throw new IllegalArgumentException("depthFirstSearch failed. Vertex out of boundary.");
 
         visited[v] = true;
-        Iterator<Integer> it = graph.adjIterator(v).iterator();
-
-        while (it.hasNext()) {
-            int nextV = it.next();
-            if (!visited[nextV]) {
-                from[nextV] = v;
-                depthFirstSearch(nextV);
+        for (int w : graph.adjIterator(v)) {
+            if (!visited[w]) {
+                from[w] = v;  // 记录上一跳顶点
+                depthFirstSearch(w);  // 递归
             }
         }
     }
@@ -61,7 +57,7 @@ public class Path {
         return visited[target];  // 如果在寻路过程中访问过该顶点，则说明在一个连通分量上，即有路径到达
     }
 
-    public List<Integer> path(int target) {
+    public List<Integer> path(int target) {  // 借助 from 数组查询 source 到 target 的路径（不一定是最短的）
         if (target < 0 || target >= graph.getVertexCount())
             throw new IllegalArgumentException("path failed. Vertex out of boundary.");
 
@@ -75,6 +71,7 @@ public class Path {
         List<Integer> list = new ArrayList<>();  // 再将栈中的元素出栈给列表，获得从 source -> target 的路径（相当于借用 stack 进行了一次 reverse 操作）
         while (!stack.isEmpty())
             list.add(stack.pop());
+
         return list;
     }
 
