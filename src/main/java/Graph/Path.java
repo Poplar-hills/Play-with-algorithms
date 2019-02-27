@@ -1,6 +1,5 @@
 package Graph;
 
-import Graph.Graph;
 import Graph.GraphReader.GraphReader;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import static Utils.Helpers.log;
 /*
 * 寻路（Path）
 *
-* 该类的设计是找到某一个顶点在
 * */
 
 public class Path {
