@@ -30,22 +30,24 @@ public class ConnectedComponent {
         }
 
         for (int i = 0; i < visited.length; i++) {  // 搜索连通分量
-            if (!visited[i]) {
+            if (!visited[i]) {  // 深度优先遍历会遍历一个连通分量上的所有顶点，没有被遍历的顶点说明在其他分量上
                 depthFirstSearch(i);
-                componentCount++;  // 深度优先遍历会遍历一个连通分量上的所有节点，即找到一个连通分量，因此计数器加一
+                componentCount++;
             }
         }
     }
 
     private void depthFirstSearch(int v) {  // 对传入的顶点进行深度优先遍历
+        if (v < 0 || v >= graph.getVertexCount())
+            throw new IllegalArgumentException("depthFirstSearch failed. Vertex out of boundary.");
+
         visited[v] = true;           // 访问顶点
         setIds[v] = componentCount;  // 为顶点所在连通分量的 id 赋值
 
-        Iterable<Integer> edges = graph.adjIterator(v);
-        Iterator<Integer> edgeIterator = edges.iterator();
+        Iterator<Integer> it = graph.adjIterator(v).iterator();
 
-        while (edgeIterator.hasNext()) {
-            int nextV = edgeIterator.next();
+        while (it.hasNext()) {
+            int nextV = it.next();
             if (!visited[nextV])
                 depthFirstSearch(nextV);  // 递归遍历
         }
@@ -54,8 +56,9 @@ public class ConnectedComponent {
     public int getCount() { return componentCount; }
 
     public boolean isConnected(int v, int w) {
-        if (v < 0 || v >= graph.getVertexCount() || w < 0 || w >= graph.getVertexCount() )
-            throw new IllegalArgumentException("isConnected failed.");
+        int n = graph.getVertexCount();
+        if (v < 0 || v >= n || w < 0 || w >= n)
+            throw new IllegalArgumentException("isConnected failed. Vertex out of boundary.");
         return setIds[v] == setIds[w];
     }
 
