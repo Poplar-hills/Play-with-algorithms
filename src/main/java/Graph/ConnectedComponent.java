@@ -80,12 +80,12 @@ public class ConnectedComponent {
 
     public static void main(String[] args) {
         Graph g1 = new SparseGraph(13, false);
-        new GraphReader(g1, "src/main/java/Graph/GraphReader/testG1.txt");
+        new GraphReader(g1, "src/main/java/Graph/GraphReader/testG1.txt");  // 将文件中的图信息读入 g1 中
         ConnectedComponent component1 = new ConnectedComponent(g1);
         log(String.format("Graph testG1 has %d connected components.", component1.getCount()));
 
         Graph g2 = new SparseGraph(6, false);
-        new GraphReader(g2, "src/main/java/Graph/GraphReader/testG2.txt");
+        new GraphReader(g2, "src/main/java/Graph/GraphReader/testG2.txt");  // 将文件中的图信息读入 g2 中
         ConnectedComponent component2 = new ConnectedComponent(g2);
         log(String.format("Graph testG2 has %d connected components.", component2.getCount()));
 

@@ -80,7 +80,7 @@ public class Path {
 
     public static void main(String[] args) {
         Graph g = new SparseGraph(6, false);
-        new GraphReader(g, "src/main/java/Graph/GraphReader/testG2.txt");
+        new GraphReader(g, "src/main/java/Graph/GraphReader/testG2.txt");  // 将文件中的图信息读入 g 中
         Path p = new Path(g, 4);
 
         log(g);
