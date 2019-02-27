@@ -2,8 +2,6 @@ package Graph;
 
 import Graph.GraphReader.GraphReader;
 
-import java.util.Iterator;
-
 import static Utils.Helpers.log;
 
 /*
@@ -60,12 +58,9 @@ public class ConnectedComponent {
         visited[v] = true;           // 访问顶点
         setIds[v] = componentCount;  // 为顶点所在连通分量的 id 赋值
 
-        Iterator<Integer> it = graph.adjIterator(v).iterator();
-
-        while (it.hasNext()) {
-            int nextV = it.next();
-            if (!visited[nextV])
-                depthFirstSearch(nextV);  // 递归遍历
+        for (int w : graph.adjIterator(v)) {
+            if (!visited[w])
+                depthFirstSearch(w);  // 递归遍历
         }
     }
 
