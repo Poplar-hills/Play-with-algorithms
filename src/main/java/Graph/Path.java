@@ -67,14 +67,14 @@ public class Path {
         if (target < 0 || target >= graph.getVertexCount())
             throw new IllegalArgumentException("path failed. Vertex out of boundary.");
 
-        Stack<Integer> stack = new Stack<>();
+        Stack<Integer> stack = new Stack<>();  // 使用栈记录从 target -> source 中的每一个节点
         int v = target;
-        while (v != -1) {
+        while (v != -1) {  // source 的 from 是 -1，到此结束循环
             stack.add(v);
             v = from[v];
         }
 
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();  // 再将栈中的元素出栈给列表，获得从 source -> target 的路径（相当于借用 stack 进行了一次 reverse 操作）
         while (!stack.isEmpty())
             list.add(stack.pop());
         return list;
