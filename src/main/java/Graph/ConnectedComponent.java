@@ -9,7 +9,7 @@ import static Utils.Helpers.log;
 *
 * - 通过对图进行深度优先遍历找到图中的连通分量
 * - 深度优先遍历的复杂度分析：
-*   - 如果是邻接表则为 O(n + m)，其中 n、m 分别是顶点数和边数。
+*   - 如果是邻接表则为 O(n + m)，其中 n、m 分别是顶点数和边数
 *   - 如果是邻接矩阵则为 O(n^2)
 *   因为深度优先遍历的实现实际上是在遍历邻接表或邻接矩阵中的每一个节点，那么：
 *         0 | 1
@@ -58,7 +58,7 @@ public class ConnectedComponent {
         visited[v] = true;           // 访问顶点
         setIds[v] = componentCount;  // 为顶点所在连通分量的 id 赋值
 
-        for (int w : graph.adjIterator(v)) {
+        for (int w : graph.getAdjacentVertexes(v)) {
             if (!visited[w])
                 depthFirstSearch(w);  // 递归遍历
         }

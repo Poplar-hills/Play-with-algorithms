@@ -18,6 +18,10 @@ package Graph;
 *       vertex:    0  1  2  3  4  5
 *       from:    [ 1  4  1  4 -1  3 ]
 *       orders:  [ 2  1  2  1  0  2 ]
+*
+* - 广度优先遍历的复杂度分析：
+*   - 如果是邻接表则为 O(n + m)，其中 n、m 分别是顶点数和边数
+*   - 如果是邻接矩阵则为 O(n^2)
 * */
 
 import Graph.GraphReader.GraphReader;
@@ -61,10 +65,10 @@ public class ShortestPath {
 
         while (!queue.isEmpty()) {
             int v = queue.remove();
-            for (int w : graph.adjIterator(v)) {
+            for (int w : graph.getAdjacentVertexes(v)) {
                 if (!visited[w]) {
                     queue.add(w);
-                    visited[w] = true;
+                    visited[w] = true;  // 只要顶点被加入到了队列就置为 true
                     from[w] = v;
                     orders[w] = orders[v] + 1;
                 }

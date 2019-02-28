@@ -53,9 +53,9 @@ public class DenseGraph implements Graph {
     /*
      * Misc
      * */
-    public Iterable<Integer> adjIterator(int v) {  // 读取一个顶点的所有邻边（∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器）
+    public Iterable<Integer> getAdjacentVertexes(int v) {  // 读取一个顶点的所有邻边（∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器）
         if (v < 0 || v >= n)
-            throw new IllegalArgumentException("adjIterator failed. Vertex index is out of boundary");
+            throw new IllegalArgumentException("getAdjacentVertexes failed. Vertex index is out of boundary");
 
         ArrayList<Integer> edges = new ArrayList<>();
         for (int i = 0; i < n; i++)
@@ -96,8 +96,8 @@ public class DenseGraph implements Graph {
         log(g.hasEdge(3, 0));
         log(g.hasEdge(3, 1));
 
-        // 测试 adjIterator
-        for (int n : g.adjIterator(2))
+        // 测试 getAdjacentVertexes
+        for (int n : g.getAdjacentVertexes(2))
             log(n);
     }
 }

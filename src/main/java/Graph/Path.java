@@ -56,7 +56,7 @@ public class Path {
             throw new IllegalArgumentException("depthFirstSearch failed. Vertex out of boundary.");
 
         visited[v] = true;
-        for (int w : graph.adjIterator(v)) {
+        for (int w : graph.getAdjacentVertexes(v)) {
             if (!visited[w]) {
                 from[w] = v;  // 记录上一跳顶点
                 depthFirstSearch(w);  // 递归
