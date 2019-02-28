@@ -11,6 +11,20 @@ import static Utils.Helpers.log;
 /*
 * 寻路（Path）
 *
+* - 通过深度优先遍历找到两点之间的路径
+*
+* - 例：对于 testG2.txt 中描述的 graph：
+*
+*             0 ----- 1 ------- 4       0 | 1  2  3
+*           / \     / \        /        1 | 0  2  3  4
+*         /    \  /    \     /          2 | 0  1
+*       /       2       \  /            3 | 1  4  5
+*      5 --------------- 3              4 | 1  3
+*                                       5 | 0  3
+*
+*   如果 source 是4，则经过 new Path(graph, 4) 之后：
+*       vertex:    0  1  2  3  4  5
+*       from:    [ 1  4  0  5 -1  0 ]
 * */
 
 public class Path {
@@ -77,8 +91,8 @@ public class Path {
     public static void main(String[] args) {
         Graph g = new SparseGraph(6, false);
         new GraphReader(g, "src/main/java/Graph/GraphReader/testG2.txt");  // 将文件中的图信息读入 g 中
-        Path p = new Path(g, 4);
 
+        Path p = new Path(g, 4);
         log(g);
         log(p.path(5));  // 输出从 4 到 5 的 path
         log(p.path(2));  // 输出从 4 到 2 的 path（不是最短路径）

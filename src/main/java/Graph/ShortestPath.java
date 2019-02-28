@@ -4,9 +4,27 @@ package Graph;
 * 最短路径（Shortest Path）
 *
 * - 通过广度优先遍历找到两点之间的最短路径
+*
+* - 例：对于 testG2.txt 中描述的 graph：
+*
+*             0 ----- 1 ------- 4       0 | 1  2  3
+*           / \     / \        /        1 | 0  2  3  4
+*         /    \  /    \     /          2 | 0  1
+*       /       2       \  /            3 | 1  4  5
+*      5 --------------- 3              4 | 1  3
+*                                       5 | 0  3
+*
+*   如果 source 是4，则经过 new ShortestPath(graph, 4) 之后：
+*       vertex:    0  1  2  3  4  5
+*       from:    [ 1  4  1  4 -1  3 ]
+*       orders:  [ 2  1  2  1  0  2 ]
 * */
 
+import Graph.GraphReader.GraphReader;
+
 import java.util.*;
+
+import static Utils.Helpers.log;
 
 public class ShortestPath {
     private Graph graph;
@@ -85,6 +103,17 @@ public class ShortestPath {
     }
 
     public static void main(String[] args) {
+        Graph g = new SparseGraph(6, false);
+        new GraphReader(g, "src/main/java/Graph/GraphReader/testG2.txt");  // 将文件中的图信息读入 g 中
 
+        ShortestPath p = new ShortestPath(g, 4);
+
+        log(p.hasPath(5));
+        log(p.path(5));
+        log(p.length(5));
+
+        log(p.hasPath(0));
+        log(p.path(0));
+        log(p.length(0));
     }
 }
