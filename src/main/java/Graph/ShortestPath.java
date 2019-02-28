@@ -3,11 +3,11 @@ package Graph;
 /*
 * 最短路径（Shortest Path）
 *
-* - 通过广度优先遍历找到两点之间的最短路径
+* - 通过广度优先遍历（Breadth First Search, BFS）找到两点之间的最短路径
 *
 * - 例：对于 testG2.txt 中描述的 graph：
 *
-*             0 ----- 1 ------- 4       0 | 1  2  3
+*             0 ----- 1 ------- 4       0 | 1  2  5
 *           / \     / \        /        1 | 0  2  3  4
 *         /    \  /    \     /          2 | 0  1
 *       /       2       \  /            3 | 1  4  5
@@ -19,9 +19,25 @@ package Graph;
 *       from:    [ 1  4  1  4 -1  3 ]
 *       orders:  [ 2  1  2  1  0  2 ]
 *
-* - 广度优先遍历的复杂度分析：
+* - BFS 的复杂度与 DFS 一致：
 *   - 如果是邻接表则为 O(n + m)，其中 n、m 分别是顶点数和边数
 *   - 如果是邻接矩阵则为 O(n^2)
+*   具体分析 SEE: ConnectedComponent
+*
+* - 图遍历的本质：
+*   - 不管是 BFS 还是 DFS，在遍历图的过程中都是由一个顶点出发，沿不同路径不重复地走完图上的所有节点。
+*     而这样由一点出发延伸出多条路径的过程实际上就是在生成一棵树。
+*   - 对于上面的 graph 来说，如果 source = 4：
+*            BFS 过程中得到的树：               DFS 过程中得到的树：
+*                   4                                 4
+*                 /   \                               |
+*               1      3                              1
+*             /   \    |                              |
+*            0    2    5                              0
+*                                                   /   \
+*                                                  2     5
+*                                                        |
+*                                                        3
 * */
 
 import Graph.GraphReader.GraphReader;
@@ -57,7 +73,7 @@ public class ShortestPath {
         breadthFirstSearch();  // 对 source 进行寻路，记录在 from 和 orders 数组中
     }
 
-    private void breadthFirstSearch() {
+    private void breadthFirstSearch() {  // BFS
         Queue<Integer> queue = new LinkedList<>();  // 使用队列作为辅助数据结构（类似 BST 的 levelOrderTraverse）
         queue.add(source);
         visited[source] = true;

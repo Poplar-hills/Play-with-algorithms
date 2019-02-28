@@ -11,11 +11,11 @@ import static Utils.Helpers.log;
 /*
 * 寻路（Path）
 *
-* - 通过深度优先遍历找到两点之间的路径
+* - 通过深度优先遍历（Depth First Search, DFS）找到两点之间的路径
 *
 * - 例：对于 testG2.txt 中描述的 graph：
 *
-*             0 ----- 1 ------- 4       0 | 1  2  3
+*             0 ----- 1 ------- 4       0 | 1  2  5
 *           / \     / \        /        1 | 0  2  3  4
 *         /    \  /    \     /          2 | 0  1
 *       /       2       \  /            3 | 1  4  5
@@ -51,7 +51,7 @@ public class Path {
         depthFirstSearch(source);  // 对 source 进行寻路，记录在 from 数组中
     }
 
-    private void depthFirstSearch(int v) {
+    private void depthFirstSearch(int v) {  // DFS
         if (v < 0 || v >= graph.getVertexCount())
             throw new IllegalArgumentException("depthFirstSearch failed. Vertex out of boundary.");
 
