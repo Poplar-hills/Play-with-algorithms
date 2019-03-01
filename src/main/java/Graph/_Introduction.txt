@@ -44,5 +44,5 @@ Graph Theory 中的一些术语
     - 邻接矩阵更适合表示 dense graph（稠密图）
     - 邻接表适更合表示 sparse graph（稀疏图）
 
-- 图的应用：Photoshop 中的魔棒、扫雷、迷宫生成、二分图、地图填色等
+- 无权图的应用：Photoshop 中的魔棒、扫雷、迷宫生成、二分图、欧拉路径、地图填色等
   - SEE: https://coding.imooc.com/lesson/71.html#mid=1486
