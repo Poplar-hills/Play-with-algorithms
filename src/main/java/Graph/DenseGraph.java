@@ -25,6 +25,7 @@ public class DenseGraph implements Graph {
     /*
      * 增操作
      * */
+    @Override
     public void addEdge(int v, int w) {  // 在顶点 v 和 w 之间建立一条边
         if (v < 0 || v >= n || w < 0 || w >= n)
             throw new IllegalArgumentException("addEdge failed. Vertex index is out of boundary");
@@ -40,19 +41,14 @@ public class DenseGraph implements Graph {
     /*
      * 查操作
      * */
+    @Override
     public boolean hasEdge(int v, int w) {
         if (v < 0 || v >= n || w < 0 || w >= n)
             throw new IllegalArgumentException("hasEdge failed. Vertex index is out of boundary");
         return graph[v][w];
     }
 
-    public int getVertexCount() { return n; }
-
-    public int getEdgeCount() { return m; }
-
-    /*
-     * Misc
-     * */
+    @Override
     public Iterable<Integer> getAdjacentVertexes(int v) {  // 读取一个顶点的所有邻边（∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器）
         if (v < 0 || v >= n)
             throw new IllegalArgumentException("getAdjacentVertexes failed. Vertex index is out of boundary");
@@ -64,6 +60,15 @@ public class DenseGraph implements Graph {
         return edges;
     }
 
+    @Override
+    public int getVertexCount() { return n; }
+
+    @Override
+    public int getEdgeCount() { return m; }
+
+    /*
+     * Misc
+     * */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
