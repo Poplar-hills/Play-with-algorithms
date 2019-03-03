@@ -32,6 +32,7 @@ public class DenseGraph implements Graph {
 
         if (hasEdge(v, w))  // 两点之间是否已存在边（该实现中不允许平行边）
             return;
+
         graph[v][w] = true;
         if (!directed)
             graph[w][v] = true;
