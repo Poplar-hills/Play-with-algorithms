@@ -85,8 +85,8 @@ public class IndexMaxHeap<E extends Comparable> {
             indexes.add(i);
 
         int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);  // heapify
-        while (lastNonLeafNodeIndex >= 0)
-            siftDown(lastNonLeafNodeIndex--);
+        for (int i = lastNonLeafNodeIndex; i >= 0; i--)
+            siftDown(i);
     }
 
     private int getParentIndex(int index) {
@@ -122,7 +122,7 @@ public class IndexMaxHeap<E extends Comparable> {
         }
     }
 
-    public void add(E e) {
+    public void insert(E e) {
         data.add(e);
         indexes.add(indexes.size());
         siftUp(indexes.size() - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
@@ -177,7 +177,7 @@ public class IndexMaxHeap<E extends Comparable> {
         log("\n---- Generating IndexMaxHeap by adding ----");
         IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>();
         for (int n : inputSeq)
-            heap2.add(n);
+            heap2.insert(n);
         log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
 
         heap2.change(2, 999);  // 修改中间元素

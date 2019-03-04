@@ -12,7 +12,7 @@ import static java.util.Collections.swap;
  * 带反向查找的的索引堆（Index Heap with Reverse Retrieval）
  *
  * - 问题：
- *   - IndexMaxHeap 的实现中，add、extractMax 方法的复杂度为 O(logn)，而 change 为 O(n)，成了堆操作的性能短板。
+ *   - IndexMaxHeap 的实现中，insert、extractMax 方法的复杂度为 O(logn)，而 change 为 O(n)，成了堆操作的性能短板。
  *   - 具体来说，在 change 过程中，需要通过遍历找到指定元素的索引 i 在 indexes 中的位置，这个过程是 O(n) 的复杂度。
  *
  * - 优化：
@@ -152,7 +152,7 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     }
 
     public static void main(String[] args) {
-        log("---- Testing add ----");
+        log("---- Testing insert ----");
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
         IndexMaxHeapOptimised<Integer> heap1 = new IndexMaxHeapOptimised<>();
         for (int n : inputSeq)

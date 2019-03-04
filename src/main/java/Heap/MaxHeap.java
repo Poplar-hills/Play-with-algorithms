@@ -62,7 +62,7 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
 
     private E findMax() { return data.get(0); }
 
-    public void add(E e) {
+    public void insert(E e) {
         data.add(e);
         siftUp(getSize() - 1);
     }
@@ -96,10 +96,10 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
         MaxHeap<Integer> heap = new MaxHeap<>();
         Integer[] inputSeq = {3, 10, 6, 4, 8, 7, 1, 5, 2, 9};
 
-        // test add
+        // test insert
         for (int e : inputSeq) {
-            heap.add(e);
-            log("add " + e + " -> " + heap.toString());
+            heap.insert(e);
+            log("insert " + e + " -> " + heap.toString());
         }
 
         // test extractMax

@@ -6,8 +6,8 @@ import static Utils.Helpers.*;
 * 堆排序（Heap Sort）：
 *
 * - 堆排序的3种实现方式：
-*   1. add + extractMax：
-*      - 先往一个空堆中不断 add 元素，再逐一 extractMax 并放入数组。
+*   1. insert + extractMax：
+*      - 先往一个空堆中不断 insert 元素，再逐一 extractMax 并放入数组。
 *      - 两者都是 O(n * logn) 的操作，因此整体复杂度是 O(nlogn)。
 *   2. heapify + extractMax：
 *      - 先 heapify 生成最大堆，再逐一 extractMax 并放入数组。
@@ -17,7 +17,7 @@ import static Utils.Helpers.*;
 *      - 时间复杂度：O(n) + O(n * 1) + O(n * logn) = O(n + nlogn) = O(nlogn)。
 *      - 演示 SEE：https://coding.imooc.com/lesson/71.html#mid=1468（0'28''）
 *
-*   - 前两种实现的思路都是先 new 出一个最大堆（不管是通过 add 还是通过 heapify），然后不断 extractMax 来实现排序。
+*   - 前两种实现的思路都是先 new 出一个最大堆（不管是通过 insert 还是通过 heapify），然后不断 extractMax 来实现排序。
 *     因为要通过 new 来新开辟 n 的空间，因此空间复杂度是 O(n)。而第3种不需要 new（不用额外空间），仅凭原地对数组元
 *     素进行交换就实现了排序，因此空间复杂度是 O(1)，同时还省去了开辟新空间、往新空间里赋值的时间成本。
 *
@@ -29,7 +29,7 @@ public class HeapSort {
     public static void sort1(Comparable[] arr) {  // 第一种实现
         MaxHeap<Comparable> heap = new MaxHeap<>(arr.length);
         for (int i = 0; i < arr.length; i++)
-            heap.add(arr[i]);
+            heap.insert(arr[i]);
         for (int i = arr.length - 1; i >= 0; i--)
             arr[i] = heap.extractMax();
     }
