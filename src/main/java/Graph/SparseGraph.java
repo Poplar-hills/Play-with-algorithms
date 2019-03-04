@@ -4,9 +4,10 @@ package Graph;
 * Sparse graph implemented by adjacency list（使用邻接表实现稀疏图）
 *
 * - 处理平行边：
-*   - 在 hasEdge 中使用了 contains 来寻找元素，而 contains 底层会进行遍历，因此使得 hasEdge 是 O(n) 的复杂度，从而也使得 addEdge
-*     也是 O(n) 的复杂度。
-*   - 因为处理平行边的效率是邻接表的一个劣势，所以常见的邻接表的实现中会允许存在平行边，而在所有边都添加完之后再统一去除平行边。
+*   - 在 hasEdge 中使用了 contains 来寻找元素，而 contains 底层会进行遍历，因此使得 hasEdge 是 O(n) 的复杂度，因此如果不允许
+*     存在平行边，则需要在 addEdge 中调用 hasEdge，从而使得 addEdge 也是 O(n) 的复杂度。
+*   - 因为处理平行边的效率是邻接表的一个劣势，所以常见的邻接表的实现（包括本实现）中允许存在平行边。如果不希望有平行边，可以在所有
+*     边都添加完之后再统一去除平行边。
 * */
 
 import java.util.ArrayList;
@@ -34,10 +35,10 @@ public class SparseGraph implements Graph {
     @Override
     public void addEdge(int v, int w) {  // 在顶点 v 和 w 之间建立一条边
         if (v < 0 || v >= n || w < 0 || w >= n)
-            throw new IllegalArgumentException("hasEdge failed. Vertex index is out of boundary");
+            throw new IllegalArgumentException("addEdge failed. Vertex index is out of boundary");
 
-        if (hasEdge(v, w))  // 该实现中不允许平行边
-            return;
+        // 注意，由于在邻接表查找是否有平行边的效率较低，因此这里允许平行边的出现
+
         graph[v].add(w);
         if (v != w && !directed)  // 该实现中允许自环边，但不能重复添加自环边
             graph[w].add(v);

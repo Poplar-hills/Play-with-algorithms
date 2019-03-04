@@ -81,7 +81,7 @@ public class DenseGraph<Weight extends Number & Comparable> implements WeightedG
             s.append(i + " | ");
             for (int j = 0; j < n; j++) {
                 Edge edge = graph[i][j];
-                s.append((edge != null ? edge.weight() : 0) + "  ");
+                s.append((edge != null ? edge.weight() : "N") + "  ");
             }
             s.append("\n");
         }
@@ -92,6 +92,7 @@ public class DenseGraph<Weight extends Number & Comparable> implements WeightedG
         WeightedGraph graph = new DenseGraph(4, false);
         graph.addEdge(1, 2, 8);
         graph.addEdge(2, 3, 7);
+        graph.addEdge(2, 3, 9);  // 替换已存在的边
         log(graph);
     }
 }
