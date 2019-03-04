@@ -52,7 +52,7 @@ public class MinHeap<E extends Comparable> {
 
     private E findMin() { return data.get(0); }
 
-    public void add(E e) {
+    public void insert(E e) {
         data.add(e);
         siftUp(getSize() - 1);
     }
@@ -84,10 +84,10 @@ public class MinHeap<E extends Comparable> {
         MinHeap<Integer> heap = new MinHeap<>();
         Integer[] inputSeq = {3, 10, 6, 4, 8, 7, 1, 5, 2, 9};
 
-        // test add
+        // test insert
         for (int e : inputSeq) {
-            heap.add(e);
-            log("add " + e + " -> " + heap.toString());
+            heap.insert(e);
+            log("insert " + e + " -> " + heap.toString());
         }
 
         // test extractMax
