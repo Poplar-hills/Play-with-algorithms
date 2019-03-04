@@ -17,14 +17,13 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
         data = new ArrayList<>();
     }
 
-    public MaxHeap(E[] arr) {
+    public MaxHeap(E[] arr) {  // heapify
         data = new ArrayList<>();
         for (E e : arr)
             data.add(e);
 
-        // heapify
         int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);
-        while (lastNonLeafNodeIndex >= 0)
+        for (int i = lastNonLeafNodeIndex; i >= 0; i--)
             siftDown(lastNonLeafNodeIndex--);
     }
 
@@ -46,10 +45,10 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
     }
 
     private void siftDown(int k) {
-        while (getLeftChildIndex(k) < data.size()) {  // 只要左孩子的索引 < 元素个数就说明还没到达叶子节点，可以继续循环
+        while (getLeftChildIndex(k) < getSize()) {  // 只要左孩子的索引 < 元素个数就说明还没到达叶子节点，可以继续循环
             // 找到位于 k 的节点的左右孩子中较大的那个的索引
             int i = getLeftChildIndex(k);
-            if (i + 1 < data.size() && data.get(i + 1).compareTo(data.get(i)) > 0)  // i 是左孩子的索引，i + 1 即为右孩子的索引
+            if (i + 1 < getSize() && data.get(i + 1).compareTo(data.get(i)) > 0)  // i+1 是右孩子的索引，i+1 < getSize() 是要保证有右孩子
                 i += 1;  // i 保存了左右孩子中值较大的那个的索引
 
             // 用父节点与较大的那个比，如果父节点大则 break loop，否则 swap（只有用较大的子节点跟父节点比才能保证 swap 之后换上来的新父节点比两个子节点都大，保证最大堆性质不被破坏）
@@ -61,17 +60,26 @@ public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E ext
         }
     }
 
+    private E findMax() { return data.get(0); }
+
     public void add(E e) {
         data.add(e);
-        siftUp(data.size() - 1);
+        siftUp(getSize() - 1);
     }
 
     public E extractMax() {
         E ret = data.get(0);     // 先保存最大值
-        int lastIndex = data.size() - 1;
+        int lastIndex = getSize() - 1;
         data.set(0, data.get(lastIndex));  // 取数组的最后一个元素覆盖第一个元素
-        data.remove(lastIndex);  // 移除最大值元素
+        data.remove(lastIndex);  // 移除最大值元素（注：以上这三行不能写成 data.set(0, data.remove(getSize() - 1)); 因为当 data 中只剩一个元素时，remove 掉之后就无法再 set）
         siftDown(0);          // 对新的第一个元素进行下沉操作
+        return ret;
+    }
+
+    public E replace(E e) {
+        E ret = findMax();
+        data.set(0, e);
+        siftDown(0);
         return ret;
     }
 
