@@ -1,4 +1,4 @@
-package MinimumSpanTree;
+package MinimumSpanningTree;
 
 import java.util.ArrayList;
 import java.util.List;

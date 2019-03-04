@@ -1,4 +1,4 @@
-package MinimumSpanTree;
+package MinimumSpanningTree;
 
 /*
 * Minimum Spanning Tree（最小生成树）
