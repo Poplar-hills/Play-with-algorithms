@@ -42,19 +42,17 @@ public class SparseGraph<Weight extends Number & Comparable> implements Weighted
     }
 
     @Override
-    public Iterable<Edge> getAdjacentVertexes(int v) {
-        return null;
+    public Iterable<Edge<Weight>> getAdjacentVertexes(int v) {
+        if (v < 0 || v >= n)
+            throw new IllegalArgumentException("getAdjacentVertexes failed. Vertex index is out of boundary");
+        return graph[v];
     }
 
     @Override
-    public int getVertexCount() {
-        return 0;
-    }
+    public int getVertexCount() { return n; }
 
     @Override
-    public int getEdgeCount() {
-        return 0;
-    }
+    public int getEdgeCount() { return m; }
 
     /*
      * Misc
