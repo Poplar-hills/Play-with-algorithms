@@ -21,7 +21,7 @@ public class WeightedGraphReader {
         if (filePath == null)
             throw new IllegalArgumentException("filename cannot be empty.");
 
-        try (Scanner scanner = new Scanner(new File(filePath))) {
+        try (Scanner scanner = new Scanner(new File(filePath))) {  // 一次性读取文件中的所有行
             while (scanner.hasNext())
                 lines.add(scanner.nextLine());
         } catch (FileNotFoundException e) {
@@ -37,8 +37,8 @@ public class WeightedGraphReader {
 
         try {
             constructor = clazz.getConstructor(int.class, boolean.class);
-            graph = (WeightedGraph<Double>) constructor.newInstance(8, directed);
-        } catch (Exception e) {
+            graph = (WeightedGraph<Double>) constructor.newInstance(8, directed);  // 利用反射创建 graph
+        } catch (Exception e) {  // 简化了错误处理，真实场景中不能这么写
             e.printStackTrace();
         }
 
