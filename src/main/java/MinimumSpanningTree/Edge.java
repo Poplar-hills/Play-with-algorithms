@@ -31,4 +31,7 @@ public class Edge<Weight extends Number & Comparable> implements Comparable<Edge
         else if (comp > 0) return 1;
         else return 0;
     }
+
+    @Override
+    public String toString() { return a + "-" + b + ": " + weight; }
 }

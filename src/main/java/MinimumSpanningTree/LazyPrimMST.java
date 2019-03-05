@@ -7,8 +7,8 @@ package MinimumSpanningTree;
 *
 * - 定义：
 *   - 生成树：一副无向图的生成树是具有该图的全部顶点，同时边数最少的连通子图。
-*   - 最小生成树：在一副带权图的生成树中，总权重最小的生成树称为最小生成树。更通俗的解释：如果一幅图有 n 个顶点，则至少需要 n-1
-*     条边才能把所有节点都连接起来，形成一棵生成树。而在一幅图中，这样的生成树可能有多个，但是他们的权重之和不同，其中权重之和最
+*   - 最小生成树：在一副带权图的生成树中，总权值最小的生成树称为最小生成树。更通俗的解释：如果一幅图有 n 个顶点，则至少需要 n-1
+*     条边才能把所有节点都连接起来，形成一棵生成树。而在一幅图中，这样的生成树可能有多个，但是他们的权值之和不同，其中权值之和最
 *     小的即是最小生成树。
 *
 * - 条件：
@@ -38,27 +38,32 @@ package MinimumSpanningTree;
 * - Lazy Prim 算法：
 *   1. 从一个顶点开始切分（切分内侧只有一个顶点）
 *   2. 找到该顶点的所有横切边，并插入最小堆中进行比较（注意：切分内侧顶点之间的边不是横切边）
-*   3. 取堆中权重最小的横切边加入最小生成树中
+*   3. 取堆中权值最小的横切边加入最小生成树中
 *   4. 将该最小边上的另一个顶点加入切分内侧
 *   5. 回到步骤2进行循环
 *   动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1489（0'33''）
 * */
 
+import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static Utils.Helpers.log;
 
 public class LazyPrimMST<Weight extends Number & Comparable> {
     private WeightedGraph graph;
     private boolean[] visited;            // 用于标记节点 i 是否被访问过
     private List<Edge<Weight>> mst;      // 最小生成树所包含的所有边
     private MinHeap<Edge<Weight>> heap;  // 用于比较边的最小堆（辅助数据结构）
-    private Weight minWeight;            // 最小生成树的权值之和
+    private Number minWeight;            // 最小生成树的权值之和（注意：是 Number 类型，Number 是一个抽象类）
 
     public LazyPrimMST(WeightedGraph graph) {
         this.graph = graph;
         int n = graph.getVertexCount();
         visited = new boolean[n];         // boolean 数组初值都为 false
         mst = new ArrayList<>();
+        heap = new MinHeap<>();
 
         lazyPrim();  // 开始计算最小生成树
     }
@@ -67,17 +72,17 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
         visit(0);  // 步骤1：从一个顶点开始切分，将其加入切分内侧进行访问
 
         while (!heap.isEmpty()) {
-            // 步骤3：取堆中权重最小的横切边加入最小生成树中
+            // 步骤3：取堆中权值最小的横切边加入最小生成树中
             Edge<Weight> e = heap.extractMin();
             if (visited[e.v()] && visited[e.w()])  // 如果一条横切边的两个端点都被 visit 过了，说明它不再是横切边了
                 continue;
             mst.add(e);
             // 步骤4：将最小边上的另一个顶点加入切分内侧进行访问
-            visit(!visited[e.v()] ? e.w() : e.v());
+            visit(visited[e.v()] ? e.w() : e.v());
         }
 
-        // 计算最小生成树的权重之和
-        minWeight = mst.get(0).weight();  // 初值
+        // 计算最小生成树的权值
+        minWeight = mst.get(0).weight().doubleValue();  // 初值
         for (int i = 1; i < mst.size(); i++)
             minWeight = minWeight.doubleValue() + mst.get(i).weight().doubleValue();
     }
@@ -97,6 +102,17 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
 
     public List<Edge<Weight>> mstEdges() { return mst; }
 
-    public Weight weight() { return minWeight; }
+    public Number weight() { return minWeight; }
 
+    public static void main(String[] args) {
+        // 下面用到的 testG1.txt 中的图就是 https://coding.imooc.com/lesson/71.html#mid=1489（1'24''）中的图
+        WeightedGraph<Double> graph = new WeightedGraphReader()
+                .read("src/main/java/MinimumSpanningTree/WeightedGraphReader/testG1.txt")
+                .build(WeightedSparseGraph.class, false);
+        log(graph);
+
+        LazyPrimMST<Double> mst = new LazyPrimMST<>(graph);
+        log(mst.mstEdges());  // 结果应该与 https://coding.imooc.com/lesson/71.html#mid=1489（8'41''）中的红色一致
+        log(mst.weight());
+    }
 }

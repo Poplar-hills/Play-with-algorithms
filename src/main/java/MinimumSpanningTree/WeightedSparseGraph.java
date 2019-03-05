@@ -63,7 +63,7 @@ public class WeightedSparseGraph<Weight extends Number & Comparable> implements 
         for (int i = 0; i < n; i++) {
             s.append(i + " | ");
             s.append(graph[i].stream()
-                    .map(x -> String.format("{to: %d, w: %d}", x.w(), x.weight()))
+                    .map(x -> "{to: " + x.w() + ", wt: " + x.weight() + "}")
                     .collect(Collectors.joining(" ")));
             s.append("\n");
         }
