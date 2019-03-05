@@ -5,12 +5,12 @@ import java.util.List;
 
 import static Utils.Helpers.log;
 
-public class DenseGraph<Weight extends Number & Comparable> implements WeightedGraph {  // 注意这里的接口
+public class WeightedDenseGraph<Weight extends Number & Comparable> implements WeightedGraph {  // 注意这里的接口
     private int n, m;
     private boolean directed;
     private Edge<Weight>[][] graph;
 
-    public DenseGraph(int n, boolean directed) {
+    public WeightedDenseGraph(int n, boolean directed) {
         this.n = n;
         this.directed = directed;
         m = 0;
@@ -89,7 +89,7 @@ public class DenseGraph<Weight extends Number & Comparable> implements WeightedG
     }
 
     public static void main(String[] args) {
-        WeightedGraph graph = new DenseGraph(4, false);
+        WeightedGraph graph = new WeightedDenseGraph(4, false);
         graph.addEdge(1, 2, 8);
         graph.addEdge(2, 3, 7);
         graph.addEdge(2, 3, 9);  // 替换已存在的边

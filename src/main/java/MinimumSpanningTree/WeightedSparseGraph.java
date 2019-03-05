@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 
 import static Utils.Helpers.log;
 
-public class SparseGraph<Weight extends Number & Comparable> implements WeightedGraph {
+public class WeightedSparseGraph<Weight extends Number & Comparable> implements WeightedGraph {
     private int n, m;
     private boolean directed;
     private List<Edge<Weight>>[] graph;
 
-    public SparseGraph(int n, boolean directed) {
+    public WeightedSparseGraph(int n, boolean directed) {
         this.n = n;
         this.directed = directed;
         m = 0;
@@ -71,7 +71,7 @@ public class SparseGraph<Weight extends Number & Comparable> implements Weighted
     }
 
     public static void main(String[] args) {
-        WeightedGraph graph = new SparseGraph(4, false);
+        WeightedGraph graph = new WeightedSparseGraph(4, false);
         graph.addEdge(1, 2, 8);
         graph.addEdge(2, 3, 7);
         graph.addEdge(2, 3, 9);  // 稀疏图因为性能原因允许平行边
