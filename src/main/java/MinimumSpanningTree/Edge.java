@@ -1,6 +1,6 @@
 package MinimumSpanningTree;
 
-public class Edge<Weight extends Number & Comparable> implements Comparable<Edge> {
+public class Edge<Weight extends Number & Comparable> implements Comparable<Edge<Weight>> {
     private int a, b;  // 边上的两个顶点（对于有向图来说，该边是从 a 指向 b，对于无向图来说都一样）
     private Weight weight;  // 边的权值
 
