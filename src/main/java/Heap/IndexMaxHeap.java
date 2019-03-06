@@ -69,7 +69,7 @@ import static java.util.Collections.swap;
 
 public class IndexMaxHeap<E extends Comparable> {
     List<E> data;
-    List<Integer> indexes;  // 堆索引（其元素个数 <= data.size()，因为 data 不变，变的是 indexes）
+    List<Integer> indexes;  // 堆索引数组
 
     public IndexMaxHeap(int capacity) {
         data = new ArrayList<>(capacity);
@@ -130,7 +130,7 @@ public class IndexMaxHeap<E extends Comparable> {
 
     public void insert(E e) {
         data.add(e);
-        indexes.add(indexes.size());
+        indexes.add(indexes.size());    // 同样需要添加到 indexes 中
         siftUp(indexes.size() - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
     }
 
