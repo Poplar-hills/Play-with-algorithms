@@ -92,11 +92,9 @@ public class Path {
         Graph g = new GraphReader()
                 .read("src/main/java/Graph/GraphReader/testG2.txt")
                 .build(SparseGraph.class, false);
-        
         log(g);
 
         Path p = new Path(g, 4);
-
         log(p.path(5));  // 输出从 4 到 5 的 path
         log(p.path(2));  // 输出从 4 到 2 的 path（不是最短路径）
         log(p.path(3));  // 输出从 4 到 3 的 path（不是最短路径）

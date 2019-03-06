@@ -38,7 +38,7 @@ package MinimumSpanningTree;
 * - Lazy Prim 算法：
 *   1. 从一个顶点开始切分（切分内侧只有一个顶点）
 *   2. 找到该顶点的所有横切边，并插入最小堆中进行比较（注意：切分内侧顶点之间的边不是横切边）
-*   3. 取堆中权值最小的横切边加入最小生成树中
+*   3. 取堆中权值最小的横切边加入最小生成树中（注意：此时堆中权值最小的边不一定是横切边，需要判断）
 *   4. 将该最小边上的另一个顶点加入切分内侧
 *   5. 回到步骤2进行循环
 *   动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1489（0'33''）
@@ -53,7 +53,7 @@ import static Utils.Helpers.log;
 
 public class LazyPrimMST<Weight extends Number & Comparable> {
     private WeightedGraph graph;
-    private boolean[] visited;            // 用于标记节点 i 是否被访问过
+    private boolean[] visited;           // 用于标记节点 i 是否被访问过
     private List<Edge<Weight>> mst;      // 最小生成树所包含的所有边
     private MinHeap<Edge<Weight>> heap;  // 用于比较边的最小堆（辅助数据结构）
     private Number minWeight;            // 最小生成树的权值之和（注意：是 Number 类型，Number 是一个抽象类）
@@ -106,13 +106,13 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
 
     public static void main(String[] args) {
         // 下面用到的 testG1.txt 中的图就是 https://coding.imooc.com/lesson/71.html#mid=1489（1'24''）中的图
-        WeightedGraph<Double> graph = new WeightedGraphReader()
+        WeightedGraph<Double> g = new WeightedGraphReader()
                 .read("src/main/java/MinimumSpanningTree/WeightedGraphReader/testG1.txt")
                 .build(WeightedSparseGraph.class, false);
-        log(graph);
+        log(g);
 
-        LazyPrimMST<Double> mst = new LazyPrimMST<>(graph);
-        log(mst.mstEdges());  // 结果应该与 https://coding.imooc.com/lesson/71.html#mid=1489（8'41''）中的红色一致
+        LazyPrimMST<Double> mst = new LazyPrimMST<>(g);
+        log(mst.mstEdges());  // 结果应该与 https://coding.imooc.com/lesson/71.html#mid=1489（8'41''）中的红色边一致
         log(mst.weight());
     }
 }
