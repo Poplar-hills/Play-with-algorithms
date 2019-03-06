@@ -58,7 +58,7 @@ public class Path {
         visited[v] = true;
         for (int w : graph.getAdjacentVertexes(v)) {
             if (!visited[w]) {
-                from[w] = v;  // 记录上一跳顶点
+                from[w] = v;          // 记录上一跳顶点
                 depthFirstSearch(w);  // 递归
             }
         }
@@ -67,7 +67,7 @@ public class Path {
     public boolean hasPath(int target) {  // 检查从顶点 source 到顶点 target 之间是否有路径（和 isConnected 一个意思）
         if (target < 0 || target >= graph.getVertexCount())
             throw new IllegalArgumentException("hasPath failed. Vertex out of boundary.");
-        return visited[target];  // 如果在寻路过程中访问过该顶点，则说明在一个连通分量上，即有路径到达
+        return visited[target];           // 如果在寻路过程中访问过该顶点，则说明在一个连通分量上，即有路径到达
     }
 
     public List<Integer> path(int target) {  // 借助 from 数组查询 source 到 target 的路径（不一定是最短的）

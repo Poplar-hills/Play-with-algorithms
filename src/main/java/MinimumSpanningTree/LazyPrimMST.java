@@ -36,12 +36,21 @@ package MinimumSpanningTree;
 *          而其中权值最小的边一定在最小生成树上（比如上面👆链接中的图中的5号顶点）。
 *
 * - Lazy Prim 算法：
-*   1. 从一个顶点开始切分（切分内侧只有一个顶点）
-*   2. 找到该顶点的所有横切边，并插入最小堆中进行比较（注意：切分内侧顶点之间的边不是横切边）
-*   3. 取堆中权值最小的横切边加入最小生成树中（注意：此时堆中权值最小的边不一定是横切边，需要判断）
-*   4. 将该最小边上的另一个顶点加入切分内侧
-*   5. 回到步骤2进行循环
-*   动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1489（0'33''）
+*   - 过程：
+*     动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1489（0'33''）
+*     1. 从一个顶点开始切分（切分内侧只有一个顶点）
+*     2. 找到该顶点的所有横切边，并插入最小堆中进行比较（注意：切分内侧顶点之间的边不是横切边）
+*     3. 取堆中权值最小的横切边加入最小生成树中（注意：此时堆中权值最小的边不一定是横切边，需要判断）
+*     4. 将该最小边上的另一个顶点加入切分内侧
+*     5. 回到步骤2进行循环
+*   - 时间复杂度：
+*     lazyPrim 方法中的 while 循环的终止条件是堆为空，而算法过程中又会将所有的边都插入堆中，因此 while 循环的
+*     执行次数就是图中边数 E。而循环内部：
+*       1. heap.extractMin()：因为 heap 中有 E 条边，因此一次 extractMin 是 O(logE) 级别，E 次就是 O(ElogE)。
+*       2. visit()：一次 visit 会遍历一个顶点的所有邻边，E 次 visit 虽然会重复遍历一些边，但也是 E 级别的（若是邻
+*          接矩阵则是 V^2）。每次 visit 内部要调一次 insert，与 extractMin 同理，每次 insert 也是 O(logE)，所以
+*          总体也是 O(ElogE)。
+*     因此 lazyPrim 总体就是 O(ElogE + ElogE) = O(ElogE)。
 * */
 
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;

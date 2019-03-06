@@ -20,9 +20,9 @@ package Graph;
 *       orders:  [ 2  1  2  1  0  2 ]
 *
 * - BFS 的复杂度与 DFS 一致：
-*   - 如果是邻接表则为 O(n + m)，其中 n、m 分别是顶点数和边数
-*   - 如果是邻接矩阵则为 O(n^2)
-*   具体分析 SEE: ConnectedComponent
+*   - 如果是邻接表则为 O(V + E) 或 O(E)
+*   - 如果是邻接矩阵则为 O(V^2) 或 O(E)
+*   注：具体分析 SEE: ConnectedComponent
 *
 * - 图遍历的本质：
 *   - 不管是 BFS 还是 DFS，在遍历图的过程中都是由一个顶点出发，沿不同路径不重复地走完图上的所有节点。而这样由一点出发
