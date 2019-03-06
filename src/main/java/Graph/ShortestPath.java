@@ -126,8 +126,9 @@ public class ShortestPath {
     }
 
     public static void main(String[] args) {
-        Graph g = new SparseGraph(6, false);
-        new GraphReader(g, "src/main/java/Graph/GraphReader/testG2.txt");  // 将文件中的图信息读入 g 中
+        Graph g = new GraphReader()
+                .read("src/main/java/Graph/GraphReader/testG2.txt")
+                .build(SparseGraph.class, false);
 
         ShortestPath p = new ShortestPath(g, 4);
 
