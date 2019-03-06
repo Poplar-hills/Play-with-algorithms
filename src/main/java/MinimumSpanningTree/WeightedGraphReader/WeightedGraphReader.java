@@ -5,10 +5,7 @@ import MinimumSpanningTree.WeightedGraph;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class WeightedGraphReader {
     List<String> lines;
@@ -37,16 +34,23 @@ public class WeightedGraphReader {
 
         try {
             constructor = clazz.getConstructor(int.class, boolean.class);
-            graph = (WeightedGraph<Double>) constructor.newInstance(8, directed);  // 利用反射创建 graph
+            graph = (WeightedGraph<Double>) constructor.newInstance(getVertexCount(), directed);  // 利用反射创建 graph
         } catch (Exception e) {  // 简化了错误处理，真实场景中不能这么写
             e.printStackTrace();
         }
 
-        for (String s : lines) {
-            String[] params = s.split(" ");
+        for (String line : lines) {
+            String[] params = line.split(" ");
             graph.addEdge(Integer.parseInt(params[0]), Integer.parseInt(params[1]), Double.parseDouble(params[2]));
         }
 
         return graph;
+    }
+
+    private int getVertexCount() {
+        return (int) lines.stream()
+                .flatMap(x -> Arrays.stream(x.split(" ")).limit(2))
+                .distinct()
+                .count();
     }
 }
