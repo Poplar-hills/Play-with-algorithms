@@ -21,13 +21,14 @@ import static java.util.Collections.swap;
  *            data: [15, 17, 19, 13, 22, 20]
  *         indexes: [4,  2,  5,  3,  0,  1]   -- 维护 data 中每个元素在最大堆中的位置
  *         reverse: [4,  5,  1,  3,  0,  2]   -- 维护 data 中每个元素的索引在 indexes 中的位置
- *   - 因为 reverse[i] 表示索引 i 在 indexes 中的位置，可知：
+ *   - 因为 reverse[i] 表示索引 i 在 indexes 中的位置，可知以下性质：
  *     1. 若 j = indexes[i]，则 reverse[j] = i
- *        比如要让 indexes[2] = 0，即索引0在 indexes 中的位置发生了变化，此时需要维护 reverse[0] = 2。
+ *        比如 indexes 中第1个位置上是2，则 reverse 中第2个位置上是1。
+ *        因此若要让 indexes[2] = 0，则需同时维护 reverse[0] = 2。
  *     2. indexes[reverse[i]] == i
- *        因为 reverse[i] 表示索引 i 在 indexes 中的位置，所以 indexes 中 reverse[i] 位置上的元素就是 i。
+ *        把性质1中的 reverse[j] = i 带入 indexes[i]。
  *     3. reverse[indexes[i]] == i
- *        结合1、2两条性质得到。
+ *        把性质1中的 j = indexes[i] 带入 reverse[j]。
  * */
 
 public class IndexMaxHeapOptimised<E extends Comparable> {
