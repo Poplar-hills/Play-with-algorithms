@@ -12,16 +12,16 @@ import static java.util.Collections.swap;
  * 带反向查找的的索引堆（Index Heap with Reverse Retrieval）
  *
  * - 问题：
- *   - IndexMaxHeap 的实现中，insert、extractMax 方法的复杂度为 O(logn)，而 change 为 O(n)，成了堆操作的性能短板。
- *   - 具体来说，在 change 过程中，需要通过遍历找到指定元素的索引 i 在 indexes 中的位置，这个过程是 O(n) 的复杂度。
+ *   - IndexMaxHeap 的实现中，insert、extractMax 方法的复杂度为 O(logn)，只有 change 是 O(n)，成了堆操作的性能短板。
+ *   - 具体来说，在 change 过程中，需要通过遍历找到指定元素的索引 i 在 indexes 中的位置，这个过程最坏情况下是 O(n) 的复杂度。
  *
  * - 优化：
- *   - 如果采用空间换时间的思想，将要查找的结果提前维护在一个数组中，这样在需要用的时候就可以以 O(1) 的复杂度来查找了。
+ *   - 仍然采用空间换时间的思想，将要查找的结果提前维护在一个数组中，这样在需要用的时候就可以以 O(1) 的复杂度来查找了。
  *   - 具体来说，建立"反向索引" reverse 数组：
  *            data: [15, 17, 19, 13, 22, 20]
  *         indexes: [4,  2,  5,  3,  0,  1]   -- 维护 data 中每个元素在最大堆中的位置
  *         reverse: [4,  5,  1,  3,  0,  2]   -- 维护 data 中每个元素的索引在 indexes 中的位置
- *   - 由此可推导，因为 revers[i] 表示索引 i 在 indexes 中的位置：
+ *   - 因为 reverse[i] 表示索引 i 在 indexes 中的位置，可知：
  *     1. 若 j = indexes[i]，则 reverse[j] = i
  *        比如要让 indexes[2] = 0，即索引0在 indexes 中的位置发生了变化，此时需要维护 reverse[0] = 2。
  *     2. indexes[reverse[i]] == i

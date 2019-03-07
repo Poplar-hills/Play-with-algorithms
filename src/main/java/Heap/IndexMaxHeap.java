@@ -51,8 +51,8 @@ import static java.util.Collections.swap;
 *     1. 因为交换的是 indexes 中的元素，数据结构简单（只是单纯的 int），不会有性能问题。
 *     2. 因为交换的是 indexes 中的元素，而 data 中元素的索引不变，因此语义不会丢失，仍然可以通过随机访问取到对应的元素。
 *     3. 另外，索引堆比普通堆在功能上更强大 —— 能够修改、查询堆中指定元素的值（change, getItem 方法）。因为普通堆只能取到堆
-*        顶元素，而对堆中的其他元素都失去了控制。但是索引堆依靠索引，可以随时查询、修改堆中的任意元素。
-*     👉 因此，如果某个问题中需要一种即能取到最大/小值，又能随时查询、修改堆中的任意元素的数据结构，则应使用索引堆。
+*        顶元素，而对堆中的其他元素都失去了控制。但是索引堆依靠索引，可以随时查询、更新堆中的任意元素。
+*     👉 因此，如果某个问题中需要一种即能取到最大/小值，又能随时查询、更新堆中的任意元素的数据结构，则应使用索引堆。
 *
 * - 索引堆的实现：
 *   1. 在普通堆的基础上添加堆索引。
@@ -107,7 +107,7 @@ public class IndexMaxHeap<E extends Comparable> {
 
     private E getElement(int i) {
         return data.get(indexes.get(i));
-    }
+    }  // 添加这个辅助方法作为 data 和 indexes 之间的桥梁
 
     private void siftUp(int k) {
         while (k > 0 && getElement(getParentIndex(k)).compareTo(getElement(k)) < 0) {  // 比较的是堆中元素
@@ -117,7 +117,7 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     private void siftDown(int k) {
-        while (getLeftChildIndex(k) < indexes.size()) {  // 注意这里是 < 堆索引的元素个数
+        while (getLeftChildIndex(k) < indexes.size()) {  // 如果左孩子存在（没越界）就继续循环
             int i = getLeftChildIndex(k);
             if (i + 1 < indexes.size() && getElement(i).compareTo(getElement(i + 1)) < 0)
                 i += 1;
@@ -135,18 +135,18 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     public E extractMax() {
-        E ret = getElement(0);
+        E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除，只删除 indexes 中的对应索引）
         int last = indexes.size() - 1;
         indexes.set(0, indexes.get(last));
-        indexes.remove(last);  // 去掉 indexes 中的最后一个元素，而 data 不变
-        siftDown(0);  // 对第一个元素进行下沉
+        indexes.remove(last);
+        siftDown(0);
         return ret;
     }
 
-    public void change(int i, E newE) {  // 修改堆中任意一个元素（最差情况下为 O(n + logn) = O(n)，相对于其他操作 O(logn) 来说并不理想，在下个版本中优化）
-        // 修改 data 中的元素
+    public void change(int i, E newE) {  // 更新堆中任意一个元素（索引堆的优势，普通堆做不到）
+        // 更新 data 中的元素
         data.set(i, newE);
-        // 修改 indexes 中的该元素的索引位置
+        // 更新 indexes 中的该元素的索引位置（最差情况下为 O(n+logn) = O(n)，相对于其他操作 O(logn) 来说并不理想，在下个版本中优化）
         for (int j = 0; j < indexes.size(); j++)
             if (indexes.get(j) == i) {
                 siftUp(j);
@@ -155,10 +155,10 @@ public class IndexMaxHeap<E extends Comparable> {
             }
     }
 
-    public E getItem(int i) {  // 查询堆中任意一个元素
+    public E getItem(int i) {  // 查询堆中任意一个元素（索引堆的优势，普通堆做不到）
         if (i < 0 || i >= data.size())
             throw new IllegalArgumentException("getItem failed.");
-        return data.get(i);  // 因为 data 不变，元素的索引语义不变，所以可以随时查询到。
+        return data.get(i);  // 因为 data 不变，元素的索引语义不变，所以可以随时通过索引查询到（其实普通堆也可以通过索引找到元素，但是没有意义，因为内容可能已经改变）
     }
 
     public boolean isEmpty() {
@@ -171,7 +171,7 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     public static void main(String[] args) {
-        log("---- Generating IndexMaxHeap by heapifying ----");
+        log("---- Generate IndexMaxHeap by heapifying ----");
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
         IndexMaxHeap<Integer> heap1 = new IndexMaxHeap<>(inputSeq);
         log(heap1);
@@ -180,13 +180,15 @@ public class IndexMaxHeap<E extends Comparable> {
             log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
 
 
-        log("\n---- Generating IndexMaxHeap by adding ----");
+        log("\n---- Generate IndexMaxHeap by adding ----");
         IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>();
         for (int n : inputSeq)
             heap2.insert(n);
         log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
 
         heap2.change(2, 999);  // 修改中间元素
+        log("---- Change element ----");
+        log(heap2);
 
         while (!heap2.isEmpty())
             log("Extracted: " + heap2.extractMax() + "; " + heap2.toString());
