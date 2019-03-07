@@ -8,7 +8,7 @@ import java.util.List;
 import static Utils.Helpers.log;
 
 /*
-* Lazy Prim 算法
+* Lazy Prim 算法：
 *
 * - 用途：寻找最小生成树
 *
