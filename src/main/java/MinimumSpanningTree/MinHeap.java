@@ -6,6 +6,10 @@ import java.util.List;
 import static Utils.Helpers.log;
 import static java.util.Collections.swap;
 
+/*
+* 最小堆（作为 LazyPrimMST 的辅助数据结构）
+* */
+
 public class MinHeap<E extends Comparable> {
     private List<E> data;
 

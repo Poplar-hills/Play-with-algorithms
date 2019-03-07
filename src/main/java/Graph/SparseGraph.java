@@ -1,7 +1,7 @@
 package Graph;
 
 /*
-* Sparse graph implemented by adjacency list（使用邻接表实现稀疏图）
+* 使用邻接表实现稀疏图（Sparse graph implemented by adjacency list）
 *
 * - 处理平行边：
 *   - 在 hasEdge 中使用了 contains 来寻找元素，而 contains 底层会进行遍历，因此使得 hasEdge 是 O(n) 的复杂度，因此如果不允许

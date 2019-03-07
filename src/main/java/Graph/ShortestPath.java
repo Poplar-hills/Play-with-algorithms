@@ -1,5 +1,11 @@
 package Graph;
 
+import Graph.GraphReader.GraphReader;
+
+import java.util.*;
+
+import static Utils.Helpers.log;
+
 /*
 * 最短路径（Shortest Path）
 *
@@ -42,12 +48,6 @@ package Graph;
 *     迷宫就是在生成一棵树（也有不能用树表示的迷宫，比如有环的迷宫）。
 *
 * */
-
-import Graph.GraphReader.GraphReader;
-
-import java.util.*;
-
-import static Utils.Helpers.log;
 
 public class ShortestPath {
     private Graph graph;

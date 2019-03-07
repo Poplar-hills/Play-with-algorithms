@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import static Utils.Helpers.*;
 
 /*
-* Dense graph implemented by adjacency matrix（使用邻接矩阵实现稠密图）
+* 使用邻接矩阵实现稠密图（Dense graph implemented by adjacency matrix）
 * */
 
 public class DenseGraph implements Graph {

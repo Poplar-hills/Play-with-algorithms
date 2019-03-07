@@ -1,7 +1,7 @@
 package MinimumSpanningTree;
 
 /*
-* Minimum Spanning Tree（最小生成树）
+* 最小生成树（Minimum Spanning Tree）
 *
 * - 背景：在 ShortestPath 中，我们说过"很多图的问题实际上是树的问题，或者说可以转化为树的问题来解决"。最小生成树的问题就是这样的。
 *
