@@ -1,64 +1,34 @@
 package MinimumSpanningTree;
 
-/*
-* 最小生成树（Minimum Spanning Tree）
-*
-* - 背景：在 ShortestPath 中，我们说过"很多图的问题实际上是树的问题，或者说可以转化为树的问题来解决"。最小生成树的问题就是这样的。
-*
-* - 定义：
-*   - 生成树：一副无向图的生成树是具有该图的全部顶点，同时边数最少的连通子图。
-*   - 最小生成树：在一副带权图的生成树中，总权值最小的生成树称为最小生成树。更通俗的解释：如果一幅图有 n 个顶点，则至少需要 n-1
-*     条边才能把所有节点都连接起来，形成一棵生成树。而在一幅图中，这样的生成树可能有多个，但是他们的权值之和不同，其中权值之和最
-*     小的即是最小生成树。
-*
-* - 条件：
-*   一幅图必须要满足 1.带权 2.无向 3.连通 这三个条件才能找到其最小生成树。
-*     - 如果图不带权，则有生成树，但无最小生成树。
-*     - 如果图有向，则没有最小生成树（最小生成树是针对无向图而言的，有向图上的这类问题叫做最小树形图）。
-*     - 如果图不连通（即存在多个连通分量），则可以对每个分量求出最小生成树，最后得到的是该图的最小生成森林。
-*
-* - 应用：
-*   最小生成树中的"权之和"可以看做是对成本之和的抽象。例如：
-*     - 电缆布线（cabling）：如何用最小成本将发电站的电传输至电网中的每一个节点
-*     - 网络设计
-*     - 电路设计
-*
-* - 如何找到一幅图的最小生成树：
-*   - 两种算法：Prim 算法、Krusk 算法
-*   - 这两种算法都应用了 Cut Property（切分定理）
-*
-* - 切分定理（Cut Property）：
-*   - 切分（Cut）：把图中的顶点分为两部分的过程就是一个切分。
-*   - 横切边（Crossing Edge）：一个边上的两个顶点分别属于一个切分的两部分中，则该边叫做横切边。
-*     图形化解释 SEE: https://coding.imooc.com/lesson/71.html#mid=1488（4'00''）。
-*   - 切分定理（Cut Property）：给定一幅图的任意切分，其横切边中权值最小的边必然在该图的最小生成树中。
-*     证明：将一副有 n 个顶点的图切成分别具有1个顶点和 n-1 个顶点的两部分。此时图中的横切边即是第一部分中那一个顶点的所有邻边，
-*          而其中权值最小的边一定在最小生成树上（比如上面👆链接中的图中的5号顶点）。
-*
-* - Lazy Prim 算法：
-*   - 过程：
-*     动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1489（0'33''）
-*     1. 从一个顶点开始切分（切分内侧只有一个顶点）
-*     2. 找到该顶点的所有横切边，并插入最小堆中进行比较（注意：切分内侧顶点之间的边不是横切边）
-*     3. 取堆中权值最小的横切边加入最小生成树中（注意：此时堆中权值最小的边不一定是横切边，需要判断）
-*     4. 将该最小边上的另一个顶点加入切分内侧
-*     5. 回到步骤2进行循环
-*   - 时间复杂度：
-*     lazyPrim 方法中的 while 循环的终止条件是堆为空，而算法过程中又会将所有的边都插入堆中，因此 while 循环的
-*     执行次数就是图中边数 E。而循环内部：
-*       1. heap.extractMin()：因为 heap 中有 E 条边，因此一次 extractMin 是 O(logE) 级别，E 次就是 O(ElogE)。
-*       2. visit()：一次 visit 会遍历一个顶点的所有邻边，E 次 visit 虽然会重复遍历一些边，但也是 E 级别的（若是邻
-*          接矩阵则是 V^2）。每次 visit 内部要调一次 insert，与 extractMin 同理，每次 insert 也是 O(logE)，所以
-*          总体也是 O(ElogE)。
-*     因此 lazyPrim 总体就是 O(ElogE + ElogE) = O(ElogE)。
-* */
-
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static Utils.Helpers.log;
+
+/*
+* Lazy Prim 算法
+*
+* - 用途：寻找最小生成树
+*
+* - 过程：
+*   动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1489（0'33''）
+*   1. 从一个顶点开始切分（切分内侧只有一个顶点）
+*   2. 找到该顶点的所有横切边，并插入最小堆中进行比较（注意：切分内侧顶点之间的边不是横切边）
+*   3. 取堆中权值最小的横切边加入最小生成树中（注意：此时堆中权值最小的边不一定是横切边，需要判断）
+*   4. 将该最小边上的另一个顶点加入切分内侧
+*   5. 回到步骤2进行循环
+*
+* - 时间复杂度：
+*   lazyPrim 方法中的 while 循环的终止条件是堆为空，而算法过程中又会将所有的边都插入堆中，因此 while 循环的
+*   执行次数就是图中边数 E。而循环内部：
+*     1. heap.extractMin()：因为 heap 中有 E 条边，因此一次 extractMin 是 O(logE) 级别，E 次就是 O(ElogE)。
+*     2. visit()：一次 visit 会遍历一个顶点的所有邻边，E 次 visit 虽然会重复遍历一些边，但也是 E 级别的（若是邻
+*        接矩阵则是 V^2）。每次 visit 内部要调一次 insert，与 extractMin 同理，每次 insert 也是 O(logE)，所以
+*        总体也是 O(ElogE)。
+*   因此 lazyPrim 总体就是 O(ElogE + ElogE) = O(ElogE)。
+* */
 
 public class LazyPrimMST<Weight extends Number & Comparable> {
     private WeightedGraph graph;
