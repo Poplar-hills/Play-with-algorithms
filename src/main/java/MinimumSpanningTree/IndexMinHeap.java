@@ -1,5 +1,7 @@
 package MinimumSpanningTree;
 
+import Heap.IndexMaxHeap;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,20 @@ public class IndexMinHeap<E extends Comparable> {
         data = new ArrayList<>();
         indexes = new ArrayList<>();
 //        reverse = new ArrayList<>();
+    }
+
+    public IndexMinHeap(E[] arr) {
+        data = new ArrayList<>();
+        indexes = new ArrayList<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            data.add(arr[i]);
+            indexes.add(i);
+        }
+
+        int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);  // heapify
+        for (int i = lastNonLeafNodeIndex; i >= 0; i--)
+            siftDown(i);
     }
 
     private int getParentIndex(int index) {
