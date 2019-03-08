@@ -119,7 +119,7 @@ public class IndexMaxHeap<E extends Comparable> {
     private void siftDown(int k) {
         while (getLeftChildIndex(k) < indexes.size()) {  // 如果左孩子存在（没越界）就继续循环
             int i = getLeftChildIndex(k);
-            if (i + 1 < indexes.size() && getElement(i).compareTo(getElement(i + 1)) < 0)
+            if (i + 1 < indexes.size() && getElement(i + 1).compareTo(getElement(i)) > 0)
                 i += 1;
             if (getElement(k).compareTo(getElement(i)) >= 0)
                 break;

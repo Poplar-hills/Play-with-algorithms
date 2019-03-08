@@ -1,7 +1,5 @@
 package Heap;
 
-import sun.awt.util.IdentityLinkedList;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,7 @@ import static Utils.Helpers.log;
 import static java.util.Collections.swap;
 
 /*
- * 带反向查找的的索引堆（Index Heap with Reverse Retrieval）
+ * 带反向查找的的最大索引堆（Index Heap with Reverse Retrieval）
  *
  * - 问题：
  *   - IndexMaxHeap 的实现中，insert、extractMax 方法的复杂度为 O(logn)，只有 change 是 O(n)，成了堆操作的性能短板。
@@ -97,7 +95,7 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     private void siftDown(int k) {
         while (getLeftChildIndex(k) < indexes.size()) {
             int i = getLeftChildIndex(k);
-            if (i + 1 < indexes.size() && getElement(i).compareTo(getElement(i + 1)) < 0)
+            if (i + 1 < indexes.size() && getElement(i + 1).compareTo(getElement(i)) > 0)
                 i += 1;
             if (getElement(k).compareTo(getElement(i)) >= 0)
                 break;
