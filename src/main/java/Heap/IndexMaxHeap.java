@@ -82,13 +82,13 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     public IndexMaxHeap(E[] arr) {
-        data = new ArrayList<>(arr.length);
-        for (E e : arr)
-            data.add(e);
+        data = new ArrayList<>();
+        indexes = new ArrayList<>();  // 创建堆索引数组
 
-        indexes = new ArrayList<>(arr.length);  // 创建堆索引数组
-        for (int i = 0; i < arr.length; i++)
-            indexes.add(i);
+        for (int i = 0; i < arr.length; i++) {
+            data.add(arr[i]);
+            indexes.add(i);           // 初始化堆索引数组
+        }
 
         int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);  // heapify
         for (int i = lastNonLeafNodeIndex; i >= 0; i--)
