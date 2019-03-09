@@ -79,9 +79,13 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     }
 
     private void swapIndexes(int i, int j) {
-        swap(indexes, i, j);  // indexes 中索引 i 和 j 上的值发生了变化
-        reverse.set(indexes.get(i), i);  // 修改 indexes 之后要对应地维护 reverse
+        swap(indexes, i, j);             // indexes 中索引 i 和 j 上的值发生了变化
+        reverse.set(indexes.get(i), i);  // 修改 indexes 之后要对应地维护 reverse（见上面介绍中的性质1）
         reverse.set(indexes.get(j), j);
+    }
+
+    private boolean contains(int i) {
+        return i >= 0 && i < getSize();
     }
 
     private void siftUp(int k) {
@@ -93,9 +97,9 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     }
 
     private void siftDown(int k) {
-        while (getLeftChildIndex(k) < indexes.size()) {
+        while (getLeftChildIndex(k) < getSize()) {
             int i = getLeftChildIndex(k);
-            if (i + 1 < indexes.size() && getElement(i + 1).compareTo(getElement(i)) > 0)
+            if (i + 1 < getSize() && getElement(i + 1).compareTo(getElement(i)) > 0)
                 i += 1;
             if (getElement(k).compareTo(getElement(i)) >= 0)
                 break;
@@ -104,23 +108,19 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
         }
     }
 
-    private boolean contains(int i) {
-        return i >= 0 && i < indexes.size();
-    }
-
     public void add(E e) {
         data.add(e);
-        indexes.add(indexes.size());
+        indexes.add(getSize());
         reverse.add(reverse.size());
-        siftUp(indexes.size() - 1);
+        siftUp(getSize() - 1);
     }
 
     public E extractMax() {
         E ret = getElement(0);
-        int last = indexes.size() - 1;
+        int last = getSize() - 1;
         int lastIndex = indexes.get(last);
         indexes.set(0, lastIndex);
-        reverse.set(lastIndex, 0);  // 修改 indexes 之后对应地维护 reverse
+        reverse.set(lastIndex, 0);  // 修改 indexes 后要维护 reverse 中的对应元素（见上面介绍中的性质1 —— 若让 indexes[i] = x，则需让 reverse[x] = i）
         indexes.remove(last);
         siftDown(0);
         return ret;
@@ -141,8 +141,10 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
         return data.get(i);
     }
 
+    public int getSize() { return indexes.size(); }
+
     public boolean isEmpty() {
-        return indexes.size() == 0;
+        return getSize() == 0;
     }
 
     @Override

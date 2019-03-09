@@ -117,9 +117,9 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     private void siftDown(int k) {
-        while (getLeftChildIndex(k) < indexes.size()) {  // 如果左孩子存在（没越界）就继续循环
+        while (getLeftChildIndex(k) < getSize()) {  // 如果左孩子存在（没越界）就继续循环
             int i = getLeftChildIndex(k);
-            if (i + 1 < indexes.size() && getElement(i + 1).compareTo(getElement(i)) > 0)
+            if (i + 1 < getSize() && getElement(i + 1).compareTo(getElement(i)) > 0)
                 i += 1;
             if (getElement(k).compareTo(getElement(i)) >= 0)
                 break;
@@ -130,13 +130,13 @@ public class IndexMaxHeap<E extends Comparable> {
 
     public void insert(E e) {
         data.add(e);
-        indexes.add(indexes.size());    // 同样需要添加到 indexes 中
-        siftUp(indexes.size() - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
+        indexes.add(getSize());    // 同样需要添加到 indexes 中
+        siftUp(getSize() - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
     }
 
     public E extractMax() {
         E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除，只删除 indexes 中的对应索引）
-        int last = indexes.size() - 1;
+        int last = getSize() - 1;
         indexes.set(0, indexes.get(last));
         indexes.remove(last);
         siftDown(0);
@@ -147,7 +147,7 @@ public class IndexMaxHeap<E extends Comparable> {
         // 更新 data 中的元素
         data.set(i, newE);
         // 更新 indexes 中的该元素的索引位置（最差情况下为 O(n+logn) = O(n)，相对于其他操作 O(logn) 来说并不理想，在下个版本中优化）
-        for (int j = 0; j < indexes.size(); j++)
+        for (int j = 0; j < getSize(); j++)
             if (indexes.get(j) == i) {
                 siftUp(j);
                 siftDown(j);
@@ -161,9 +161,9 @@ public class IndexMaxHeap<E extends Comparable> {
         return data.get(i);  // 因为 data 不变，元素的索引语义不变，所以可以随时通过索引查询到（其实普通堆也可以通过索引找到元素，但是没有意义，因为内容可能已经改变）
     }
 
-    public boolean isEmpty() {
-        return indexes.size() == 0;
-    }
+    public int getSize() { return indexes.size(); }
+
+    public boolean isEmpty() { return getSize() == 0; }
 
     @Override
     public String toString() {
