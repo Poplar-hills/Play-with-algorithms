@@ -3,12 +3,13 @@ package MinimumSpanningTree;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Utils.Helpers.log;
 import static java.util.Collections.swap;
 
 /*
 * 最小索引堆（作为 PrimMST 的辅助数据结构）
 *
-* - 采用了增加 reverse 数据的设计，使 change 方法的复杂度为 O()
+* - 采用了增加 reverse 数据的设计，使 change 方法的复杂度为 O(logn)。
 * */
 
 public class IndexMinHeap<E extends Comparable> {
@@ -111,5 +112,22 @@ public class IndexMinHeap<E extends Comparable> {
     @Override
     public String toString() {
         return String.format("Elements: %s; Indexes: %s; Reverse: %s", data.toString(), indexes.toString(), reverse.toString());
+    }
+
+    public static void main(String[] args) {
+        log("---- Testing insert ----");
+        Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
+        IndexMinHeap<Integer> heap1 = new IndexMinHeap<>();
+        for (int n : inputSeq)
+            heap1.insert(n);
+        log(heap1);
+
+        log("\n---- Testing change ----");
+        heap1.change(2, 999);
+        log(heap1);
+
+        log("\n---- Testing extractMax ----");
+        while (!heap1.isEmpty())
+            log("Extracted: " + heap1.extractMin() + "\n" + heap1.toString());
     }
 }

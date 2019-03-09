@@ -14,7 +14,8 @@ import static java.util.Collections.swap;
  *   - 具体来说，在 change 过程中，需要通过遍历找到指定元素的索引 i 在 indexes 中的位置，这个过程最坏情况下是 O(n) 的复杂度。
  *
  * - 优化：
- *   - 仍然采用空间换时间的思想，将要查找的结果提前维护在一个数组中，这样在需要用的时候就可以以 O(1) 的复杂度来查找了。
+ *   - 仍然采用空间换时间的思想，将要查找的结果提前维护在一个数组中，这样在需要用的时候就可以以 O(1) 的复杂度来查找了，从而
+ *     使得 change 方法的总体复杂度为 O(logn)。
  *   - 具体来说，建立"反向索引" reverse 数组：
  *            data: [15, 17, 19, 13, 22, 20]
  *         indexes: [4,  2,  5,  3,  0,  1]   -- 维护 data 中每个元素在最大堆中的位置
@@ -108,7 +109,7 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
         }
     }
 
-    public void add(E e) {
+    public void insert(E e) {
         data.add(e);
         indexes.add(getSize());
         reverse.add(reverse.size());
@@ -157,7 +158,7 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
         IndexMaxHeapOptimised<Integer> heap1 = new IndexMaxHeapOptimised<>();
         for (int n : inputSeq)
-            heap1.add(n);
+            heap1.insert(n);
         log(heap1);
 
         log("\n---- Testing change ----");
