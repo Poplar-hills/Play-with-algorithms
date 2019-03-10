@@ -6,7 +6,7 @@ import java.util.List;
 import static Utils.Helpers.log;
 import static java.util.Collections.swap;
 
-public class MaxHeap<E extends Comparable> {  // todo: 为什么不能是 <E extends Comparable<E>>？？？
+public class MaxHeap<E extends Comparable<E>> {
     private List<E> data;
 
     public MaxHeap(int capacity) {

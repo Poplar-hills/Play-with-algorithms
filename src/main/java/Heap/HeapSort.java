@@ -26,21 +26,23 @@ import static Utils.Helpers.*;
 * */
 
 public class HeapSort {
-    public static void sort1(Comparable[] arr) {  // 第一种实现
-        MaxHeap<Comparable> heap = new MaxHeap<>(arr.length);
+    // 注：因为 MaxHeap 的类定义是 MaxHeap<E extends Comparable<E>>，所以下面的 static 方法中用到的泛型也必须有相应声明
+
+    public static <E extends Comparable<E>> void sort1(E[] arr) {  // 第一种实现
+        MaxHeap<E> heap = new MaxHeap<>(arr.length);
         for (int i = 0; i < arr.length; i++)
             heap.insert(arr[i]);
         for (int i = arr.length - 1; i >= 0; i--)
             arr[i] = heap.extractMax();
     }
 
-    public static void sort2(Comparable[] arr) {  // 第二种实现
-        MaxHeap<Comparable> heap = new MaxHeap<>(arr);
+    public static <E extends Comparable<E>> void sort2(E[] arr) {  // 第二种实现
+        MaxHeap<E> heap = new MaxHeap<>(arr);
         for (int i = arr.length - 1; i >= 0; i--)
             arr[i] = heap.extractMax();
     }
 
-    public static void sort3(Comparable[] arr) {  // 第三种实现
+    public static <E extends Comparable<E>> void sort3(E[] arr) {  // 第三种实现
         int n = arr.length;
         int lastNonLeafNodeIndex = (n - 1) / 2;
 
@@ -54,7 +56,7 @@ public class HeapSort {
     }
 
     // 比 MaxHeap 中的 siftDown 多了一个参数 n，用于控制下沉的范围
-    private static void siftDown2(Comparable[] arr, int n, int k) {  // 对第 k 个元素在前 n 个元素的范围内进行下沉，n 之后是已经排好序的元素
+    private static <E extends Comparable<E>> void siftDown2(E[] arr, int n, int k) {  // 对第 k 个元素在前 n 个元素的范围内进行下沉，n 之后是已经排好序的元素
         while (k * 2 + 1 < n) {  // 注意这里是 < n
             int i = k * 2 + 1;
             if (i + 1 < n && arr[i + 1].compareTo(arr[i]) > 0)
