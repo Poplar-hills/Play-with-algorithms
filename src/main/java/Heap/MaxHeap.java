@@ -90,7 +90,7 @@ public class MaxHeap<E extends Comparable<E>> {
 
     public int getSize() { return size; }
 
-    public boolean isEmpty() { return getSize() == 0; }
+    public boolean isEmpty() { return size == 0; }
 
     @Override
     public String toString() {

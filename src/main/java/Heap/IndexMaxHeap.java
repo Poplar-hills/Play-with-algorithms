@@ -1,10 +1,10 @@
 package Heap;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static Utils.Helpers.log;
-import static java.util.Collections.swap;
+import static Utils.Helpers.swap;
 
 /*
 * 索引堆（Index Heap）：
@@ -68,29 +68,29 @@ import static java.util.Collections.swap;
 * */
 
 public class IndexMaxHeap<E extends Comparable> {
-    List<E> data;
-    List<Integer> indexes;  // 堆索引数组
+    private E[] data;
+    private int[] indexes;  // 堆索引数组
+    private int size;
 
     public IndexMaxHeap(int capacity) {
-        data = new ArrayList<>(capacity);
-        indexes = new ArrayList<>(capacity);
-    }
-
-    public IndexMaxHeap() {
-        data = new ArrayList<>();
-        indexes = new ArrayList<>();
+        data = (E[]) new Comparable[capacity];
+        indexes = new int[capacity];
+        size = 0;
     }
 
     public IndexMaxHeap(E[] arr) {
-        data = new ArrayList<>();
-        indexes = new ArrayList<>();  // 创建堆索引数组
+        int n = arr.length;
+        data = (E[]) new Comparable[n];
+        indexes = new int[n];  // 创建堆索引数组
 
-        for (int i = 0; i < arr.length; i++) {
-            data.add(arr[i]);
-            indexes.add(i);           // 初始化堆索引数组
+        for (int i = 0; i < n; i++) {
+            data[i] = arr[i];
+            indexes[i] = i;  // 初始化堆索引数组
         }
+        size = n;
 
-        int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);  // heapify
+        // heapify
+        int lastNonLeafNodeIndex = getParentIndex(n - 1);
         for (int i = lastNonLeafNodeIndex; i >= 0; i--)
             siftDown(i);
     }
@@ -105,9 +105,9 @@ public class IndexMaxHeap<E extends Comparable> {
         return index * 2 + 1;
     }
 
-    private E getElement(int i) {
-        return data.get(indexes.get(i));
-    }  // 添加这个辅助方法作为 data 和 indexes 之间的桥梁
+    private E getElement(int i) {  // 添加这个辅助方法作为 data 和 indexes 之间的桥梁
+        return data[indexes[i]];
+    }
 
     private void siftUp(int k) {
         while (k > 0 && getElement(getParentIndex(k)).compareTo(getElement(k)) < 0) {  // 比较的是堆中元素
@@ -117,9 +117,9 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     private void siftDown(int k) {
-        while (getLeftChildIndex(k) < getSize()) {  // 如果左孩子存在（没越界）就继续循环
+        while (getLeftChildIndex(k) < size) {  // 如果左孩子存在（没越界）就继续循环
             int i = getLeftChildIndex(k);
-            if (i + 1 < getSize() && getElement(i + 1).compareTo(getElement(i)) > 0)
+            if (i + 1 < size && getElement(i + 1).compareTo(getElement(i)) > 0)
                 i += 1;
             if (getElement(k).compareTo(getElement(i)) >= 0)
                 break;
@@ -128,27 +128,29 @@ public class IndexMaxHeap<E extends Comparable> {
         }
     }
 
-    public void insert(E e) {
-        data.add(e);
-        indexes.add(getSize());    // 同样需要添加到 indexes 中
-        siftUp(getSize() - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
+    public void insert(E e) {  // 索引堆的 insert 方法可以指定插入位置
+//        if (i < 0 || i >= size || data[i] != null)
+//            throw new IllegalArgumentException("insert failed. Target index already exists.");
+        data[size] = e;
+        indexes[size] = size;  // 同样需要添加到 indexes 中
+        size++;
+        siftUp(size - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
     }
 
     public E extractMax() {
         E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除，只删除 indexes 中的对应索引）
-        int last = getSize() - 1;
-        indexes.set(0, indexes.get(last));
-        indexes.remove(last);
+        swap(indexes, 0, size - 1);  // 直接将第0个元素 swap 到末尾去，之后 size-- 后就相当于软删除了这个元素
+        size--;
         siftDown(0);
         return ret;
     }
 
     public void change(int i, E newE) {  // 更新堆中任意一个元素（索引堆的优势，普通堆做不到）
         // 更新 data 中的元素
-        data.set(i, newE);
+        data[i] = newE;
         // 更新 indexes 中的该元素的索引位置（最差情况下为 O(n+logn) = O(n)，相对于其他操作 O(logn) 来说并不理想，在下个版本中优化）
         for (int j = 0; j < getSize(); j++)
-            if (indexes.get(j) == i) {
+            if (indexes[j] == i) {
                 siftUp(j);
                 siftDown(j);
                 return;
@@ -156,22 +158,22 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     public E getItem(int i) {  // 查询堆中任意一个元素（索引堆的优势，普通堆做不到）
-        if (i < 0 || i >= data.size())
-            throw new IllegalArgumentException("getItem failed.");
-        return data.get(i);  // 因为 data 不变，元素的索引语义不变，所以可以随时通过索引查询到（其实普通堆也可以通过索引找到元素，但是没有意义，因为内容可能已经改变）
+        if (i < 0 || i >= size)
+            throw new IllegalArgumentException("getItem failed. Index is out of bounds");
+        return data[i];  // 因为 data 不变，元素的索引语义不变，所以可以随时通过索引查询到（其实普通堆也可以通过索引找到元素，但是没有意义，因为内容可能已经改变）
     }
 
-    public int getSize() { return indexes.size(); }
+    public int getSize() { return size; }
 
-    public boolean isEmpty() { return getSize() == 0; }
+    public boolean isEmpty() { return size == 0; }
 
     @Override
     public String toString() {
-        return "Elements: " + data.toString() + "; Indexes: " + indexes.toString();
+        return "Elements: " + Arrays.toString(data) + "; Indexes: " + Arrays.toString(indexes);
     }
 
     public static void main(String[] args) {
-        log("---- Generate IndexMaxHeap by heapifying ----");
+        log("---- Test heapify ----");
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
         IndexMaxHeap<Integer> heap1 = new IndexMaxHeap<>(inputSeq);
         log(heap1);
@@ -179,15 +181,14 @@ public class IndexMaxHeap<E extends Comparable> {
         while (!heap1.isEmpty())
             log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
 
-
-        log("\n---- Generate IndexMaxHeap by adding ----");
-        IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>();
-        for (int n : inputSeq)
-            heap2.insert(n);
+        log("\n---- Test insert ----");
+        IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>(inputSeq.length);
+        for (int e : inputSeq)
+            heap2.insert(e);
         log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
 
         heap2.change(2, 999);  // 修改中间元素
-        log("---- Change element ----");
+        log("\n---- Change element ----");
         log(heap2);
 
         while (!heap2.isEmpty())

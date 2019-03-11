@@ -13,8 +13,18 @@ public class Helpers {
         System.out.println(Arrays.toString(arr));
     }
 
-    public static void swap(Object[] arr, int i, int j) {
-        Object temp = arr[i];
+    public static <E> void swap(E[] arr, int i, int j) {
+        if (i < 0 || i >= arr.length || j < 0 || j >= arr.length)
+            throw new IllegalArgumentException("swap failed. Index is out of bounds.");
+        E temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    public static void swap(int[] arr, int i, int j) {
+        if (i < 0 || i >= arr.length || j < 0 || j >= arr.length)
+            throw new IllegalArgumentException("swap failed. Index is out of bounds.");
+        int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
