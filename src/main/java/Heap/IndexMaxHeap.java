@@ -1,6 +1,7 @@
 package Heap;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static Utils.Helpers.log;
 import static Utils.Helpers.swap;
@@ -108,6 +109,12 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         return data[indexes[i]];
     }
 
+    private boolean isTaken(int i) {  // 检查索引 i 所在的位置是否被占用（存在元素）
+        if (i < 0 || i >= data.length)
+            throw new IllegalArgumentException("isTaken failed. Index out of bounds.");
+        return data[i] != null;
+    }
+
     private void siftUp(int k) {
         while (k > 0 && getElement(getParentIndex(k)).compareTo(getElement(k)) < 0) {  // 比较的是堆中元素
             swap(indexes, k, getParentIndex(k));  // 交换的是堆索引
@@ -127,13 +134,13 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         }
     }
 
-    public void insert(E e) {  // 索引堆的 insert 方法可以指定插入位置
-//        if (i < 0 || i >= size || data[i] != null)
-//            throw new IllegalArgumentException("insert failed. Target index already exists.");
-        data[size] = e;
-        indexes[size] = size;  // 同样需要添加到 indexes 中
+    public void insert(int i, E e) {  // 索引堆的 insert 方法可以指定插入位置
+        if (isTaken(i))
+            throw new IllegalArgumentException("insert failed. Index has already been taken.");
+        data[i] = e;          // 插入 data 指定位置
+        indexes[size] = i;    // 添加到 indexes 末尾（不能像 data 那样插入指定位置，因为 indexes 中的元素才是真正要在树上移动的）
         size++;
-        siftUp(size - 1);  // 对新添元素进行上浮（并不是对新添索引进行上浮）
+        siftUp(size - 1);   // 对新添元素进行上浮（并不是对新添索引进行上浮）
     }
 
     public E extractMax() {
@@ -180,11 +187,20 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         while (!heap1.isEmpty())
             log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
 
-        log("\n---- Testing insert ----");
+        log("\n---- Testing insert ----");  // 测试将元素以乱序插入堆中
         IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>(inputSeq.length);
-        for (int e : inputSeq)
-            heap2.insert(e);
-        log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
+        heap2.insert(4, inputSeq[0]);
+        log(heap2);
+        heap2.insert(2, inputSeq[1]);
+        log(heap2);
+        heap2.insert(3, inputSeq[2]);
+        log(heap2);
+        heap2.insert(0, inputSeq[3]);
+        log(heap2);
+        heap2.insert(5, inputSeq[4]);
+        log(heap2);
+        heap2.insert(1, inputSeq[5]);
+        log(heap2);
 
         log("\n---- Testing change ----");
         heap2.change(2, 999);  // 修改中间元素
