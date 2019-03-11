@@ -1,7 +1,6 @@
 package Heap;
 
 import java.util.Arrays;
-import java.util.Random;
 
 import static Utils.Helpers.log;
 import static Utils.Helpers.swap;
@@ -109,12 +108,6 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         return data[indexes[i]];
     }
 
-    private boolean isTaken(int i) {  // 检查索引 i 所在的位置是否被占用（存在元素）
-        if (i < 0 || i >= data.length)
-            throw new IllegalArgumentException("isTaken failed. Index out of bounds.");
-        return data[i] != null;
-    }
-
     private void siftUp(int k) {
         while (k > 0 && getElement(getParentIndex(k)).compareTo(getElement(k)) < 0) {  // 比较的是堆中元素
             swap(indexes, k, getParentIndex(k));  // 交换的是堆索引
@@ -135,17 +128,17 @@ public class IndexMaxHeap<E extends Comparable<E>> {
     }
 
     public void insert(int i, E e) {  // 索引堆的 insert 方法可以指定插入位置
-        if (isTaken(i))
-            throw new IllegalArgumentException("insert failed. Index has already been taken.");
-        data[i] = e;          // 插入 data 指定位置
+        if (i < 0 || i >= data.length)
+            throw new IllegalArgumentException("insert failed. Index out of bounds.");
+        data[i] = e;          // 插入 data 指定位置（这里假设调用端不会提供重复的 i，IndexMaxHeapOptimised 中将会补全这部分验证逻辑）
         indexes[size] = i;    // 添加到 indexes 末尾（不能像 data 那样插入指定位置，因为 indexes 中的元素才是真正要在树上移动的）
         size++;
         siftUp(size - 1);   // 对新添元素进行上浮（并不是对新添索引进行上浮）
     }
 
     public E extractMax() {
-        E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除，只删除 indexes 中的对应索引）
-        swap(indexes, 0, size - 1);  // 将 indexes 中第0个元素 swap 到末尾去，之后 size-- 后就相当于软删除了 data 中的对应元素
+        E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除）
+        swap(indexes, 0, size - 1);  // 将 indexes 中第0个元素 swap 到末尾，之后再 size--，就相当于软删除了 data 中的对应元素
         size--;
         siftDown(0);
         return ret;
