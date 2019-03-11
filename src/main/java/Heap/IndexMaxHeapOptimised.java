@@ -40,6 +40,9 @@ public class IndexMaxHeapOptimised<E extends Comparable<E>> {
         indexes = new int[capacity];
         reverse = new int[capacity];
         size = 0;
+
+        for (int i = 0; i < capacity; i++)
+            reverse[i] = -1;  // reverse 中的元素都初始化为 -1，因为最开始 data 中没有元素
     }
 
     public IndexMaxHeapOptimised(E[] arr) {
@@ -81,8 +84,10 @@ public class IndexMaxHeapOptimised<E extends Comparable<E>> {
         reverse[indexes[j]] = j;
     }
 
-    private boolean contains(int i) {
-        return i >= 0 && i < getSize();
+    private boolean contains(int i) {  // 检查索引 i 所在的位置是否被占用（存在元素）
+        if (i < 0 || i >= data.length)
+            throw new IllegalArgumentException("contains failed. Index out of bounds.");
+        return reverse[i] != -1;  // 注意这里不能用 data[i] 或 indexes[i] 检查，因为 extract 之后 data 和 indexes 中的元素不会变，只有 reverse 中的会被置为-1
     }
 
     private void siftUp(int k) {
@@ -105,17 +110,20 @@ public class IndexMaxHeapOptimised<E extends Comparable<E>> {
         }
     }
 
-    public void insert(E e) {
-        data[size] = e;
-        indexes[size] = size;
-        reverse[size] = size;
+    public void insert(int i, E e) {
+        if (contains(i))
+            throw new IllegalArgumentException("insert failed. Index has been taken");
+        data[i] = e;
+        indexes[size] = i;
+        reverse[i] = size;  // 维护 reverse（见上面介绍中的性质1）
         size++;
         siftUp(size - 1);
     }
 
     public E extractMax() {
         E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除，只删除 indexes 中的对应索引）
-        swapIndexes(0, size - 1);  // 将 indexes 中第0个元素 swap 到末尾去，同时维护 reverse，之后 size-- 后就相当于软删除了 data 中的对应元素
+        swapIndexes(0, size - 1);  // 将 indexes 中第0个元素 swap 到末尾，并维护 reverse
+        reverse[indexes[size - 1]] = -1;  // 置为-1表示删除该索引（覆盖 swapIndexes 中的最后一句），最后再 size--，就相当于软删除了 data 中的对应元素
         size--;
         siftDown(0);
         return ret;
@@ -156,11 +164,20 @@ public class IndexMaxHeapOptimised<E extends Comparable<E>> {
         while (!heap1.isEmpty())
             log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
 
-        log("\n---- Testing insert ----");
+        log("\n---- Testing insert ----");  // 测试将元素以乱序插入堆中
         IndexMaxHeapOptimised<Integer> heap2 = new IndexMaxHeapOptimised<>(inputSeq.length);
-        for (int e : inputSeq)
-            heap2.insert(e);
-        log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
+        heap2.insert(4, inputSeq[0]);
+        log(heap2);
+        heap2.insert(2, inputSeq[1]);
+        log(heap2);
+        heap2.insert(3, inputSeq[2]);
+        log(heap2);
+        heap2.insert(0, inputSeq[3]);
+        log(heap2);
+        heap2.insert(5, inputSeq[4]);
+        log(heap2);
+        heap2.insert(1, inputSeq[5]);
+        log(heap2);
 
         log("\n---- Testing change ----");
         heap2.change(2, 999);  // 修改中间元素
