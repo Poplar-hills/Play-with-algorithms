@@ -3,6 +3,7 @@ package Heap;
 import java.util.Arrays;
 
 import static Utils.Helpers.log;
+import static Utils.Helpers.swap;
 
 /*
 * 最大堆（Max Heap）
@@ -14,15 +15,16 @@ public class MaxHeap<E extends Comparable<E>> {
 
     public MaxHeap(int capacity) {
         data = (E[]) new Comparable[capacity];
+        size = 0;
     }
 
     public MaxHeap(E[] arr) {  // heapify
         int n = arr.length;
-        size = 0;
 
         data = (E[]) new Comparable[n];
         for (int i = 0; i < n; i++)
             data[i] = arr[i];
+        size = n;
 
         int lastNonLeafNodeIndex = getParentIndex(n - 1);
         for (int i = lastNonLeafNodeIndex; i >= 0; i--)
@@ -37,14 +39,6 @@ public class MaxHeap<E extends Comparable<E>> {
         if (index <= 0)
             throw new IllegalArgumentException("getParentIndex failed.");
         return (index - 1) / 2;
-    }
-
-    private void swap(E[] arr, int i, int j) {
-        if (i < 0 || i >= arr.length || j < 0 || j >= arr.length)
-            throw new IllegalArgumentException("swap failed. Index is out of bounds.");
-        E temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
     }
 
     private void siftUp(int k) {
@@ -107,19 +101,19 @@ public class MaxHeap<E extends Comparable<E>> {
         Integer[] inputSeq = {3, 10, 6, 4, 8, 7, 1, 5, 2, 9};
         MaxHeap<Integer> heap = new MaxHeap<>(inputSeq.length);
 
-        // test insert
+        log("---- Testing insert ----");
         for (int e : inputSeq) {
             heap.insert(e);
             log("insert " + e + " -> " + heap.toString());
         }
 
-        // test extractMax
+        log("\n---- Testing extractMax ----");
         while (!heap.isEmpty()) {
             int max = heap.extractMax();
             log("extract " + max + " -> " + heap.toString());
         }
 
-        // test heapify
+        log("\n---- Testing heapify ----");
         log(new MaxHeap<>(inputSeq));
     }
 }
