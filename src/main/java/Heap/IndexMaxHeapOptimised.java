@@ -1,10 +1,9 @@
 package Heap;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static Utils.Helpers.log;
-import static java.util.Collections.swap;
+import static Utils.Helpers.swap;
 
 /*
  * 带反向查找的的最大索引堆（Index Heap with Reverse Retrieval）
@@ -30,39 +29,36 @@ import static java.util.Collections.swap;
  *        把性质1中的 j = indexes[i] 带入 reverse[j]。
  * */
 
-public class IndexMaxHeapOptimised<E extends Comparable> {
-    List<E> data;
-    List<Integer> indexes;
-    List<Integer> reverse;
+public class IndexMaxHeapOptimised<E extends Comparable<E>> {
+    private E[] data;
+    private int[] indexes;
+    private int[] reverse;  // 反向索引数组
+    private int size;
 
     public IndexMaxHeapOptimised(int capacity) {
-        data = new ArrayList<>(capacity);
-        indexes = new ArrayList<>(capacity);
-        reverse = new ArrayList<>(capacity);
-    }
-
-    public IndexMaxHeapOptimised() {
-        data = new ArrayList<>();
-        indexes = new ArrayList<>();
-        reverse = new ArrayList<>();
+        data = (E[]) new Comparable[capacity];
+        indexes = new int[capacity];
+        reverse = new int[capacity];
+        size = 0;
     }
 
     public IndexMaxHeapOptimised(E[] arr) {
-        data = new ArrayList<>(arr.length);
-        for (E e : arr)
-            data.add(e);
+        int n = arr.length;
+        data = (E[]) new Comparable[n];
+        indexes = new int[n];
+        reverse = new int[n];
 
-        indexes = new ArrayList<>(arr.length);
-        for (int i = 0; i < arr.length; i++)
-            indexes.add(i);
+        for (int i = 0; i < n; i++) {
+            data[i] = arr[i];
+            indexes[i] = i;
+            reverse[i] = i;
+        }
+        size = n;
 
-        int lastNonLeafNodeIndex = getParentIndex(arr.length - 1);
-        while (lastNonLeafNodeIndex >= 0)
-            siftDown(lastNonLeafNodeIndex--);
-
-        reverse = new ArrayList<>(arr.length);  // 初始化 reverse
-        for (int i = 0; i < arr.length; i++)
-            reverse.add(i);
+        // heapify
+        int lastNonLeafNodeIndex = getParentIndex(n - 1);
+        for (int i = lastNonLeafNodeIndex; i >= 0; i--)
+            siftDown(i);
     }
 
     private int getParentIndex(int index) {
@@ -76,13 +72,13 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     }
 
     private E getElement(int i) {
-        return data.get(indexes.get(i));
+        return data[indexes[i]];
     }
 
     private void swapIndexes(int i, int j) {
-        swap(indexes, i, j);             // indexes 中索引 i 和 j 上的值发生了变化
-        reverse.set(indexes.get(i), i);  // 修改 indexes 之后要对应地维护 reverse（见上面介绍中的性质1）
-        reverse.set(indexes.get(j), j);
+        swap(indexes, i, j);      // indexes 中索引 i 和 j 上的值发生了变化
+        reverse[indexes[i]] = i;  // 修改 indexes 之后要对应地维护 reverse（见上面介绍中的性质1）
+        reverse[indexes[j]] = j;
     }
 
     private boolean contains(int i) {
@@ -98,9 +94,9 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     }
 
     private void siftDown(int k) {
-        while (getLeftChildIndex(k) < getSize()) {
+        while (getLeftChildIndex(k) < size) {
             int i = getLeftChildIndex(k);
-            if (i + 1 < getSize() && getElement(i + 1).compareTo(getElement(i)) > 0)
+            if (i + 1 < size && getElement(i + 1).compareTo(getElement(i)) > 0)
                 i += 1;
             if (getElement(k).compareTo(getElement(i)) >= 0)
                 break;
@@ -110,19 +106,17 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     }
 
     public void insert(E e) {
-        data.add(e);
-        indexes.add(getSize());
-        reverse.add(reverse.size());
-        siftUp(getSize() - 1);
+        data[size] = e;
+        indexes[size] = size;
+        reverse[size] = size;
+        size++;
+        siftUp(size - 1);
     }
 
     public E extractMax() {
-        E ret = getElement(0);
-        int last = getSize() - 1;
-        int lastIndex = indexes.get(last);
-        indexes.set(0, lastIndex);
-        reverse.set(lastIndex, 0);  // 修改 indexes 后要维护 reverse 中的对应元素（见上面介绍中的性质1 —— 若让 indexes[i] = x，则需让 reverse[x] = i）
-        indexes.remove(last);
+        E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除，只删除 indexes 中的对应索引）
+        swapIndexes(0, size - 1);  // 将 indexes 中第0个元素 swap 到末尾去，同时维护 reverse，之后 size-- 后就相当于软删除了 data 中的对应元素
+        size--;
         siftDown(0);
         return ret;
     }
@@ -130,8 +124,8 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     public void change(int i, E newE) {
         if (!contains(i))
             throw new IllegalArgumentException("change failed.");
-        data.set(i, newE);
-        int j = reverse.get(i);  // 不再需要遍历，以 O(1) 的复杂度获得 i 在 indexes 中的索引
+        data[i] = newE;
+        int j = reverse[i];  // 不再需要遍历，以 O(1) 的复杂度获得 i 在 indexes 中的索引
         siftUp(j);
         siftDown(j);
     }
@@ -139,10 +133,10 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
     public E getItem(int i) {
         if (!contains(i))
             throw new IllegalArgumentException("getItem failed.");
-        return data.get(i);
+        return data[i];
     }
 
-    public int getSize() { return indexes.size(); }
+    public int getSize() { return size; }
 
     public boolean isEmpty() {
         return getSize() == 0;
@@ -150,23 +144,28 @@ public class IndexMaxHeapOptimised<E extends Comparable> {
 
     @Override
     public String toString() {
-        return String.format("Elements: %s; Indexes: %s; Reverse: %s", data.toString(), indexes.toString(), reverse.toString());
+        return String.format("Elements: %s; Indexes: %s; Reverse: %s", Arrays.toString(data), Arrays.toString(indexes), Arrays.toString(reverse));
     }
 
     public static void main(String[] args) {
-        log("---- Testing insert ----");
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
-        IndexMaxHeapOptimised<Integer> heap1 = new IndexMaxHeapOptimised<>();
-        for (int n : inputSeq)
-            heap1.insert(n);
+
+        log("---- Testing heapify ----");
+        IndexMaxHeapOptimised<Integer> heap1 = new IndexMaxHeapOptimised<>(inputSeq);
         log(heap1);
+        while (!heap1.isEmpty())
+            log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
+
+        log("\n---- Testing insert ----");
+        IndexMaxHeapOptimised<Integer> heap2 = new IndexMaxHeapOptimised<>(inputSeq.length);
+        for (int e : inputSeq)
+            heap2.insert(e);
+        log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
 
         log("\n---- Testing change ----");
-        heap1.change(2, 999);
-        log(heap1);
-
-        log("\n---- Testing extractMax ----");
-        while (!heap1.isEmpty())
-            log("Extracted: " + heap1.extractMax() + "\n" + heap1.toString());
+        heap2.change(2, 999);  // 修改中间元素
+        log(heap2);
+        while (!heap2.isEmpty())
+            log("Extracted: " + heap2.extractMax() + "; " + heap2.toString());
     }
 }

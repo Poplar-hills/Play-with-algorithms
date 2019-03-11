@@ -1,6 +1,5 @@
 package Heap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static Utils.Helpers.log;
@@ -67,7 +66,7 @@ import static Utils.Helpers.swap;
 *   2. 这种思路同样也被用于数据库的底层算法。
 * */
 
-public class IndexMaxHeap<E extends Comparable> {
+public class IndexMaxHeap<E extends Comparable<E>> {
     private E[] data;
     private int[] indexes;  // 堆索引数组
     private int size;
@@ -139,7 +138,7 @@ public class IndexMaxHeap<E extends Comparable> {
 
     public E extractMax() {
         E ret = getElement(0);  // 返回的是 data 中的最大值（但是不从 data 中删除，只删除 indexes 中的对应索引）
-        swap(indexes, 0, size - 1);  // 直接将第0个元素 swap 到末尾去，之后 size-- 后就相当于软删除了这个元素
+        swap(indexes, 0, size - 1);  // 将 indexes 中第0个元素 swap 到末尾去，之后 size-- 后就相当于软删除了 data 中的对应元素
         size--;
         siftDown(0);
         return ret;
@@ -173,24 +172,23 @@ public class IndexMaxHeap<E extends Comparable> {
     }
 
     public static void main(String[] args) {
-        log("---- Test heapify ----");
         Integer[] inputSeq = {15, 17, 19, 13, 22, 20};
+
+        log("---- Testing heapify ----");
         IndexMaxHeap<Integer> heap1 = new IndexMaxHeap<>(inputSeq);
         log(heap1);
-
         while (!heap1.isEmpty())
             log("Extracted: " + heap1.extractMax() + "; " + heap1.toString());
 
-        log("\n---- Test insert ----");
+        log("\n---- Testing insert ----");
         IndexMaxHeap<Integer> heap2 = new IndexMaxHeap<>(inputSeq.length);
         for (int e : inputSeq)
             heap2.insert(e);
         log(heap2);  // 生成的 indexes 可能与 heap1 中的不同，因为生成机制不同
 
+        log("\n---- Testing change ----");
         heap2.change(2, 999);  // 修改中间元素
-        log("\n---- Change element ----");
         log(heap2);
-
         while (!heap2.isEmpty())
             log("Extracted: " + heap2.extractMax() + "; " + heap2.toString());
     }
