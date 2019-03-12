@@ -11,22 +11,23 @@ import static Utils.Helpers.log;
 * */
 
 public class UnionFind {
-    private int[] setIds;
-    private int[] sizes;
+    private int[] parents;
+    private int[] ranks;
 
     public UnionFind(int size) {
-        setIds = new int[size];
-        sizes = new int[size];
+        parents = new int[size];
+        ranks = new int[size];
 
-        for (int i = 0; i < setIds.length; i++) {
-            setIds[i] = i;
+        for (int i = 0; i < size; i++) {
+            parents[i] = i;
+            ranks[i] = 1;
         }
     }
 
     private int find(int p) {
-        if (p < 0 || p >= setIds.length)
+        if (p < 0 || p >= parents.length)
             throw new IllegalArgumentException("find failed. p is out of bound.");
-        return (setIds[p] == p) ? p : find(setIds[p]);
+        return (parents[p] == p) ? p : find(parents[p]);
     }
 
     public boolean isConnencted(int p, int q) {
@@ -40,20 +41,21 @@ public class UnionFind {
         if (pRoot == qRoot)
             return;
 
-        if (sizes[pRoot] < sizes[qRoot]) {
-            setIds[pRoot] = qRoot;
-            sizes[qRoot] += sizes[pRoot];
+        if (ranks[pRoot] < ranks[qRoot]) {
+            parents[pRoot] = qRoot;
+        } else if (ranks[pRoot] > ranks[qRoot]) {
+            parents[qRoot] = pRoot;
         } else {
-            setIds[qRoot] = pRoot;
-            sizes[pRoot] += sizes[qRoot];
+            parents[pRoot] = qRoot;
+            ranks[qRoot]++;
         }
     }
 
-    public int getSize() { return setIds.length; }
+    public int getSize() { return parents.length; }
 
     @Override
     public String toString() {
-        return Arrays.toString(setIds);
+        return Arrays.toString(parents);
     }
 
     public static void main(String[] args) {
