@@ -147,7 +147,7 @@ public class IndexMaxHeapOptimised<E extends Comparable<E>> {
     public int getSize() { return size; }
 
     public boolean isEmpty() {
-        return getSize() == 0;
+        return size == 0;
     }
 
     @Override
