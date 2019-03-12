@@ -39,10 +39,10 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
 
     public LazyPrimMST(WeightedGraph graph) {
         this.graph = graph;
-        int n = graph.getVertexCount();
-        visited = new boolean[n];         // boolean 数组初值都为 false
+        visited = new boolean[graph.getVertexCount()];  // boolean 数组初值都为 false
         mst = new ArrayList<>();
         heap = new MinHeap<>();
+        minWeight = 0;
 
         lazyPrim();  // 开始计算最小生成树
     }
@@ -61,8 +61,7 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
         }
 
         // 计算最小生成树的权值
-        minWeight = mst.get(0).weight().doubleValue();  // 初值
-        for (int i = 1; i < mst.size(); i++)
+        for (int i = 0; i < mst.size(); i++)
             minWeight = minWeight.doubleValue() + mst.get(i).weight().doubleValue();
     }
 

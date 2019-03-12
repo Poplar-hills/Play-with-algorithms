@@ -20,5 +20,73 @@ package MinimumSpanningTree;
 * - 👉 看动画演示后再理解一遍以上文字：https://coding.imooc.com/lesson/71.html#mid=1490（3'34''）
 * */
 
-public class PrimMST {
+import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static Utils.Helpers.log;
+
+public class PrimMST<Weight extends Number & Comparable> {
+    private WeightedGraph graph;
+    private boolean[] visited;
+    private List<Edge<Weight>> mst;
+    private IndexMinHeap<Edge<Weight>> indexHeap;
+    private Number minWeight;
+
+    public PrimMST(WeightedGraph graph) {
+        this.graph = graph;
+        visited = new boolean[graph.getVertexCount()];
+        mst = new ArrayList<>();
+        indexHeap = new IndexMinHeap<>(graph.getVertexCount());
+        minWeight = 0;
+
+        prim();  // 开始计算最小生成树
+    }
+
+    private void prim() {
+        visit(0);
+        while (!indexHeap.isEmpty()) {
+            Edge<Weight> e = indexHeap.extractMin();  // 得到最小横切边
+            mst.add(e);
+            visit(visited[e.v()] ? e.w() : e.v());
+        }
+
+        for (Edge<Weight> e : mst)
+            minWeight = minWeight.doubleValue() + e.weight().doubleValue();
+    }
+
+    private void visit(int v) {
+        if (visited[v])
+            throw new IllegalArgumentException("visit failed. Vertex has already been visited.");
+
+        visited[v] = true;
+
+        Iterable<Edge<Weight>> it = graph.getAdjacentVertexes(v);
+        for (Edge<Weight> e : it) {
+            int w = e.theOther(v);
+            if (!visited[w]) {
+                if (indexHeap.contains(w)) {
+                    if (e.weight().compareTo(indexHeap.getItem(w).weight()) < 0)
+                        indexHeap.change(w, e);
+                } else
+                    indexHeap.insert(w, e);
+            }
+        }
+    }
+
+    public List<Edge<Weight>> mstEdges() { return mst; }
+
+    public Number weight() { return minWeight; }
+
+    public static void main(String[] args) {
+        WeightedGraph<Double> g = new WeightedGraphReader()
+                .read("src/main/java/MinimumSpanningTree/WeightedGraphReader/testG1.txt")
+                .build(WeightedSparseGraph.class, false);
+        log(g);
+
+        PrimMST<Double> mst = new PrimMST<>(g);
+        log(mst.mstEdges());  // 结果应该与 https://coding.imooc.com/lesson/71.html#mid=1489（8'41''）中的红色边一致
+        log(mst.weight());
+    }
 }
