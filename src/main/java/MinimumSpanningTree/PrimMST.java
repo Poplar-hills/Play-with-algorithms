@@ -68,9 +68,9 @@ public class PrimMST<Weight extends Number & Comparable> {
             if (!visited[w]) {
                 if (indexHeap.contains(w)) {
                     if (e.weight().compareTo(indexHeap.getItem(w).weight()) < 0)
-                        indexHeap.change(w, e);
+                        indexHeap.change(w, e);  // 在切分不断扩大的过程中持续更新每个顶点对应的最小横切边，而不是像 Lazy Prim 中那样将所有边加入堆中比较
                 } else
-                    indexHeap.insert(w, e);
+                    indexHeap.insert(w, e);  // 将一条边加入堆中要满足：1.是横切边  2.该边的权值 < 当前顶点 w 在堆中所对应的边的权值
             }
         }
     }
