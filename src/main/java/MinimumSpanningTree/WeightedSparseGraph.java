@@ -42,9 +42,9 @@ public class WeightedSparseGraph<Weight extends Number & Comparable> implements 
     }
 
     @Override
-    public Iterable<Edge<Weight>> getAdjacentVertexes(int v) {
+    public Iterable<Edge<Weight>> getAdjacentEdges(int v) {
         if (v < 0 || v >= n)
-            throw new IllegalArgumentException("getAdjacentVertexes failed. Vertex index is out of boundary");
+            throw new IllegalArgumentException("getAdjacentEdges failed. Vertex index is out of boundary");
         return graph[v];
     }
 
@@ -71,10 +71,10 @@ public class WeightedSparseGraph<Weight extends Number & Comparable> implements 
     }
 
     public static void main(String[] args) {
-        WeightedGraph graph = new WeightedSparseGraph(4, false);
-        graph.addEdge(1, 2, 8);
-        graph.addEdge(2, 3, 7);
-        graph.addEdge(2, 3, 9);  // 稀疏图因为性能原因允许平行边
-        log(graph);
+        WeightedGraph g = new WeightedSparseGraph(4, false);
+        g.addEdge(1, 2, 8);
+        g.addEdge(2, 3, 7);
+        g.addEdge(2, 3, 9);  // 稀疏图因为性能原因允许平行边
+        log(g);
     }
 }

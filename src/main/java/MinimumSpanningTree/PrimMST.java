@@ -62,7 +62,7 @@ public class PrimMST<Weight extends Number & Comparable> {
 
         visited[v] = true;
 
-        Iterable<Edge<Weight>> it = graph.getAdjacentVertexes(v);
+        Iterable<Edge<Weight>> it = graph.getAdjacentEdges(v);
         for (Edge<Weight> e : it) {
             int w = e.theOther(v);
             if (!visited[w]) {

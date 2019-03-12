@@ -59,9 +59,9 @@ public class SparseGraph implements Graph {
     // ∵ 不能暴露 graph 给外界 ∴ 使用迭代器模式，返回一个访问某一顶点的边的迭代器（或者不使用迭代器，直接返回所有相邻接点也可以）
     // 在 java 中返回迭代器和返回所有相邻接点是一样的（都是返回 graph[v]，只是返回值类型不同）
     @Override
-    public Iterable<Integer> getAdjacentVertexes(int v) {
+    public Iterable<Integer> getAdjacentEdges(int v) {
         if (v < 0 || v >= n)
-            throw new IllegalArgumentException("getAdjacentVertexes failed. Vertex index is out of boundary");
+            throw new IllegalArgumentException("getAdjacentEdges failed. Vertex index is out of boundary");
         return graph[v];  // ArrayList 实现了 List，List 继承了 Collection，Collection 继承了 Iterable
     }
 
@@ -89,7 +89,7 @@ public class SparseGraph implements Graph {
 
     public static void main(String[] args) {
         // 测试 addEdge
-        SparseGraph g = new SparseGraph(4, false);  // 无向图
+        SparseGraph g = new SparseGraph(4, false);
         g.addEdge(0, 1);
         g.addEdge(1, 2);
         g.addEdge(2, 3);
@@ -100,8 +100,8 @@ public class SparseGraph implements Graph {
         log(g.hasEdge(3, 0));
         log(g.hasEdge(3, 1));
 
-        // 测试 getAdjacentVertexes
-        for (int n : g.getAdjacentVertexes(2))
+        // 测试 getAdjacentEdges
+        for (int n : g.getAdjacentEdges(2))
             log(n);
     }
 }

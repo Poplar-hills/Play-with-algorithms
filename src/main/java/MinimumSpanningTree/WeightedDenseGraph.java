@@ -48,9 +48,9 @@ public class WeightedDenseGraph<Weight extends Number & Comparable> implements W
     }
 
     @Override
-    public Iterable<Edge<Weight>> getAdjacentVertexes(int v) {
+    public Iterable<Edge<Weight>> getAdjacentEdges(int v) {
         if (v < 0 || v >= n)
-            throw new IllegalArgumentException("getAdjacentVertexes failed. Vertex index is out of boundary");
+            throw new IllegalArgumentException("getAdjacentEdges failed. Vertex index is out of boundary");
 
         List<Edge<Weight>> edges = new ArrayList<>();
         for (int i = 0; i < n; i++)
@@ -89,10 +89,10 @@ public class WeightedDenseGraph<Weight extends Number & Comparable> implements W
     }
 
     public static void main(String[] args) {
-        WeightedGraph graph = new WeightedDenseGraph(4, false);
-        graph.addEdge(1, 2, 8);
-        graph.addEdge(2, 3, 7);
-        graph.addEdge(2, 3, 9);  // 替换已存在的边
-        log(graph);
+        WeightedGraph g = new WeightedDenseGraph(4, false);
+        g.addEdge(1, 2, 8);
+        g.addEdge(2, 3, 7);
+        g.addEdge(2, 3, 9);  // 替换已存在的边
+        log(g);
     }
 }

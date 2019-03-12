@@ -62,7 +62,7 @@ public class ConnectedComponent {
         visited[v] = true;           // 访问顶点
         setIds[v] = componentCount;  // 为顶点所在连通分量的 id 赋值
 
-        for (int w : graph.getAdjacentVertexes(v)) {
+        for (int w : graph.getAdjacentEdges(v)) {
             if (!visited[w])
                 depthFirstSearch(w);  // 递归遍历
         }

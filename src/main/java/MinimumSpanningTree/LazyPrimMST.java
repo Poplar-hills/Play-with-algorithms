@@ -72,7 +72,7 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
         visited[v] = true;
 
         // 步骤2：找到该顶点的所有横切边，并插入最小堆中进行比较（注意切分内侧顶点之间的边不是横切边）
-        Iterable<Edge<Weight>> it = graph.getAdjacentVertexes(v);
+        Iterable<Edge<Weight>> it = graph.getAdjacentEdges(v);
         for (Edge<Weight> e : it)
             if (!visited[e.theOther(v)])  // 若另一个顶点没有被 visit 则说明该边是横切边，应加入堆中比较
                 heap.insert(e);

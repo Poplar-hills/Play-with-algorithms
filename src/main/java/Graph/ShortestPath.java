@@ -84,7 +84,7 @@ public class ShortestPath {
 
         while (!queue.isEmpty()) {
             int v = queue.remove();
-            for (int w : graph.getAdjacentVertexes(v)) {
+            for (int w : graph.getAdjacentEdges(v)) {
                 if (!visited[w]) {
                     queue.add(w);
                     visited[w] = true;  // 只要顶点被加入到了队列就置为 true
