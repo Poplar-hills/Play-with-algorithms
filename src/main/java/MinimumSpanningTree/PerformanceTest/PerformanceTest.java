@@ -6,6 +6,10 @@ import MinimumSpanningTree.WeightedGraph;
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
 import MinimumSpanningTree.WeightedSparseGraph;
 
+/*
+* 结论：g从结果可见，对于10000个顶点、60000条边的图，O(ElogV) 的 Prim 算法要比 O(ElogE) 的 LazyPrim 算法快两倍多。
+* */
+
 public class PerformanceTest {
     private static void timeIt(Runnable fn) {
         double startTime = System.nanoTime();
