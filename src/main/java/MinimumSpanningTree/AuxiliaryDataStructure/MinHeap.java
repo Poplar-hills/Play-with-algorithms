@@ -1,4 +1,4 @@
-package MinimumSpanningTree;
+package MinimumSpanningTree.AuxiliaryDataStructure;
 
 import java.util.ArrayList;
 import java.util.List;
