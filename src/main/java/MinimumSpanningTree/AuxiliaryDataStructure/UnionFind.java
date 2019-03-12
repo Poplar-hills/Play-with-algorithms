@@ -12,15 +12,14 @@ import static Utils.Helpers.log;
 
 public class UnionFind {
     private int[] setIds;
-//    private int[] parents;
+    private int[] sizes;
 
     public UnionFind(int size) {
         setIds = new int[size];
-//        parents = new int[size];
+        sizes = new int[size];
 
         for (int i = 0; i < setIds.length; i++) {
             setIds[i] = i;
-//            parents[i] = i;
         }
     }
 
@@ -35,13 +34,19 @@ public class UnionFind {
     }
 
     public void union(int p, int q) {
-        int pSetId = find(p);
-        int qSetId = find(q);
+        int pRoot = find(p);
+        int qRoot = find(q);
 
-        if (pSetId == qSetId)
+        if (pRoot == qRoot)
             return;
 
-        setIds[p] = qSetId;
+        if (sizes[pRoot] < sizes[qRoot]) {
+            setIds[pRoot] = qRoot;
+            sizes[qRoot] += sizes[pRoot];
+        } else {
+            setIds[qRoot] = pRoot;
+            sizes[pRoot] += sizes[qRoot];
+        }
     }
 
     public int getSize() { return setIds.length; }
