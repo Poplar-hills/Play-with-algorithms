@@ -64,13 +64,21 @@ public class UnionFind {
     }
 
     public static void main(String[] args) {
-        UnionFind uf = new UnionFind(5);
+        UnionFind uf = new UnionFind(6);
 
-        uf.union(2, 4);
+        uf.union(3, 2);
+        log(uf);
+        uf.union(5, 3);
         log(uf);
         uf.union(4, 0);
         log(uf);
+        uf.union(4, 5);
+        log(uf);
 
-        log(uf.isConnencted(2, 0));
+        log(uf.isConnencted(4, 0));
+        log(uf.isConnencted(4, 1));
+        log(uf.isConnencted(4, 2));
+        log(uf.isConnencted(4, 3));
+        log(uf.isConnencted(4, 5));
     }
 }
