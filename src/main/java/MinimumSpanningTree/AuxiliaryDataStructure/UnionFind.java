@@ -12,17 +12,22 @@ import static Utils.Helpers.log;
 
 public class UnionFind {
     private int[] setIds;
+//    private int[] parents;
 
     public UnionFind(int size) {
         setIds = new int[size];
-        for (int i = 0; i < setIds.length; i++)
+//        parents = new int[size];
+
+        for (int i = 0; i < setIds.length; i++) {
             setIds[i] = i;
+//            parents[i] = i;
+        }
     }
 
     private int find(int p) {
         if (p < 0 || p >= setIds.length)
             throw new IllegalArgumentException("find failed. p is out of bound.");
-        return setIds[p];
+        return (setIds[p] == p) ? p : find(setIds[p]);
     }
 
     public boolean isConnencted(int p, int q) {
@@ -36,10 +41,7 @@ public class UnionFind {
         if (pSetId == qSetId)
             return;
 
-        for (int i = 0; i < setIds.length; i++) {
-            if (find(i) == pSetId)
-                setIds[i] = qSetId;
-        }
+        setIds[p] = qSetId;
     }
 
     public int getSize() { return setIds.length; }
