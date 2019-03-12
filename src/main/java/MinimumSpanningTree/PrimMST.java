@@ -20,6 +20,7 @@ package MinimumSpanningTree;
 * - 👉 看动画演示后再理解一遍以上文字：https://coding.imooc.com/lesson/71.html#mid=1490（3'34''）
 * */
 
+import MinimumSpanningTree.AuxiliaryDataStructure.IndexMinHeap;
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
 
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package MinimumSpanningTree;
 
+import MinimumSpanningTree.AuxiliaryDataStructure.MinHeap;
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
 
 import java.util.ArrayList;
