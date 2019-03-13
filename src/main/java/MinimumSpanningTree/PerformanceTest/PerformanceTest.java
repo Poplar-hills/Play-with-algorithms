@@ -4,10 +4,12 @@ import MinimumSpanningTree.*;
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
 
 /*
-* 分析：对于10000个顶点、60000条边的图：
-*   - Lazy Prim 算法的复杂度为 O(ElogE)
-*   - Prim 算法的复杂度为 O(ElogV)，实际效率是 Lazy Prim 的两倍
-*   - Kruskal 算法的复杂度为 ？？？？？？？？？
+* 复杂度：
+*   - Lazy Prim 算法为 O(ElogE)
+*   - Prim 算法为 O(ElogV)
+*   - Kruskal 算法为 O(ElogE)
+*
+* 测试结果：对于10000个顶点、60000条边的图，Prim 算法实际效率要比 Lazy Prim 和 Kruskal 快两倍左右。
 * */
 
 public class PerformanceTest {

@@ -10,20 +10,23 @@ package MinimumSpanningTree;
 *
 * - 证明：对于每次找到的最小边，我们都能找到一个切分，使得该最小边是该切分的横切边，因此符合切分定理（Cut Property）。
 *
-* - 实现过程 & 复杂度分析：
-*   1. 首先需要对所有边根据权值排序。
+* - 算法过程：
+*   1. 首先需要根据权值对所有边进行排序。
 *   2. 对排序后的边从小到大进行遍历，检测每一条边是否会让最小生成树形成环，若不会则将该边加入最小生成树。
-*   3. 直到所有顶点都被访问过后，退出循环
+*   3. 直到所有顶点都被访问过后，得到了最小生成树。
 *
 * - 判断图中是否有环：
 *   - 使用并查集（这是并查集的经典应用场景）
 *   - 具体来说，在将一条边加入最小生成树之前要对该边的2个顶点进行 union 操作，看他们的根是否相同，若相同则说明会成环。
 *
-* - 算法复杂度分析：
-*   - 对所有边排序这一步至少是 O(ElogE) 的复杂度
-*   - （这两步是 O(ElogV) 的复杂度？？？？？？）。
-*   - 因此，Kruskal 算法总体是 O() 的复杂度。
-*   - Kruskal 算法确实不如 Prim 算法快，但是因为它思路简单易实现，所以对于规模不太的图可以使用。
+* - 实现过程 & 复杂度分析：
+*   1. 对边排序可以选择任意一种排序算法。这里使用 O(nlogn) 的堆排序，因为有 E 条边，所以是 O(ElogE)；
+*   2. 对边进行遍历的循环最多会执行 E 次（即堆被取空才将所有顶点都访问一遍）：
+*     a. 每次从堆中取出最小边，这是 O(logE) 的复杂度；
+*     b. 用并查集判断取出的边是否会让最小生成树成环，若使用优化过的并查集则是接近 O(1) 的复杂度；
+*     c. 若没有成环则放入最小生成树，并将边上的节点 union 在一起，也是 O(1) 的复杂度;
+*   - 因此，Kruskal 算法总体的复杂度是 O(ElogE + E * logE + E + E) = O(ElogE)。
+*   - Kruskal 算法确实不如 Prim 算法快，但是因为它思路简单易实现，所以对于规模不太的图比较友好。
 * */
 
 import MinimumSpanningTree.AuxiliaryDataStructure.MinHeap;
@@ -51,7 +54,7 @@ public class KruskalMST<Weight extends Number & Comparable> {
     private void kruskal() {
         MinHeap<Edge<Weight>> heap = new MinHeap<>(graph.getEdgeCount());
 
-        // 将所有边加入堆中排序（O(ElogE)）
+        // 将所有边加入堆中排序
         for (int v = 0; v < graph.getVertexCount(); v++) {
             Iterable<Edge<Weight>> it = graph.getAdjacentEdges(v);  // 拿到每个顶点的所有邻边
             for (Edge<Weight> e : it) {
@@ -65,9 +68,9 @@ public class KruskalMST<Weight extends Number & Comparable> {
         UnionFind uf = new UnionFind(heap.getSize());
         while (!heap.isEmpty() && mst.size() < graph.getVertexCount() - 1) {  // 一棵 mst 中最多有顶点数-1条边
             Edge<Weight> edge = heap.extractMin();
-            if (!uf.isConnencted(edge.v(), edge.w())) {
-                uf.union(edge.v(), edge.w());
+            if (!uf.isConnencted(edge.v(), edge.w())) {  // 判断是否成环
                 mst.add(edge);
+                uf.union(edge.v(), edge.w());
             }
         }
 
