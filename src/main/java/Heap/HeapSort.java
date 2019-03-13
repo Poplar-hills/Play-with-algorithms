@@ -8,10 +8,10 @@ import static Utils.Helpers.*;
 * - 堆排序的3种实现方式：
 *   1. insert + extractMax：
 *      - 先往一个空堆中不断 insert 元素，再逐一 extractMax 并放入数组。
-*      - 两者都是 O(n * logn) 的操作，因此整体复杂度是 O(nlogn)。
+*      - 两种操作都是 O(n * logn)，因此整体复杂度是 O(nlogn)。
 *   2. heapify + extractMax：
 *      - 先 heapify 生成最大堆，再逐一 extractMax 并放入数组。
-*      - 时间复杂度：O(n) + O(n * logn) = O(n + nlogn)；因为 nlogn > n，因此是总体是 O(nlogn) 级别。
+*      - 时间复杂度：O(n) + O(n * logn) = O(n + nlogn)；因为 nlogn > n，因此是总体也是 O(nlogn) 级别，但统计上比方法1快。
 *   3. 原地 heapify + swap + siftDown：
 *      - 先原地 heapify 生成最大堆，再逐一将最大值与换到数组末尾正确的位置上，并对换到头部的元素 siftDown。
 *      - 时间复杂度：O(n) + O(n * 1) + O(n * logn) = O(n + nlogn) = O(nlogn)。
