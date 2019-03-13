@@ -60,7 +60,7 @@ public class KruskalMST<Weight extends Number & Comparable> {
             }
         }
 
-        // 每次
+        // 从小到大检测每条边是否会让最小生成树形成环，是则丢弃，否则放入 mst
         UnionFind uf = new UnionFind(heap.getSize());
         while (!heap.isEmpty() && mst.size() < graph.getVertexCount() - 1) {  // 一棵 mst 中最多有顶点数-1条边
             Edge<Weight> edge = heap.extractMin();
@@ -68,9 +68,9 @@ public class KruskalMST<Weight extends Number & Comparable> {
                 uf.union(edge.v(), edge.w());
                 mst.add(edge);
             }
-
         }
 
+        // 计算 mst 的权值之和
         for (int i = 0; i < mst.size(); i++)
             minWeight = minWeight.doubleValue() + mst.get(i).weight().doubleValue();
     }
