@@ -1,13 +1,13 @@
 package MinimumSpanningTree.PerformanceTest;
 
-import MinimumSpanningTree.LazyPrimMST;
-import MinimumSpanningTree.PrimMST;
-import MinimumSpanningTree.WeightedGraph;
+import MinimumSpanningTree.*;
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
-import MinimumSpanningTree.WeightedSparseGraph;
 
 /*
-* 结论：g从结果可见，对于10000个顶点、60000条边的图，O(ElogV) 的 Prim 算法要比 O(ElogE) 的 LazyPrim 算法快两倍多。
+* 分析：对于10000个顶点、60000条边的图：
+*   - Lazy Prim 算法的复杂度为 O(ElogE)
+*   - Prim 算法的复杂度为 O(ElogV)，实际效率是 Lazy Prim 的两倍
+*   - Kruskal 算法的复杂度为 ？？？？？？？？？
 * */
 
 public class PerformanceTest {
@@ -26,5 +26,6 @@ public class PerformanceTest {
         System.out.println(String.format("The graph contains %d vertexes and %d edges", g.getVertexCount(), g.getEdgeCount()));
         timeIt(() -> { LazyPrimMST<Double> mst = new LazyPrimMST<>(g); });
         timeIt(() -> { PrimMST<Double> mst = new PrimMST<>(g); });
+        timeIt(() -> { KruskalMST<Double> mst = new KruskalMST<>(g); });
     }
 }
