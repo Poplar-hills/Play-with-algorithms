@@ -84,7 +84,7 @@ public class LazyPrimMST<Weight extends Number & Comparable> {
     public Number weight() { return minWeight; }
 
     public static void main(String[] args) {
-        // 下面用到的 testG1.txt 中的图就是 https://coding.imooc.com/lesson/71.html#mid=1489（1'24''）中的图
+        // 下面用到的 testG1.txt 中的图就是 graph.jpg 中的图
         WeightedGraph<Double> g = new WeightedGraphReader()
                 .read("src/main/java/MinimumSpanningTree/WeightedGraphReader/testG1.txt")
                 .build(WeightedSparseGraph.class, false);
