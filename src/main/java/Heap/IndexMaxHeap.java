@@ -144,6 +144,14 @@ public class IndexMaxHeap<E extends Comparable<E>> {
         return ret;
     }
 
+    public int extractMaxIndex() {
+        int ret = indexes[0];
+        swap(indexes, 0, size - 1);
+        size--;
+        siftDown(0);
+        return ret;
+    }
+
     public void change(int i, E newE) {  // 更新堆中任意一个元素（索引堆的优势，普通堆做不到）
         // 更新 data 中的元素
         data[i] = newE;
