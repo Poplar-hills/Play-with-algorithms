@@ -108,6 +108,15 @@ public class IndexMinHeap<E extends Comparable<E>> {
         return ret;
     }
 
+    public int extractMinIndex() {
+        int ret = indexes[0];
+        swapIndexes(0, size - 1);
+        reverse[indexes[size - 1]] = -1;
+        size--;
+        siftDown(0);
+        return ret;
+    }
+
     public void change(int i, E newE) {
         if (!contains(i))
             throw new IllegalArgumentException("change failed.");

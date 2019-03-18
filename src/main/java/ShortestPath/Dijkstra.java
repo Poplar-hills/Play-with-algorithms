@@ -1,12 +1,23 @@
 package ShortestPath;
 
+import MinimumSpanningTree.AuxiliaryDataStructure.IndexMinHeap;
+import MinimumSpanningTree.Edge;
+import MinimumSpanningTree.WeightedGraph;
+import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
+import MinimumSpanningTree.WeightedSparseGraph;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static Utils.Helpers.log;
+
 /*
 * Dijkstra 单源最短路径算法（Dijkstra Single Source Shortest Path）
 *
 * - 概要
 *   - Dijkstra 算法是应用最广、名气最大的针对有权图的最短路径算法。
 *   - 用途：用于计算一幅带权图的最短路径树（即从起始顶点到图中所有其他顶点的最短路径）。
-*   - 局限性：图中不能有负权边
+*   - 局限性：图中不能有负权边（有负权边的应用场景本来也很少）
 *   - 时间复杂度：O(ElogV)
 *
 * - 运算过程动画演示 SEE：https://coding.imooc.com/lesson/71.html#mid=1495（3'30''）
@@ -15,22 +26,22 @@ package ShortestPath;
 * - 运算过程：
 *   1. 由起始顶点开始访问（顶点0）
 *   2. 找到该顶点的所有邻边
-*   3. 更新起始顶点到每条邻边上另一顶点的成本：
+*   3. 更新起始顶点到每条邻边上另一顶点的距离：
 *        0  1  2  3  4           0  1  2  3  4
 *        -------------    --->   -------------
 *        0  -  -  -  -           0  5  2  6  -
-*   4. 在未被访问的顶点（1、2、3、4）中，找到从起始顶点开始能以最低成本到达的那个顶点（访问顶点2），则到达该顶点的路径即在最短路径树上。
-*   5. 进行 relaxation 操作，看看从该顶点到其他未被访问的节点的路径相较于之前是否成本更低，若是则更新对应顶点的成本：
+*   4. 在未被访问的顶点（1、2、3、4）中，找到从起始顶点开始能以最短距离到达的那个顶点（访问顶点2），则到达该顶点的路径即在最短路径树上。
+*   5. 进行 relaxation 操作，看看从该顶点到其他未被访问的节点的路径相较于之前是否距离更短，若是则更新对应顶点的距离：
 *        0  1  2  3  4           0  1  2  3  4
 *        -------------    --->   -------------
 *        0  5  2  6  -           0  3  2  5  7
-*   6. 至此完成一轮 Dijkstra 算法循环，跳到第4步继续循环（此时未被访问的顶点是1、3、4，成本最小的是路径是2->1，因此访问顶点1，
+*   6. 至此完成一轮 Dijkstra 算法循环，跳到第4步继续循环（此时未被访问的顶点是1、3、4，距离最短的是路径是2->1，因此访问顶点1，
 *      且路径2->1在最短路径树上）。
 *
 * - 算法所需数据结构：
 *   从运算过程中可知，该算法主要做两件事：
-*     1. 从未被访问的顶点中找出到达成本最小的那个节点，即从一个数组中找最小值。
-*     2. 在发现有更低成本的路径后需要更新对应顶点成本，即更新数组中的元素。
+*     1. 从未被访问的顶点中找出到达距离最短的那个节点，即从一个数组中找最小值。
+*     2. 在发现有更短距离的路径后需要更新对应顶点距离，即更新数组中的元素。
 *   - 最小索引堆能同时满足这两个需求（类似 Prim 算法里的需求）。
 *
 * - 复杂度分析：
@@ -40,5 +51,88 @@ package ShortestPath;
 *     - 另外在算法过程中要对所有边进行遍历，因此使得算法的整体复杂度为 O(ElogV) 级别。
 * */
 
-public class Dijkstra {
+public class Dijkstra<Weight extends Number & Comparable<Weight>> {
+    private WeightedGraph graph;
+    private int source;              // 起始顶点，即单源最短路径中的"源"
+    private IndexMinHeap<Weight> heap;
+    private Weight[] distances;      // 记录起始顶点到其他所有顶点的最短距离
+    private boolean[] visited;       // 记录每个顶点是否被访问过
+    private List<Edge<Weight>> spt;  // 最短路径树
+
+    public Dijkstra(WeightedGraph graph, int source) {
+        this.graph = graph;
+        this.source = source;
+        int n = graph.getVertexCount();
+        heap = new IndexMinHeap(graph.getVertexCount());
+        distances = (Weight[]) new Number[n];
+        visited = new boolean[n];  // 默认值都是 false
+        spt = new ArrayList<>();
+
+        dijkstra();
+    }
+
+    private void dijkstra() {
+        visit(source);
+        distances[source] = (Weight)(Number) 0;
+
+        while (!heap.isEmpty()) {
+            int minV = heap.extractMinIndex();
+            // add the path into spt
+            spt.add(minV);
+
+            if (visited[minV])
+                continue;
+
+            // relaxation
+            Iterable<Edge<Weight>> it = graph.getAdjacentEdges(minV);
+            for (Edge<Weight> e : it) {
+                int w = e.theOther(minV);
+                // calc relaxed distance for each of the adj vertex
+                Number relaxedDistance = distances[minV].doubleValue() + e.weight().doubleValue();
+                // update the min distance from source to each vertex
+                if (distances[w] == null || relaxedDistance.doubleValue() < distances[w].doubleValue())
+                    distances[w] = (Weight) relaxedDistance;
+            }
+
+            visit(minV);
+        }
+    }
+
+    private void visit(int v) {
+        // visit the vertex
+        visited[v] = true;
+        // get its adj edges
+        Iterable<Edge<Weight>> it = graph.getAdjacentEdges(v);
+        for (Edge<Weight> e : it) {
+            int w = e.theOther(v);
+            // update the min distance from source to each vertex
+            if (distances[w] == null)
+                distances[w] = e.weight();
+            // insert into heap
+            if (heap.contains(w))
+                heap.change(w, e.weight());
+            else
+                heap.insert(w, e.weight());
+        }
+    }
+
+    public Weight[] distances() { return distances; }
+
+    public List<Edge<Weight>> shortestPathTo(int v) {
+
+    }
+
+    public int distanceTo(int v) {
+        return distances[v];
+    }
+
+    public static void main(String[] args) {
+        WeightedGraph<Double> g = new WeightedGraphReader()
+            .read("src/main/java/ShortestPath/testG1.txt")
+            .build(WeightedSparseGraph.class, true);
+
+        Dijkstra<Double> d = new Dijkstra<>(g, 0);
+        log(d.shortestPathTree());
+        log(d.distances);
+    }
 }
