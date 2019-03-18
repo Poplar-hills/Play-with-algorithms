@@ -8,6 +8,7 @@ import MinimumSpanningTree.WeightedSparseGraph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import static Utils.Helpers.log;
 
@@ -54,19 +55,19 @@ import static Utils.Helpers.log;
 public class Dijkstra<Weight extends Number & Comparable<Weight>> {
     private WeightedGraph graph;
     private int source;              // 起始顶点，即单源最短路径中的"源"
-    private IndexMinHeap<Weight> heap;
     private Weight[] distances;      // 记录起始顶点到其他所有顶点的最短距离
     private boolean[] visited;       // 记录每个顶点是否被访问过
     private List<Edge<Weight>> spt;  // 最短路径树
+    private IndexMinHeap<Edge<Weight>> heap;  // 辅助数据结构
 
     public Dijkstra(WeightedGraph graph, int source) {
         this.graph = graph;
         this.source = source;
         int n = graph.getVertexCount();
-        heap = new IndexMinHeap(graph.getVertexCount());
         distances = (Weight[]) new Number[n];
         visited = new boolean[n];  // 默认值都是 false
         spt = new ArrayList<>();
+        heap = new IndexMinHeap(graph.getVertexCount());
 
         dijkstra();
     }
@@ -76,20 +77,21 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         distances[source] = (Weight)(Number) 0;
 
         while (!heap.isEmpty()) {
-            int minV = heap.extractMinIndex();
-            // add the path into spt
-            spt.add(minV);
+            Edge<Weight> minE = heap.extractMin();
+            int minV = visited[minE.v()] ? minE.w() : minE.v();
 
             if (visited[minV])
                 continue;
+
+            spt.add(minE);
 
             // relaxation
             Iterable<Edge<Weight>> it = graph.getAdjacentEdges(minV);
             for (Edge<Weight> e : it) {
                 int w = e.theOther(minV);
-                // calc relaxed distance for each of the adj vertex
+                // calculate the relaxed distance
                 Number relaxedDistance = distances[minV].doubleValue() + e.weight().doubleValue();
-                // update the min distance from source to each vertex
+                // update the min distance
                 if (distances[w] == null || relaxedDistance.doubleValue() < distances[w].doubleValue())
                     distances[w] = (Weight) relaxedDistance;
             }
@@ -105,25 +107,40 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         Iterable<Edge<Weight>> it = graph.getAdjacentEdges(v);
         for (Edge<Weight> e : it) {
             int w = e.theOther(v);
-            // update the min distance from source to each vertex
+            // update the min distance from source to each of the vertex
             if (distances[w] == null)
                 distances[w] = e.weight();
-            // insert into heap
+            // update the heap
             if (heap.contains(w))
-                heap.change(w, e.weight());
+                heap.change(w, e);
             else
-                heap.insert(w, e.weight());
+                heap.insert(w, e);
         }
     }
 
     public Weight[] distances() { return distances; }
 
-    public List<Edge<Weight>> shortestPathTo(int v) {
+    public Weight distanceTo(int w) { return distances[w]; }  // 寻找从 source 到 w 的最短路径
 
-    }
+    public List<Edge<Weight>> shortestPathTree() { return spt; }
 
-    public int distanceTo(int v) {
-        return distances[v];
+    public List<Edge<Weight>> shortestPathTo(int w) {  // 寻找从 source 到 w 的最短路径
+        Stack<Edge<Weight>> stack = new Stack<>();     // 辅助数据结构，用于 reverse 输出列表中的元素
+        List<Edge<Weight>> path = new ArrayList<>();
+
+        int targetVertex = w;
+        for (int i = spt.size() - 1; i >= 0; i--) {
+            Edge<Weight> e = spt.get(i);
+            if (e.w() == targetVertex) {
+                targetVertex = e.v();
+                stack.add(e);
+            }
+        }
+
+        while (!stack.empty())
+            path.add(stack.pop());
+
+        return path;
     }
 
     public static void main(String[] args) {
@@ -132,7 +149,10 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
             .build(WeightedSparseGraph.class, true);
 
         Dijkstra<Double> d = new Dijkstra<>(g, 0);
+
         log(d.shortestPathTree());
-        log(d.distances);
+        log(d.distances);              // distances to each vertex
+        log(d.shortestPathTo(4));  // shortest path to vertex 4
+        log(d.shortestPathTo(3));  // shortest path to vertex 3
     }
 }
