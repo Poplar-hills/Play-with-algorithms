@@ -31,8 +31,9 @@ import static Utils.Helpers.log;
 *        0  1  2  3  4           0  1  2  3  4
 *        -------------    --->   -------------
 *        0  -  -  -  -           0  5  2  6  -
-*   4. 在未被访问的顶点（1、2、3、4）中，找到从起始顶点开始能以最短距离到达的那个顶点（访问顶点2），则到达该顶点的路径即在最短路径树上。
-*   5. 进行 relaxation 操作，看看从该顶点到其他未被访问的节点的路径相较于之前是否距离更短，若是则更新对应顶点的距离：
+*   4. 在未被访问的顶点（1、2、3、4）中，找到从起始顶点开始能以最短距离到达的那个顶点（访问顶点2），则到达该顶点的路径即在最短路
+*      径树上（因为在不存在负权边的前提下，从起始顶点经过其他顶点再回到该顶点的距离一定更长）。
+*   5. 进行 relaxation 操作，检查从该顶点到其他未被访问的顶点的距离相较于上次更新是否更短，若是则更新对应顶点的距离：
 *        0  1  2  3  4           0  1  2  3  4
 *        -------------    --->   -------------
 *        0  5  2  6  -           0  3  2  5  7
@@ -145,13 +146,13 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
 
     public static void main(String[] args) {
         WeightedGraph<Double> g = new WeightedGraphReader()
-            .read("src/main/java/ShortestPath/testG1.txt")
+            .read("src/main/java/ShortestPath/GraphData/testG1.txt")
             .build(WeightedSparseGraph.class, true);  // Dijkstra 算法对于有向图或无向图同样有效
 
         Dijkstra<Double> d = new Dijkstra<>(g, 0);
 
         log(d.shortestPathTree());
-        log(d.distances);              // distances to each vertex
+        log(d.distances);  // distances to each vertex
         log(d.shortestPathTo(1));
         log(d.shortestPathTo(2));
         log(d.shortestPathTo(3));
