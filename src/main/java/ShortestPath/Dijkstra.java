@@ -31,9 +31,9 @@ import static Utils.Helpers.log;
 *        0  1  2  3  4           0  1  2  3  4
 *        -------------    --->   -------------
 *        0  -  -  -  -           0  5  2  6  -
-*   4. 在未被访问的顶点（1、2、3、4）中，找到从起始顶点开始能以最短距离到达的那个顶点（访问顶点2），则到达该顶点的路径即在最短路
+*   4. 在未被访问的顶点（1、2、3、4）中，找到从起始顶点开始能以最短距离到达的那个顶点（顶点2），则到达该顶点的路径即在最短路
 *      径树上（因为在不存在负权边的前提下，从起始顶点经过其他顶点再回到该顶点的距离一定更长）。
-*   5. 进行 relaxation 操作，检查从该顶点到其他未被访问的顶点的距离相较于上次更新是否更短，若是则更新对应顶点的距离：
+*   5. 对该顶点的邻边进行 relax 操作，检查经过该顶点到其他未被访问的顶点的距离是否更短，若是则更新对应顶点的距离：
 *        0  1  2  3  4           0  1  2  3  4
 *        -------------    --->   -------------
 *        0  5  2  6  -           0  3  2  5  7
@@ -84,35 +84,34 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
             if (visited[minV])
                 continue;
 
-            spt.add(minE);
+            spt.add(minE);  // 添加到最短路径树中
 
-            // relaxation
             Iterable<Edge<Weight>> it = graph.getAdjacentEdges(minV);
-            for (Edge<Weight> e : it) {
-                int w = e.theOther(minV);
-                // calculate the relaxed distance
-                Number relaxedDistance = distances[minV].doubleValue() + e.weight().doubleValue();
-                // update the min distance
-                if (distances[w] == null || relaxedDistance.doubleValue() < distances[w].doubleValue())
-                    distances[w] = (Weight) relaxedDistance;
-            }
+            for (Edge<Weight> e : it)  // 对顶点 minV 的每条邻边进行松弛操作
+                relax(minV, e);
 
             visit(minV);
         }
     }
 
+    private void relax(int v, Edge<Weight> e) {
+        int w = e.theOther(v);
+        Number relaxedDistance = distances[v].doubleValue() + e.weight().doubleValue();  // 计算松弛距离
+        if (distances[w] == null || relaxedDistance.doubleValue() < distances[w].doubleValue())
+            distances[w] = (Weight) relaxedDistance;  // 更新顶点的最短距离
+    }
+
     private void visit(int v) {
-        // visit the vertex
-        visited[v] = true;
-        // get its adj edges
+        visited[v] = true;  // 访问顶点
+
         Iterable<Edge<Weight>> it = graph.getAdjacentEdges(v);
-        for (Edge<Weight> e : it) {
+        for (Edge<Weight> e : it) {  // 遍历该顶点的邻边
             int w = e.theOther(v);
-            // update the min distance from source to each of the vertex
+
             if (distances[w] == null)
-                distances[w] = e.weight();
-            // update the heap
-            if (heap.contains(w))
+                distances[w] = e.weight();  // 更新起始顶点到邻边上另一顶点的距离（前提是之前没有值）
+
+            if (heap.contains(w))  // 将邻边放入堆中进行比较
                 heap.change(w, e);
             else
                 heap.insert(w, e);
