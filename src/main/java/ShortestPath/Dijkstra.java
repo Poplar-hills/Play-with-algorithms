@@ -146,7 +146,7 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
 
     public static void main(String[] args) {
         WeightedGraph<Double> g = new WeightedGraphReader()
-            .read("src/main/java/ShortestPath/GraphData/testG1.txt")
+            .read("src/main/java/ShortestPath/TestData/testG1.txt")
             .build(WeightedSparseGraph.class, true);  // Dijkstra 算法对于有向图或无向图同样有效
 
         Dijkstra<Double> d = new Dijkstra<>(g, 0);
