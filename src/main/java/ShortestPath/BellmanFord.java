@@ -1,9 +1,9 @@
 package ShortestPath;
 
-import Graph.SparseGraph;
 import MinimumSpanningTree.Edge;
 import MinimumSpanningTree.WeightedGraph;
 import MinimumSpanningTree.WeightedGraphReader.WeightedGraphReader;
+import MinimumSpanningTree.WeightedSparseGraph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,14 +52,33 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
         this.graph = graph;
         this.source = source;
         int n = graph.getVertexCount();
-        distances = (Weight[]) new Object[n];
+        distances = (Weight[]) new Number[n];
         spt = new ArrayList<>();
+
+        for (int i = 0; i < distances.length; i++)
+            distances[i] = null;  // 初始化时所有的顶点都不可达
 
         bellmanFord();
     }
 
     private void bellmanFord() {
+        distances[source] = (Weight)(Number) 0;
 
+        for (int i = 0; i < graph.getVertexCount() - 1; i++) {  // 迭代 V-1 次
+            for (int j = 0; j < graph.getVertexCount(); j++) {  // 遍历所有顶点
+                Iterable<Edge<Weight>> it = graph.getAdjacentEdges(j);
+                for (Edge<Weight> e : it) {  // 遍历每个顶点的邻边
+                    relax(j, e);             // 对每条边进行松弛
+                }
+            }
+        }
+    }
+
+    private void relax(int v, Edge<Weight> e) {
+        int w = e.theOther(v);
+        Number relaxedDistance = distances[v].doubleValue() + e.weight().doubleValue();
+        if (distances[w] == null || distances[w].compareTo((Weight) relaxedDistance) < 0)
+            distances[w] = (Weight) relaxedDistance;  // 更新顶点的最短距离
     }
 
     public Weight[] distances() { return distances; }
@@ -90,15 +109,15 @@ public class BellmanFord<Weight extends Number & Comparable<Weight>> {
     public static void main(String[] args) {
         WeightedGraph<Double> g = new WeightedGraphReader()
                 .read("src/main/java/ShortestPath/TestData/testG2.txt")
-                .build(SparseGraph.class, true);
+                .build(WeightedSparseGraph.class, true);
 
         BellmanFord<Double> b = new BellmanFord<>(g, 0);
 
         log(b.shortestPathTree());
         log(b.distances);
-//        log(b.shortestPathTo(1));
-//        log(b.shortestPathTo(2));
-//        log(b.shortestPathTo(3));
-//        log(b.shortestPathTo(4));
+        log(b.shortestPathTo(1));
+        log(b.shortestPathTo(2));
+        log(b.shortestPathTo(3));
+        log(b.shortestPathTo(4));
     }
 }

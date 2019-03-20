@@ -76,6 +76,9 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         spt = new ArrayList<>();
         heap = new IndexMinHeap(graph.getVertexCount());
 
+        for (int i = 0; i < distances.length; i++)
+            distances[i] = null;  // 初始化时所有的顶点都不可达
+
         dijkstra();
     }
 
@@ -103,7 +106,7 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
     private void relax(int v, Edge<Weight> e) {
         int w = e.theOther(v);
         Number relaxedDistance = distances[v].doubleValue() + e.weight().doubleValue();  // 计算松弛距离
-        if (distances[w] == null || relaxedDistance.doubleValue() < distances[w].doubleValue())
+        if (distances[w] == null || distances[w].compareTo((Weight) relaxedDistance) > 0)
             distances[w] = (Weight) relaxedDistance;  // 更新顶点的最短距离
     }
 
