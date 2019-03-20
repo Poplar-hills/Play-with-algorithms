@@ -157,7 +157,7 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         Dijkstra<Double> d = new Dijkstra<>(g, 0);
 
         log(d.shortestPathTree());
-        log(d.distances);  // distances to each vertex
+        log(d.distances);
         log(d.shortestPathTo(1));
         log(d.shortestPathTo(2));
         log(d.shortestPathTo(3));
