@@ -142,7 +142,7 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
             Edge<Weight> e = spt.get(i);
             if (e.w() == targetVertex) {
                 targetVertex = e.v();
-                stack.add(e);
+                stack.push(e);
             }
         }
 
@@ -159,8 +159,8 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
 
         Dijkstra<Double> d = new Dijkstra<>(g, 0);
 
+        log(d.distances());
         log(d.shortestPathTree());
-        log(d.distances);
         log(d.shortestPathTo(1));
         log(d.shortestPathTo(2));
         log(d.shortestPathTo(3));
