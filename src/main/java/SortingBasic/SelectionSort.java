@@ -10,7 +10,7 @@ import static Utils.Helpers.*;
 
 public class SelectionSort {
     public static void sort(Comparable[] arr) {
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length - 1; i++) {  // 只需要 n-1 次迭代即可完成排序（比如 [2,6,4] 只需2次迭代）
             int minIndex = i;
             for (int j = i; j < arr.length; j++)
                 if (arr[j].compareTo(arr[minIndex]) < 0)
