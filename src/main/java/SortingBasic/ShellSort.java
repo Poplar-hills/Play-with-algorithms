@@ -1,5 +1,8 @@
 package SortingBasic;
 
+import SortingAdvanced.MergeSort2;
+import SortingAdvanced.QuickSort2Ways;
+
 import static Utils.Helpers.*;
 
 /**
@@ -75,5 +78,13 @@ public class ShellSort {
         log(arr);
         sort(arr);
         log(arr);
+
+        // 性能测试
+        Integer[] arr2 = generateRandomIntArr(10000);
+        Integer[] arr3 = arr2.clone();
+        Integer[] arr4 = arr2.clone();
+        timeIt(arr3, InsertionSort::sort2);
+        timeIt(arr4, QuickSort2Ways::sort);
+        timeIt(arr2, ShellSort::sort);  // 希尔排序几乎跟两路快排一样快
     }
 }
