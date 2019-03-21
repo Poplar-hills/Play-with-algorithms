@@ -1,7 +1,5 @@
 package SortingBasic;
 
-import java.util.Arrays;
-
 import static Utils.Helpers.*;
 
 /**

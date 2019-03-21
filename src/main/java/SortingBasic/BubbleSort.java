@@ -63,7 +63,7 @@ public class BubbleSort {
         timeIt(arr3, BubbleSort::sort1);
         timeIt(arr4, BubbleSort::sort2);  // 对于完全随机的数据集比 sort1 稍慢
 
-        Integer[] arr5 = generateNearlyOrderedArr(10000, 20);
+        Integer[] arr5 = generateNearlyOrderedArr(10000, 10);  // numOfSwap 越小，sort2 比 sort1 快的越多
         Integer[] arr6 = arr5.clone();
         timeIt(arr5, BubbleSort::sort1);
         timeIt(arr6, BubbleSort::sort2);  // 对于近乎有序的数据集比 sort1 快很多
