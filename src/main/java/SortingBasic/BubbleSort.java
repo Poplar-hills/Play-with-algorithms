@@ -56,5 +56,16 @@ public class BubbleSort {
         sort2(arr2);
         log(Arrays.toString(arr1));
         log(Arrays.toString(arr2));
+
+        // 性能测试
+        Integer[] arr3 = generateRandomIntArr(10000);
+        Integer[] arr4 = arr3.clone();
+        timeIt(arr3, BubbleSort::sort1);
+        timeIt(arr4, BubbleSort::sort2);  // 对于完全随机的数据集比 sort1 稍慢
+
+        Integer[] arr5 = generateNearlyOrderedArr(10000, 20);
+        Integer[] arr6 = arr5.clone();
+        timeIt(arr5, BubbleSort::sort1);
+        timeIt(arr6, BubbleSort::sort2);  // 对于近乎有序的数据集比 sort1 快很多
     }
 }
