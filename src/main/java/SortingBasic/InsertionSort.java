@@ -43,7 +43,7 @@ public class InsertionSort {
     public static void sort2(Comparable[] arr) {
         for (int i = 0; i < arr.length; i++) {
             Comparable e = arr[i];    // 复制当前元素
-            int j = i;                // j 是 e 最终应该插入的位置
+            int j = i;                // 因为找到 e 应插入的位置的时候即是循环终止的时候，因此循环的索引的最终值 j 即是要插入的位置
             for (; j > 0 && arr[j - 1].compareTo(e) > 0; j--)
                 arr[j] = arr[j - 1];  // 如果前一个元素 > e，则将前一个元素复制到当前位置
             arr[j] = e;               // 退出循环（找到了前一个元素 <= e）即找到了 e 应该插入的位置
