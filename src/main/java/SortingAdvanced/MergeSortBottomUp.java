@@ -27,10 +27,10 @@ import static Utils.Helpers.*;
 public class MergeSortBottomUp {
     public static void sort(Comparable[] arr) {
         for (int step = 1; step <= arr.length; step *= 2) {          // 产生二分的 step 序列：1, 2, 4, 8, ...
-            for (int i = 0; i + step < arr.length; i += step * 2) {  // 每次对两个 step 内的元素进行归并
-                int l = i;
+            for (int i = 0; i + step < arr.length; i += step * 2) {  // 每次对两个 step 内的元素（即 arr[i...i+step-1] 和 arr[i+step...i+2*step-1]）
+                int l = i;                                           // 进行归并，而 i + step < arr.length 保证了第二段 step 中至少有元素存在。
                 int mid = i + step - 1;
-                int r = Math.min(i + step * 2 - 1, arr.length - 1);  // 剩余元素长度可能不够 step，因此取 min
+                int r = Math.min(i + 2 * step - 1, arr.length - 1);  // 剩余元素长度可能不够 step，因此取 min
                 if (arr[mid].compareTo(arr[mid + 1]) > 0)            // 和 MergeSort 中进行相同的优化
                     merge(arr, l, mid, r);
             }
