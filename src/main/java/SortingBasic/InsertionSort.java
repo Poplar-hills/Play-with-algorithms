@@ -1,9 +1,6 @@
 package SortingBasic;
 
-import SortingAdvanced.MergeSort2;
-import SortingAdvanced.QuickSort2;
-import SortingAdvanced.QuickSort2Ways;
-import SortingAdvanced.QuickSort3Ways;
+import SortingAdvanced.*;
 
 import static Utils.Helpers.*;
 
@@ -85,7 +82,7 @@ public class InsertionSort {
         Integer[] arr5 = generateNearlyOrderedArr(100000, 10);  // numOfSwap 趋近于0时，插入排序的复杂度趋近于 O(n)
         Integer[] arr6 = arr5.clone();
         Integer[] arr7 = arr5.clone();
-        timeIt(arr5, MergeSort2::sort);
+        timeIt(arr5, MergeSort::sort);
         timeIt(arr6, QuickSort2Ways::sort);
         timeIt(arr7, InsertionSort::sort2);  // 对于近乎有序的数据集，插入排序比归并排序、快速排序都快
     }

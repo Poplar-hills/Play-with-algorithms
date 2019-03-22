@@ -55,8 +55,10 @@ public class MergeSort {
     private static void sort(Comparable[] arr, int l, int r) {
         if (l >= r) return;          // 异常及递归终止条件
         int mid = (r - l) / 2  + l;  // 也可以写成 (l + r) / 2，但是可能整型溢出
+
         sort(arr, l, mid);
         sort(arr, mid + 1, r);
+
         boolean alreadyOrdered = arr[mid].compareTo(arr[mid + 1]) > 0;
         if (alreadyOrdered)          // 若分解完之后该部分元素已经是有序的则不用再 merge（这个判断能带来不错的性能提升）
             merge(arr, l, mid, r);   // 递归到底后再从底往上进行合并

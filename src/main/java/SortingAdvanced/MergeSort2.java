@@ -10,11 +10,11 @@ import static Utils.Helpers.*;
 * 归并排序优化：
 *
 * - MergeSort 中实现的归并排序已经是 O(nlogn) 的复杂度，快于插入排序的 O(n^2)，但是对于接近有序的数组仍然比插入排序慢。
-*   因为当数组接近有序时，归并排序不会插入排序那样退化成接近 O(n) 的复杂度，因此会慢一些。
+*   因为当数组接近有序时，归并排序不会像插入排序那样退化成接近 O(n) 的复杂度，因此会慢一些。
 * - 对归并排序的一个常用的优化策略是在 sort 方法中，根据当前 arr[l, r] 中的元素个数 r - l 进行算法切换：当元素个数大于
 *   某一水平时再采用归并排序，否则直接使用插入排序。这是因为当数据量较小时，整个数组近乎有序的概率比较大，因此使用插入更快。
-* - 注：这种根据元素个数进行算法切换的优化对于很多高级排序算法都适用。例如 Java 中 HashMap 的实现，初始哈希表中的每个位
-*   置对应的是一个链表，当哈希冲突到达一定程度时，会转换成红黑树。
+* - 注：这种根据元素个数进行算法切换的优化对于很多高级排序算法都适用。另外，在 Java 中 HashMap 的实现里，初始哈希表中的
+*   每个位置对应的是一个链表，当哈希冲突到达一定程度时，会转换成红黑树。
 * */
 
 public class MergeSort2 {
@@ -62,18 +62,20 @@ public class MergeSort2 {
         sort(arr);
         log(arr);
 
+        /* 注意：下面两组测试会互相影响，可能是因为 JVM 的优化机制导致的，因此需要注掉一组单独运行另一组 */
+
         // 性能测试（随机数组）
-        Integer[] arr1 = generateRandomIntArr(100000);
-        Integer[] arr2 = arr1.clone();
-        timeIt(arr1, MergeSort::sort);
-        timeIt(arr2, MergeSort2::sort);  // 反而比普通的 MergeSort 慢非常多（why？？？？？）
+//        Integer[] arr1 = generateRandomIntArr(10000);
+//        Integer[] arr2 = arr1.clone();
+//        timeIt(arr1, MergeSort::sort);
+//        timeIt(arr2, MergeSort2::sort);  // 反而比普通的 MergeSort 慢非常多（why？？？？？）
 
         // 性能测试（几乎有序的数组）
-        Integer[] arr3 = generateNearlyOrderedArr(10000000, 0);
+        Integer[] arr3 = generateNearlyOrderedArr(100000, 10);
         Integer[] arr4 = arr3.clone();
         Integer[] arr5 = arr3.clone();
         timeIt(arr3, MergeSort::sort);
-        timeIt(arr4, MergeSort2::sort);  // 比普通的 MergeSort 快一些
-        timeIt(arr5, InsertionSort::sort2);  // 比 MergeSort 和 MergeSort2 都快
+        timeIt(arr4, MergeSort2::sort);  // 比普通的 MergeSort 快不少
+        timeIt(arr5, InsertionSort::sort2);  // InsertionSort 还是最快的（但数据集不同结果会不同）
     }
 }

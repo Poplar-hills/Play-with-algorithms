@@ -2,6 +2,7 @@ package SortingBasic;
 
 import SortingAdvanced.MergeSort2;
 import SortingAdvanced.QuickSort2Ways;
+import SortingAdvanced.QuickSort3Ways;
 
 import static Utils.Helpers.*;
 
@@ -85,6 +86,6 @@ public class ShellSort {
         Integer[] arr4 = arr2.clone();
         timeIt(arr3, InsertionSort::sort2);
         timeIt(arr4, QuickSort2Ways::sort);
-        timeIt(arr2, ShellSort::sort);  // 希尔排序几乎跟两路快排一样快
+        timeIt(arr2, ShellSort::sort);  // 希尔排序几乎跟快排一样快
     }
 }
