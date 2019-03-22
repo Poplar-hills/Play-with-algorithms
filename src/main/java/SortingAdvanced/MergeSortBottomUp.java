@@ -7,11 +7,18 @@ import static Utils.Helpers.*;
 /*
 * 自底向上的归并排序：
 *
-* - 归并排序的另一种实现思路：不用自顶向下的递归来实现归并，自底向上的迭代同样可以实现。
-*       8|6|2|3|1|5|7|4
-*       6 8|2 3|1 5|4 7
-*       2 3 6 8|1 4 5 7
-*       1 2 3 4 5 6 7 8
+* - 归并排序的另一种思路：
+*   - 自底向上进行归并，而不是自顶向下；
+*   - 通过迭代实现，而不需要通过递归实现。
+*
+*     1 2 3 4 5 6 7 8
+*            ⬆          - 8个一组进行归并
+*     2 3 6 8|1 4 5 7
+*            ⬆          - 4个一组进行归并
+*     6 8|2 3|1 5|4 7
+*            ⬆          - 2个一组进行归并
+*     8|6|2|3|1|5|7|4
+*
 * - 两种实现的比较：
 *   - 复杂度都是 O(nlogn)，都可以在1秒内轻松处理100万数量级的数据。但是统计性能上，自顶向下的递归的实现稍好一点。
 *   - 而自底向上的迭代的实现有一个重要的特性 —— 没有使用数组的随机访问来获取元素，因此可以适用于对链表的排序（？？？）。
@@ -19,12 +26,13 @@ import static Utils.Helpers.*;
 
 public class MergeSortBottomUp {
     public static void sort(Comparable[] arr) {
-        for (int step = 1; step <= arr.length; step *= 2) {   // 模拟二分操作
+        for (int step = 1; step <= arr.length; step *= 2) {          // 产生二分的 step 序列：1, 2, 4, 8, ...
             for (int i = 0; i + step < arr.length; i += step * 2) {  // 每次对两个 step 内的元素进行归并
+                int l = i;
                 int mid = i + step - 1;
                 int r = Math.min(i + step * 2 - 1, arr.length - 1);  // 剩余元素长度可能不够 step，因此取 min
-                if (arr[mid].compareTo(arr[mid + 1]) > 0)     // 和 MergeSort 中进行相同的优化
-                    merge(arr, i, mid, r);
+                if (arr[mid].compareTo(arr[mid + 1]) > 0)            // 和 MergeSort 中进行相同的优化
+                    merge(arr, l, mid, r);
             }
         }
     }
