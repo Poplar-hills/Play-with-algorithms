@@ -35,8 +35,8 @@ import static Utils.Helpers.*;
 *         3rd conquer           \            /                   |
 *                              1 2 3 4 5 6 7 8                  ---
 *
-* - 归并排序的思想：
-*   - 有 n 个元素的数组可以进行 log(n) 次二分操作，共分出 log(n) 个层级。
+* - 归并排序的思想（重点）：
+*   - 有 n 个元素的数组最多可进行 log(n) 次二分操作，共分出 log(n) 个层级（即树高为 log(n)）。
 *   - 如果每层的排序和归并过程能在 O(n) 的复杂度内完成，则该算法的整体复杂度就是 O(nlogn)。
 *   注：这个思想也是所有 O(nlogn) 复杂度的算法的来源 —— 通过二分获得 log(n) 个层级，在每层内使用 O(n) 的算法来做事情。
 *
@@ -59,7 +59,8 @@ public class MergeSort {
         sort(arr, l, mid);
         sort(arr, mid + 1, r);
 
-        if (arr[mid].compareTo(arr[mid + 1]) > 0)  // 这一行判断能带来不错的性能提升
+        boolean alreadyOrdered = arr[mid].compareTo(arr[mid + 1]) > 0;
+        if (alreadyOrdered)          // 若分解完之后已经是有序的则不用再 merge（这个判断能带来不错的性能提升）
             merge(arr, l, mid, r);   // 递归到底后再从底往上进行合并
     }
 
