@@ -40,6 +40,8 @@ package SortingAdvanced;
 *       |_____|  |  |________|
 *          |     |      |
 *         < v    v     > v
+*
+*    注：这里不需要处理 arr[i] == v 的情况，因为会在之后的迭代过程中自动处理掉。
 * */
 
 import static Utils.Helpers.*;
@@ -57,42 +59,19 @@ public class QuickSort {
     }
 
     private static int partition(Comparable[] arr, int l, int r) {
-        Comparable v = arr[l];
-        int j = l;
+        Comparable v = arr[l];      // 标定元素 pivot
+        int j = l;                  // j 指向 < v 的最后一个元素，∵ 最初没有元素 < v，∴ 指向 l
         for (int i = l + 1; i <= r; i++) {
             if (arr[i].compareTo(v) < 0)
-                swap(arr, i, ++j);
+                swap(arr, i, ++j);  // 与 > v 的第一个元素进行 swap
         }
-        swap(arr, l, j);
-        return j;
+        swap(arr, l, j);            // 将 v 放到正确的位置上
+        return j;                   // 返回 v 的索引
     }
 
-
-//    public static void sort(Comparable[] arr) {
-//        sort(arr, 0, arr.length - 1);
-//    }
-//
-//    private static void sort(Comparable[] arr, int l, int r) {
-//        if (l >= r) return;
-//        int p = partition(arr, l, r);
-//        sort(arr, l, p - 1);
-//        sort(arr, p + 1, r);
-//    }
-//
-//    // 返回 p, 使得 arr[l...p-1] 中的元素都 < arr[p]；arr[p+1...r] 中的元素都 > arr[p]
-//    private static int partition(Comparable[] arr, int l, int r) {
-//        Comparable v = arr[l];      // 标定元素 pivot
-//        int j = l;                  // j 指向小于 v 的最后一个元素，即 arr[l+1...j] < v；arr[j+1...r] > v。最开始没有元素 < v，因此指向 l
-//        for (int i = l + 1; i <= r; i++) {
-//            if (arr[i].compareTo(v) < 0)
-//                swap(arr, i, ++j);  // 与大于 v 的第一个元素进行 swap
-//        }
-//        swap(arr, l, j);            // 将 v 放到正确的位置（j）上
-//        return j;                   // 返回 v 的索引
-//    }
-
     public static void main(String[] args) {
-        Integer[] arr = generateRandomIntArr(20);
+        Integer[] arr = generateRandomIntArr(10);
+//        Integer[] arr = {4, 6, 5, 2, 3, 7, 1, 8};  // 含有重复元素的数据集
         log(arr);
         sort(arr);
         log(arr);
