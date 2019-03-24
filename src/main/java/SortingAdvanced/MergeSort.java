@@ -64,14 +64,14 @@ public class MergeSort {
             merge(arr, l, mid, r);   // 递归到底后再从底往上进行合并
     }
 
-    // 将 arr[l, mid 和 arr[mid + 1, r] 这两部分进行归并，此时这两部分都已经各自有序了
+    // 将 arr[l...mid 和 arr[mid+1...r] 这两部分进行归并，此时这两部分都已经各自有序了
     private static void merge(Comparable[] arr, int l, int mid, int r) {
         // 创建辅助数组（空间换时间）
         Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);
 
         // 进行归并：需要3个索引 i, j, k
-        int i = l, j = mid + 1;            // i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid + 1
-        for (int k = l; k <= r; k++) {     // k 指向 arr[l, r] 中的每个位置
+        int i = l, j = mid + 1;            // i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid+1
+        for (int k = l; k <= r; k++) {     // k 指向 arr[l...r] 中的每个位置
             if (i > mid) {                 // 如果左半部分元素已经全部处理完毕
                 arr[k] = aux[j - l]; j++;  // 要减去 l 的偏移量（因为 aux 的范围是从 0 开始的）
             }
