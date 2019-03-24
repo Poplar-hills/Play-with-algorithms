@@ -42,7 +42,14 @@ package SortingAdvanced;
 *         < v    v     > v
 *
 *    注：这里不需要处理 arr[i] == v 的情况，因为会在之后的迭代过程中自动处理掉。
+*
+* - 复杂度分析：
+*   - 快速排序中不断递归的过程实际上也是不断二分（非标准二分）的过程，因此是 O(logn) 的复杂度；
+*   - 每次递归都会执行 partition 方法，该方法中会对范围内的元素进行遍历，因此是 O(n) 的复杂度；
+*   - 综合起来就是 O(nlogn) 的复杂度。
 * */
+
+import SortingBasic.InsertionSort;
 
 import static Utils.Helpers.*;
 
@@ -76,9 +83,11 @@ public class QuickSort {
         sort(arr);
         log(arr);
 
-        Integer[] arr1 = generateRandomIntArr(1000000);
+        Integer[] arr1 = generateRandomIntArr(100000);
         Integer[] arr2 = arr1.clone();
-        timeIt(arr1, QuickSort::sort);  // 比 MergeSort 快三分之一左右，原因分析见 QuickSort2
+        Integer[] arr3 = arr1.clone();
+        timeIt(arr1, QuickSort::sort);  // 比 MergeSort 快不少，原因分析见 QuickSort2
         timeIt(arr2, MergeSort::sort);
+        timeIt(arr3, InsertionSort::sort2);  // 对于完全随机的数据集，插入排序完全不是归并排序和快排的对手，不在一个量级上，慢几百倍
     }
 }
