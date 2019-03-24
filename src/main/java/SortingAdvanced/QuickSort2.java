@@ -39,7 +39,7 @@ public class QuickSort2 {
         sort(arr, 0, arr.length - 1);
     }
 
-    private static void sort(Comparable[] arr, int l, int r) {
+    private static void sort(Comparable[] arr, int l, int r) {  // 与 QuickSort2 中的一致
         if (r - l <= 15) {  // 优化2
             InsertionSort.sortRange(arr, l, r);
             return;
@@ -55,7 +55,7 @@ public class QuickSort2 {
         Comparable v = arr[l];
         int j = l;
         for (int i = l + 1; i <= r; i++) {
-            if (arr[i].compareTo(v) < 0)
+            if (arr[i].compareTo(v) <= 0)
                 swap(arr, i, ++j);
         }
         swap(arr, l, j);

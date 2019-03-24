@@ -1,5 +1,7 @@
 package SortingAdvanced;
 
+import SortingBasic.InsertionSort;
+
 import java.util.Random;
 
 import static Utils.Helpers.*;
@@ -8,13 +10,20 @@ import static Utils.Helpers.*;
 * 双路快速排序（Dual-pivot quick sort / 2-way quick sort）：
 *
 * - QuickSort 和 QuickSort2 都是一路快排，也叫做 naive quick sort。
-* - naive quick sort 对于有大量重复元素的数组还是会退化成 O(n^2) 的复杂度，并且有可能会栈溢出。这是因为如果数组中有
-*   大量重复的元素，很有可能会出现 partition 时有很多元素 == v 的情况。而我们在 partition 中又只有在 arr[i] < v 时
-*   才进行 swqp，没有考虑 arr[i] == v 的情况，因此会导致 partition 的结果极为不平衡（arr[i] >= v 的元素过多），从而
-*   导致递归深度近乎等于数组中的数据个数 n，最终导致系统栈溢出，并且复杂度趋近 O(n^2)。
-* - 动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1460 (1'17'')
-* - 这也是大多数语言的标准库中都不会使用 naive quick sort 的原因。
-* - 二路快排和三路快排要解决的就是这个问题。他们的性能不如 naive quick sort，因为代码中有更多的判断，但是并不会慢很多。
+* - 虽然 QuickSort2 对于近似有序的数组进行了优化，但对于包含大量重复元素的数组，naive quick sort 还是会退化成 O(n^2) 的复杂度，
+*   并且可能栈溢出。这是因为大量重复的元素会让 partition 过程中出现很多 arr[i] == v 的情况，
+*     -> 从而使得过多的 arr[i] 被归入 < v 的区间（∵ arr[i] < v 时会进行 swap）；
+*       -> 从而使得 partition 结果极为不平衡（< v 与 > v 区间比例失衡）；
+*         -> 从而使递归深度趋近于数组的数据个数 n；
+*           -> 从而最终导致复杂度趋近 O(n^2)、栈溢出。
+*             -> 这也是大多数语言的标准库中都不会使用 naive quick sort 的原因。
+*
+* - 双路快排和三路快排要解决的就是这个重复元素的问题
+*   - 他们的性能不如 naive quick sort，因为代码中有更多的判断，但是并不会慢很多。
+*   - 双路快排过程 SEE：https://coding.imooc.com/lesson/71.html#mid=1460（3'33''）
+*
+* - 实际上双路快排是快速排序的标准实现，因为它对于任意情况（完全随机、近乎有序、大量重复）的数据，都不会退化成 O(n^2)。
+*   因此平时我们一说起快速排序算法（Quick Sort），指的就是双路快排。
 *
 * - 注意：
 *   partition 内部的两个嵌套 while 语句的条件只能是 arr[i] < v 和 arr[j] > v，而不能是 arr[i] <= v 和 arr[j] >= v。
@@ -29,7 +38,10 @@ public class QuickSort2Ways {
     }
 
     private static void sort(Comparable[] arr, int l, int r) {
-        if (l >= r) return;
+        if (r - l <= 15) {
+            InsertionSort.sortRange(arr, l, r);
+            return;
+        }
         int p = partition(arr, l, r);
         sort(arr, l, p - 1);
         sort(arr, p + 1, r);

@@ -41,8 +41,6 @@ package SortingAdvanced;
 *          |     |      |
 *         < v    v     > v
 *
-*    注：这里不需要处理 arr[i] == v 的情况，因为会在之后的迭代过程中自动处理掉。
-*
 * - 复杂度分析：
 *   - 快速排序中不断递归的过程实际上也是不断二分（非标准二分）的过程，因此是 O(logn) 的复杂度；
 *   - 每次递归都会执行 partition 方法，该方法中会对范围内的元素进行遍历，因此是 O(n) 的复杂度；
@@ -69,7 +67,7 @@ public class QuickSort {
         Comparable v = arr[l];      // 标定元素 pivot
         int j = l;                  // j 指向 < v 的最后一个元素，∵ 最初没有元素 < v，∴ 指向 l
         for (int i = l + 1; i <= r; i++) {
-            if (arr[i].compareTo(v) < 0)
+            if (arr[i].compareTo(v) <= 0)
                 swap(arr, i, ++j);  // 与 > v 的第一个元素进行 swap
         }
         swap(arr, l, j);            // 将 v 放到正确的位置上
