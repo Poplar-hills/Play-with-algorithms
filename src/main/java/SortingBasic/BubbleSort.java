@@ -39,11 +39,12 @@ public class BubbleSort {
         boolean hasSwapped = true;
         for (int i = 0; i < arr.length && hasSwapped; i++) {
             hasSwapped = false;
-            for (int j = 0; j < arr.length - i - 1; j++)
+            for (int j = 0; j < arr.length - i - 1; j++) {
                 if (arr[j].compareTo(arr[j + 1]) > 0) {
                     swap(arr, j, j + 1);
                     hasSwapped = true;
                 }
+            }
         }
     }
 
