@@ -16,23 +16,23 @@ package SortingAdvanced;
 *   - 当 partition 过程进行时，数组结构如下：
 *     [ v|---- <v ----|---- >v ----|...... ]
 *       l            j              i
-*     - 这里需要3个索引：l 是 v 的索引；j 是 < v 的最后一个元素的索引；i 是当前正在访问的元素的索引。
-*       即 arr[l+1...j] 区间中的元素都 < v；arr[j+1...i-1] 区间中的元素都 > v。
+*     - 这里需要3个索引：l 是 v 的索引；j 是 <= v 的最后一个元素的索引；i 是当前正在访问的元素的索引。
+*       即 arr[l+1...j] 区间中的元素都 <= v；arr[j+1...i-1] 区间中的元素都 > v。
 *     - 对于若正在访问的元素 arr[i]：
 *       1. 若 arr[i] > v，则放着不动就可以归入 > v 的区间；
-*       2. 若 arr[i] <= v，则 swap(arr[i], arr[j+1]] 即可归入 < v 的区间。
+*       2. 若 arr[i] <= v，则 swap(arr[i], arr[j+1]] 即可归入 <= v 的区间。
 *     - 完整过程如下：
 *       4  6  5  2  3  7  1  8   以4作为 pivot，访问 6，∵ 6 > v，∴ 放着不动，i++
 *       lj i
 *       4  6  5  2  3  7  1  8   访问 5，∵ 5 > v，∴ 放着不动，i++
 *       lj    i
-*       4  6  5  2  3  7  1  8   访问 2，∵ 2 < v，∴ swap(i, j+1)，即对2和6进行 swap，i++，j++
+*       4  6  5  2  3  7  1  8   访问 2，∵ 2 <= v，∴ swap(i, j+1)，即对2和6进行 swap，i++，j++
 *       lj       i
-*       4  2  5  6  3  7  1  8   访问 3，∵ 3 < v，∴ swap(i, j+1)，即对3和5进行 swap，i++，j++
+*       4  2  5  6  3  7  1  8   访问 3，∵ 3 <= v，∴ swap(i, j+1)，即对3和5进行 swap，i++，j++
 *       l  j        i
 *       4  2  3  6  5  7  1  8   访问 7，∵ 7 > v，∴ 放着不动，i++
 *       l     j        i
-*       4  2  3  6  5  7  1  8   访问 1，∵ 1 < v，∴ swap(i, j+1)，即对1和6进行 swap，i++，j++
+*       4  2  3  6  5  7  1  8   访问 1，∵ 1 <= v，∴ swap(i, j+1)，即对1和6进行 swap，i++，j++
 *       l     j           i
 *       4  2  3  1  5  7  6  8   访问 8，∵ 8 > v，∴ 放着不动，i++，循环终止，swap(l, j)
 *       l        j           i
@@ -64,19 +64,20 @@ public class QuickSort {
     }
 
     private static int partition(Comparable[] arr, int l, int r) {
-        Comparable v = arr[l];      // 标定元素 pivot
-        int j = l;                  // j 指向 < v 的最后一个元素，∵ 最初没有元素 < v，∴ 指向 l
+        Comparable v = arr[l];  // 标定元素 pivot
+        int j = l;              // j 指向 <= v 的最后一个元素，∵ 最初没有元素 <= v，∴ 指向 l
         for (int i = l + 1; i <= r; i++) {
-            if (arr[i].compareTo(v) <= 0)
-                swap(arr, i, ++j);  // 与 > v 的第一个元素进行 swap
+            if (arr[i].compareTo(v) <= 0) {
+                swap(arr, i, j + 1);  // 与 > v 的第一个元素进行 swap
+                j++;
+            }
         }
-        swap(arr, l, j);            // 将 v 放到正确的位置上
-        return j;                   // 返回 v 的索引
+        swap(arr, l, j);  // 将 v 放到正确的位置上
+        return j;         // 返回 v 的索引
     }
 
     public static void main(String[] args) {
         Integer[] arr = generateRandomIntArr(10);
-//        Integer[] arr = {4, 6, 5, 2, 3, 7, 1, 8};  // 含有重复元素的数据集
         log(arr);
         sort(arr);
         log(arr);

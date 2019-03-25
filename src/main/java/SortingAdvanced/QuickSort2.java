@@ -55,8 +55,10 @@ public class QuickSort2 {
         Comparable v = arr[l];
         int j = l;
         for (int i = l + 1; i <= r; i++) {
-            if (arr[i].compareTo(v) <= 0)
-                swap(arr, i, ++j);
+            if (arr[i].compareTo(v) <= 0) {
+                swap(arr, i, j + 1);
+                j++;
+            }
         }
         swap(arr, l, j);
         return j;

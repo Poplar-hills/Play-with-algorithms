@@ -7,13 +7,13 @@ import java.util.Random;
 import static Utils.Helpers.*;
 
 /*
-* 双路快速排序（Dual-pivot quick sort / 2-way quick sort）：
+* 双路快速排序（Dual-pivot Quick Sort / 2-way Quick Sort）：
 *
-* - QuickSort 和 QuickSort2 都是一路快排，也叫做 naive quick sort。
-* - 虽然 QuickSort2 对于近似有序的数组进行了优化，但对于包含大量重复元素的数组，naive quick sort 还是会退化成 O(n^2) 的复杂度，
+* - QuickSort 和 QuickSort2 都是一路快排，也叫做 Naive Quick Sort。
+* - 虽然 QuickSort2 对于近似有序的数组进行了优化，但对于包含大量重复元素的数组，Naive Quick Sort 还是会退化成 O(n^2) 的复杂度，
 *   并且可能栈溢出。这是因为大量重复的元素会让 partition 过程中出现很多 arr[i] == v 的情况，
-*     -> 从而使得过多的 arr[i] 被归入 < v 的区间（∵ arr[i] < v 时会进行 swap）；
-*       -> 从而使得 partition 结果极为不平衡（< v 与 > v 区间比例失衡）；
+*     -> 从而使得过多的 arr[i] 被归入 <= v 的区间（∵ arr[i] <= v 时会进行 swap）；
+*       -> 从而使得 partition 结果极为不平衡（<= v 与 > v 区间比例失衡）；
 *         -> 从而使递归深度趋近于数组的数据个数 n；
 *           -> 从而最终导致复杂度趋近 O(n^2)、栈溢出。
 *             -> 这也是大多数语言的标准库中都不会使用 naive quick sort 的原因。
@@ -52,17 +52,17 @@ public class QuickSort2Ways {
         swap(arr, l, vIndex);
         Comparable v = arr[l];
 
-        // 让 arr[l+1, i) 中的元素都 <= v；让 arr(j, r] 中的元素都 >= v
+        // 套路：使用3个 while 循环实现双路查找，内部的 while 循环找到符合条件的索引后会退出，两个 while 都退出后进行 swap
         int i = l + 1, j = r;
-        while (true) {
-            while (i <= r && arr[i].compareTo(v) < 0) i++;  // 当循环结束时，i 指向从左边起第一个 arr[i] > v 的元素
-            while (j >= l + 1 && arr[j].compareTo(v) > 0) j--;  // 当循环结束时，j 指向从左右边起第一个 arr[j] < v 的元素
+        while (true) {  // ∵ 我们想在循环结束之后让 j 停在从右往左第一个 <= v 的元素上，这样才方便将 v 放到正确的位置上 ∴ 循环的终止条件写在循环内部而不是 while 后面
+            while (i <= r && arr[i].compareTo(v) < 0) i++;      // 当循环退出时，i 指向左起第一个 >= v 的元素
+            while (j >= l + 1 && arr[j].compareTo(v) > 0) j--;  // 当循环退出时，j 指向右起第一个 <= v 的元素
             if (i > j) break;  // 此时本次 partition 完成，即 arr[l+1, i) 中的元素都 <= v；arr(j, r] 中的元素都 >= v
             swap(arr, i, j);
             i++;
             j--;
         }
-        swap(arr, l, j);  // 上面循环结束后 j 停在从左往右最后一个 <= v 的元素索引上（因为 i > j 时 break 循环），因此要交换 l 和 j 来把 v 放到正确的位置上。
+        swap(arr, l, j);  // ∵ 上面循环结束后 j 停在从右往左最后一个 <= v 的元素上 ∴ 只要交换 l 和 j 即可把 v 放到正确的位置上
         return j;
     }
 
@@ -77,8 +77,8 @@ public class QuickSort2Ways {
         Integer[] arr3 = arr1.clone();
         Integer[] arr4 = arr1.clone();
         timeIt(arr1, MergeSort::sort);
-        timeIt(arr2, QuickSort::sort);   // QuickSort 比 MergeSort 慢了十几倍
-        timeIt(arr3, QuickSort2::sort);  // QuickSort2 也是一样慢
+        timeIt(arr2, QuickSort::sort);       // 对于包含大量重复元素的数据，QuickSort 比 MergeSort 慢了十几倍
+        timeIt(arr3, QuickSort2::sort);      // QuickSort2 也是一样慢
         timeIt(arr4, QuickSort2Ways::sort);  // QuickSort2Ways 的性能就非常好了
     }
 }
