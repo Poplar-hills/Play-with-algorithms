@@ -83,7 +83,7 @@ public class InsertionSort {
         Integer[] arr6 = arr5.clone();
         Integer[] arr7 = arr5.clone();
         timeIt(arr5, MergeSort::sort);
-        timeIt(arr6, QuickSort2Ways::sort);
+        timeIt(arr6, QuickSort3Ways::sort);
         timeIt(arr7, InsertionSort::sort2);  // 对于近乎有序的数据集，插入排序比归并排序、快速排序都快
     }
 }

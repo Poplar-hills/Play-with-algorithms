@@ -84,8 +84,8 @@ public class ShellSort {
         Integer[] arr2 = generateRandomIntArr(10000);
         Integer[] arr3 = arr2.clone();
         Integer[] arr4 = arr2.clone();
-        timeIt(arr3, InsertionSort::sort2);
-        timeIt(arr4, QuickSort2Ways::sort);
-        timeIt(arr2, ShellSort::sort);  // 希尔排序几乎跟快排一样快
+        timeIt(arr2, InsertionSort::sort2);
+        timeIt(arr3, QuickSort3Ways::sort);
+        timeIt(arr4, ShellSort::sort);  // 对于随机数据集，希尔排序甚至比三路快排还快
     }
 }
