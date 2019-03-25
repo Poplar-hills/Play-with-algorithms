@@ -5,10 +5,21 @@ package SortingAdvanced;
 *
 * - 对于包含大量重复元素的数据集，还有一种更经典的优化方式 —— 三路快速排序。
 *
-* - 三路快排的思路是将 == v 的元素单独放在中间区间，不与 < v 和 > v 的元素混在一起，因此在 partition 结束之后，
-*   数组会被分成 < v, == v, > v 的三段，且所有 == v 的元素都已经被放在了正确的位置上，只有 < v 和 > v 区间中的
-*   元素还存在乱序，因此只需分别对这两个区间进行递归即可。
-* - 动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1461（0'17''）
+* - 三路快排的 partition 过程：
+*   - 思路是将 == v 的元素单独放在中间区间，不与 < v 和 > v 的元素混在一起：
+*     [ v|--- <v ---|--- ==v ---|......|--- >v ---| ]
+*       l          lt            i      gt       r
+*   - 这里除了 l 和 r，还需要3个中间索引：
+*     1. lt 指向最后一个 < v 的元素；
+*     2. gt 指向第一个 > v 的元素；
+*     3. i 指向正在访问的元素。
+*   - 这样在 i 访问下一个元素的时候：
+*     1. 若 arr[i] < v，则 swap(i, lt+1)、lt++；
+*     2. 若 arr[i] == v，则放着不动；
+*     3. 若 arr[i] > v，则 swap(i, gt-1)、gt--；
+*   - 在 partition 结束之后，数组会被分成 < v, == v, > v 的三段，且所有 == v 的元素都已经被放在了正确的位置上，
+*     只有 < v 和 > v 区间中的元素还存在乱序，因此只需分别对这两个区间进行递归即可。
+*   - 动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1461（0'17''）
 *
 * - 三路快排性能：
 *   - 在处理包含大量重复元素的数据集时要比前几种快排效率高出很多；
@@ -40,8 +51,6 @@ package SortingAdvanced;
 *      这样分完之后在"治"（也就是合）的过程就不必做过多考虑了。
 * */
 
-import SortingBasic.InsertionSort;
-
 import java.util.Random;
 
 import static Utils.Helpers.*;
@@ -52,55 +61,59 @@ public class QuickSort3Ways {
     }
 
     private static void sort(Comparable[] arr, int l, int r) {
-        if (l - r <= 15) {
-            InsertionSort.sortRange(arr, l, r);
-            return;
-        }
+        if (l > r) return;
         int[] ps = partition(arr, l, r);  // 与两路快排不同，三路快排中的 partition 返回两个索引（lt 和 gt）
         sort(arr, l, ps[0]);              // 对 arr[l...lt]（即 < v 的所有元素）进行递归排序
         sort(arr, ps[1], r);              // 对 arr[gt...r]（即 > v 的所有元素）进行递归排序
     }
 
-    private static int[] partition(Comparable[] arr, int l, int r) {
-        int vIndex = new Random().nextInt(r - l + 1) + l;
-        swap(arr, l, vIndex);
-        Comparable v = arr[vIndex];
-        int lt = l + 1, gt = r;
-        for (int i = l + 1; i != gt; i++) {
-
-        }
-    }
-
 //    private static int[] partition(Comparable[] arr, int l, int r) {
 //        int vIndex = new Random().nextInt(r - l + 1) + l;
 //        swap(arr, l, vIndex);
-//        Comparable v = arr[l];
+//        Comparable v = arr[vIndex];
 //
-//        int i = l + 1;
-//        int lt = l;  // 指向 < v 的最后一个元素；因为要使得 arr[l+1...lt] < v，因此初始取值 l 才可以使得 arr[l+1...lt] 为空
-//        int gt = r + 1;  // 指向 > v 的第一个元素；因为要使得 arr[gt...r] > v，因此初始取值 r+1 才可以使得 arr[gt...r] 为空
-//
-//        while (i < gt) {
+//        int lt = l, gt = r + 1;
+//        for (int i = l + 1; i < gt; i++) {
 //            if (arr[i].compareTo(v) < 0) {
-//                swap(arr, lt + 1, i);  // 与 < v 的最后一个元素的后一个元素 swap
+//                swap(arr, i, lt + 1);
 //                lt++;
-//                i++;
-//            }
-//            else if (arr[i].compareTo(v) > 0) {
-//                swap(arr, gt - 1, i);  // 与 > v 的第一个元素的前一个元素 swap
-//                gt--;  // 此时 i 不用自增。因为 swap 之后 i 指向的是之前 gt-1 指向的元素，即一个还未被处理过的元素，因此继续处理即可
-//            }
-//            else {  // arr[i] == v 的情况
-//                i++;
+//            } else if (arr[i].compareTo(v) > 0) {
+//                swap(arr, i, gt - 1);
+//                gt--;
 //            }
 //        }
-//        swap(arr, l, lt);  // 最后让 pivot 元素成为 == v 的第一个元素。此时所有 == v 的元素都已放到了正确的位置上
-//        lt--;  // swap 之后 lt 指向 == v 的第一个元素，因此自减使其指向 < v 的最后一个元素
-//        return new int[]{lt, gt};
+//        swap(arr, l, lt);
+//        lt--;
+//        return new int[] {lt, gt};
 //    }
 
+    private static int[] partition(Comparable[] arr, int l, int r) {
+        int vIndex = new Random().nextInt(r - l + 1) + l;
+        swap(arr, l, vIndex);
+        Comparable v = arr[l];
+
+        int lt = l;      // 指向 < v 的最后一个元素；∵ 初始没有元素 < v ∴ 取值 l
+        int gt = r + 1;  // 指向 > v 的第一个元素；∵ 初始没有元素 > v ∴ 取值 r+1
+        int i = l + 1;
+
+        while (i < gt) {
+            if (arr[i].compareTo(v) < 0) {
+                swap(arr, i, lt + 1);  // 与 < v 的最后一个元素的后一个元素 swap
+                lt++; i++;
+            } else if (arr[i].compareTo(v) > 0) {
+                swap(arr, i, gt - 1);  // 与 > v 的第一个元素的前一个元素 swap
+                gt--;  // 此时 i 不用自增。因为 swap 之后 i 指向的是之前 gt-1 指向的元素，即一个还未被处理过的元素，因此继续处理即可
+            } else {   // arr[i] == v 的情况
+                i++;
+            }
+        }
+        swap(arr, l, lt);
+        lt--;          // 上一句 swap 之后 lt 指向 == v 的第一个元素，因此自减使其指向 < v 的最后一个元素
+        return new int[] {lt, gt};
+    }
+
     public static void main(String[] args) {
-        Integer[] arr = generateRandomIntArr(20);
+        Integer[] arr = generateRandomIntArr(10);
         log(arr);
         sort(arr);
         log(arr);

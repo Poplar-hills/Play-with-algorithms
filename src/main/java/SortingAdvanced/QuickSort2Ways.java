@@ -18,10 +18,17 @@ import static Utils.Helpers.*;
 *           -> 从而最终导致复杂度趋近 O(n^2)、栈溢出。
 *             -> 这也是大多数语言的标准库中都不会使用 naive quick sort 的原因。
 *
-* - 双路快排和三路快排要解决的就是这个重复元素的问题：
+* - 双路快排解决的就是这个重复元素的问题：
+*   - 双路排序中，将 <= v 和 >= v 的区间分别放在放在数组的两端，索引 i 和 j 分别指向这两端正在访问的元素：
+*     [ v|---- ≤v ----|......|---- ≥v ----| ]
+*       l              i    j            r
+*   - 当 i、j 分别扫描到使得 arr[i] >= v 且 arr[j] <= v 的元素时，swap(i, j)，之后这样循环直到 i 和 j 重合。
+*   - 在 i 和 j 重合之后还需要继续扫描一轮，直到 j 找到了下一个 <= v 的元素（即最后一个 <= v 的元素），这时就可
+*     以 swap(l, j)，让 v 放到正确的位置上了。
+*   - 注意在数组两端分别扫描的过程中的，当碰到 == v 的元素也要停下来 swap，这样通过不断交换，将 arr[i] == v 的情况较
+*     为均匀地分散到两个区间内，从而避免两个区间元素数量比例失衡的问题。
 *   - 过程演示 SEE：https://coding.imooc.com/lesson/71.html#mid=1460（3'33''）
-*   - 主要思想是通过不断交换，将 arr[i] == v 的情况较为均匀地分散到两个区间内，从而避免两个区间元素数量比例失衡的问题。
-*   - 他们的性能不如 naive quick sort，因为代码中有更多的判断，但是并不会慢很多。
+*   - 双路快排和三路快排的性能不如 naive quick sort，因为代码中有更多的判断，但并不会慢很多。
 *
 * - 注意：
 *   partition 内部的两个嵌套 while 语句的条件只能是 arr[i] < v 和 arr[j] > v，而不能是 arr[i] <= v 和 arr[j] >= v。
@@ -39,10 +46,7 @@ public class QuickSort2Ways {
     }
 
     private static void sort(Comparable[] arr, int l, int r) {
-        if (r - l <= 15) {
-            InsertionSort.sortRange(arr, l, r);
-            return;
-        }
+        if (l > r) return;
         int p = partition(arr, l, r);
         sort(arr, l, p - 1);
         sort(arr, p + 1, r);
@@ -55,20 +59,20 @@ public class QuickSort2Ways {
 
         // 套路：使用3个 while 循环实现双路查找，内部的 while 循环找到符合条件的索引后会退出，两个 while 都退出后进行 swap
         int i = l + 1, j = r;
-        while (true) {  // ∵ 我们想在循环结束之后让 j 停在从右往左第一个 <= v 的元素上，这样才方便将 v 放到正确的位置上 ∴ 循环的终止条件写在循环内部而不是 while 后面
-            while (i <= r && arr[i].compareTo(v) < 0) i++;      // 当循环退出时，i 指向左起第一个 >= v 的元素
-            while (j >= l + 1 && arr[j].compareTo(v) > 0) j--;  // 当循环退出时，j 指向右起第一个 <= v 的元素
+        while (true) {  // ∵ 我们想在循环结束之后让 j 停在最后一个 <= v 的元素上，这样才方便将 v 放到正确的位置上 ∴ 循环的终止条件写在循环内部而不是 while 后面
+            while (i <= r && arr[i].compareTo(v) < 0) i++;      // 当循环退出时，i 指向第一个 >= v 的元素
+            while (j >= l + 1 && arr[j].compareTo(v) > 0) j--;  // 当循环退出时，j 指向最后一个 <= v 的元素
             if (i > j) break;  // 此时本次 partition 完成，即 arr[l+1, i) 中的元素都 <= v；arr(j, r] 中的元素都 >= v
             swap(arr, i, j);
             i++;
             j--;
         }
-        swap(arr, l, j);  // ∵ 上面循环结束后 j 停在从右往左最后一个 <= v 的元素上 ∴ 只要交换 l 和 j 即可把 v 放到正确的位置上
+        swap(arr, l, j);  // ∵ 上面循环结束后 j 停在了最后一个 <= v 的元素上 ∴ 只要交换 l 和 j 即可把 v 放到正确的位置上
         return j;
     }
 
     public static void main(String[] args) {
-        Integer[] arr = generateRandomIntArr(20);
+        Integer[] arr = generateRandomIntArr(10);
         log(arr);
         sort(arr);
         log(arr);
