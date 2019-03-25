@@ -66,27 +66,7 @@ public class QuickSort3Ways {
         sort(arr, l, ps[0]);              // 对 arr[l...lt]（即 < v 的所有元素）进行递归排序
         sort(arr, ps[1], r);              // 对 arr[gt...r]（即 > v 的所有元素）进行递归排序
     }
-
-//    private static int[] partition(Comparable[] arr, int l, int r) {
-//        int vIndex = new Random().nextInt(r - l + 1) + l;
-//        swap(arr, l, vIndex);
-//        Comparable v = arr[vIndex];
-//
-//        int lt = l, gt = r + 1;
-//        for (int i = l + 1; i < gt; i++) {
-//            if (arr[i].compareTo(v) < 0) {
-//                swap(arr, i, lt + 1);
-//                lt++;
-//            } else if (arr[i].compareTo(v) > 0) {
-//                swap(arr, i, gt - 1);
-//                gt--;
-//            }
-//        }
-//        swap(arr, l, lt);
-//        lt--;
-//        return new int[] {lt, gt};
-//    }
-
+    
     private static int[] partition(Comparable[] arr, int l, int r) {
         int vIndex = new Random().nextInt(r - l + 1) + l;
         swap(arr, l, vIndex);
