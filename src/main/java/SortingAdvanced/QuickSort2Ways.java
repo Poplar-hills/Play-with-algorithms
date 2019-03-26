@@ -46,7 +46,7 @@ public class QuickSort2Ways {
     }
 
     private static void sort(Comparable[] arr, int l, int r) {
-        if (l > r) return;
+        if (l >= r) return;
         int p = partition(arr, l, r);
         sort(arr, l, p - 1);
         sort(arr, p + 1, r);

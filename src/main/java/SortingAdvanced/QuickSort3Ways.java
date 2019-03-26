@@ -40,7 +40,7 @@ public class QuickSort3Ways {
     }
 
     private static void sort(Comparable[] arr, int l, int r) {
-        if (l > r) return;
+        if (l >= r) return;
         int[] ps = partition(arr, l, r);  // 与两路快排不同，三路快排中的 partition 返回两个索引（lt 和 gt）
         sort(arr, l, ps[0]);              // 对 arr[l...lt]（即 < v 的所有元素）进行递归排序
         sort(arr, ps[1], r);              // 对 arr[gt...r]（即 > v 的所有元素）进行递归排序
