@@ -5,7 +5,7 @@ import java.util.Arrays;
 import static Utils.Helpers.*;
 
 /*
-* 练习：寻找数组中的逆序对
+* 练习：寻找数组中的逆序对个数
 *
 * - 逆序对是衡量一个数据集有序程度的指标。
 * - 使用归并排序（及其中的分治思想）解决该问题，将算法复杂度控制在 O(nlogn) 层级上。
