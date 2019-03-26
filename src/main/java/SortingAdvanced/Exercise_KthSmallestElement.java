@@ -25,39 +25,79 @@ import static Utils.Helpers.*;
 
 public class Exercise_KthSmallestElement {
     public static Comparable quickSelect(Comparable[] arr, int k) {
-        return quickSelect(arr, 0, arr.length - 1, k - 1);  // k 是从0开始索引的, 即最小的元素是第0小元素, 如果希望 k 的语意是从1开始的, 只需要让 k - 1
+        return sort(arr, 0, arr.length - 1, k - 1);
     }
 
-    private static Comparable quickSelect(Comparable[] arr, int l, int r, int k) {
+    private static Comparable sort(Comparable[] arr, int l, int r, int k) {
         if (l == r) return arr[l];
-
-        int p = partition(arr, l, r);
-
-        if (k < p)  // 如果 k < p, 只需要在左半部分 arr[l...p-1] 中找第 k 小元素即可，而右半部分就不用管了
-            return quickSelect(arr, l, p - 1, k);
-        if (k > p)  // 如果 k > p, 只需要在右半部分 arr[p+1...r] 中找第 k-p-1 小元素即可，而左半部分就不用管了
-            return quickSelect(arr, p + 1, r, k);
-        else        // 如果当切点 p == k 时，直接返回 arr[k] 即可，因为此时 arr[k] 已经被放到了正确的位置上
-            return arr[k];
+        int[] ps = partition(arr, l, r);
+        if (k >= ps[1])
+            return sort(arr, ps[1], r, k);
+        else if (k <= ps[0])
+            return sort(arr, l, ps[0], k);
+        else
+            return arr[ps[0] + 1];
     }
 
-    // 和 QuickSort 中的 partition 一样
-    private static int partition(Comparable[] arr, int l, int r) {
+    private static int[] partition(Comparable[] arr, int l, int r) {
         int vIndex = new Random().nextInt(r - l + 1) + l;
-        swap(arr, l, vIndex);
         Comparable v = arr[l];
-        int j = l;
-        for (int i = l + 1; i <= r; i++) {
-            if (arr[i].compareTo(v) < 0)
-                swap(arr, i, ++j);
+        swap(arr, l, vIndex);
+        int lt = l;
+        int gt = r + 1;
+        int i = l + 1;
+
+        while (i < gt) {
+            if (arr[i].compareTo(v) < 0) {
+                swap(arr, i, lt + 1);
+                lt++;
+                i++;
+            } else if (arr[i].compareTo(v) > 0) {
+                swap(arr, i, gt - 1);
+                gt--;
+            } else {
+                i++;
+            }
         }
-        swap(arr, l, j);
-        return j;
+        swap(arr, lt, l);
+        lt--;
+        return new int[] {lt, gt};
     }
+
+//    public static Comparable quickSelect(Comparable[] arr, int k) {
+//        return quickSelect(arr, 0, arr.length - 1, k - 1);  // k 是从0开始索引的, 即最小的元素是第0小元素, 如果希望 k 的语意是从1开始的, 只需要让 k - 1
+//    }
+//
+//    private static Comparable quickSelect(Comparable[] arr, int l, int r, int k) {
+//        if (l == r) return arr[l];
+//
+//        int p = partition(arr, l, r);
+//
+//        if (k < p)  // 如果 k < p, 只需要在左半部分 arr[l...p-1] 中找第 k 小元素即可，而右半部分就不用管了
+//            return quickSelect(arr, l, p - 1, k);
+//        if (k > p)  // 如果 k > p, 只需要在右半部分 arr[p+1...r] 中找第 k-p-1 小元素即可，而左半部分就不用管了
+//            return quickSelect(arr, p + 1, r, k);
+//        else        // 如果当切点 p == k 时，直接返回 arr[k] 即可，因为此时 arr[k] 已经被放到了正确的位置上
+//            return arr[k];
+//    }
+//
+//    // 和 QuickSort 中的 partition 一样
+//    private static int partition(Comparable[] arr, int l, int r) {
+//        int vIndex = new Random().nextInt(r - l + 1) + l;
+//        swap(arr, l, vIndex);
+//        Comparable v = arr[l];
+//        int j = l;
+//        for (int i = l + 1; i <= r; i++) {
+//            if (arr[i].compareTo(v) < 0)
+//                swap(arr, i, ++j);
+//        }
+//        swap(arr, l, j);
+//        return j;
+//    }
 
     public static void main(String[] args) {
-        Integer[] arr1 = {4, 2, 5, 1, 3};
-        log(quickSelect(arr1, 2));
+        Integer[] arr1 = {4, 2, 5, 1, 3, 6, 7, 8};
+        log(quickSelect(arr1, 4));
 
         Character[] arr2 = {'b', 'd', 'e', 'c', 'a'};
         log(quickSelect(arr2, 4));
