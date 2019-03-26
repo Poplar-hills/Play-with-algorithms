@@ -5,7 +5,7 @@ import java.util.Random;
 import static Utils.Helpers.*;
 
 /*
- * 练习：从有 n 个元素的数组中找到第 k 小的元素
+ * 练习：从有 n 个元素的数组中找到第 k 小的元素 - 采用 Naive Quick Sort 求解
  *
  * - 该问题有多种解法：
  *   1. Sort：最直接的办法就是先将数组排序，然后取出第 k 个元素，复杂度最低是 O(nlogn)。
@@ -25,18 +25,18 @@ import static Utils.Helpers.*;
 
 public class Exercise_KthSmallestElement {
     public static Comparable quickSelect(Comparable[] arr, int k) {
-        return quickSelect(arr, 0, arr.length - 1, k - 1);  // k 是从0开始索引的, 即最小的元素是第0小元素, 如果希望 k 的语意是从1开始的, 只需要让 k - 1
+        return select(arr, 0, arr.length - 1, k - 1);  // k 是从0开始索引的, 即最小的元素是第0小元素, 如果希望 k 的语意是从1开始的, 只需要让 k - 1
     }
 
-    private static Comparable quickSelect(Comparable[] arr, int l, int r, int k) {
+    private static Comparable select(Comparable[] arr, int l, int r, int k) {
         if (l == r) return arr[l];
 
         int p = partition(arr, l, r);
 
         if (k < p)  // 如果 k < p, 只需要在左半部分 arr[l...p-1] 中找第 k 小元素即可，而右半部分就不用管了
-            return quickSelect(arr, l, p - 1, k);
+            return select(arr, l, p - 1, k);
         if (k > p)  // 如果 k > p, 只需要在右半部分 arr[p+1...r] 中找第 k-p-1 小元素即可，而左半部分就不用管了
-            return quickSelect(arr, p + 1, r, k);
+            return select(arr, p + 1, r, k);
         else        // 如果当切点 p == k 时，直接返回 arr[k] 即可，因为此时 arr[k] 已经被放到了正确的位置上
             return arr[k];
     }
