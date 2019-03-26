@@ -8,13 +8,13 @@ import static Utils.Helpers.*;
 * 练习：寻找数组中的逆序对
 *
 * - 逆序对是衡量一个数据集有序程度的指标。
-* - 使用归并排序（以及其中的分治思想）解决该问题，将算法复杂度控制在 O(nlogn) 层级上。
-* - 归并排序的分治思路是：在"分"的问题上不做过多考虑，直接简单快速的进行二分。它的重点在于"治"，以及何将
-*   "治"完之后的子问题的解合并起来形成原问题的解。
+* - 使用归并排序（及其中的分治思想）解决该问题，将算法复杂度控制在 O(nlogn) 层级上。
+* - 归并排序的分治思路是：在"分"的问题上不做过多考虑，直接简单快速的进行二分。它的重点在于"治"，以及何将"治"完之后的子问题
+*   的解合并起来形成原问题的解。
 * */
 
 public class Exercise_InversionCount {
-    public static int count1(Comparable[] arr) {  // 解法一：简单粗暴，复杂度为 O(n^2)
+    public static int count1(Comparable[] arr) {  // 解法一：brute force，复杂度为 O(n^2)
         int count = 0;
         for (int i = 0; i < arr.length; i++) {
             for (int j = i + 1; j < arr.length; j++)
@@ -48,19 +48,19 @@ public class Exercise_InversionCount {
             else if (j > r) {
                 arr[k] = aux[i - l]; i++;
             }
-            else if (aux[i - l].compareTo(aux[j - l]) < 0) {
+            else if (aux[i - l].compareTo(aux[j - l]) <= 0) {  // 注意此处条件包含 =0 的情况（即相等的两个元素不构成逆序对）
                 arr[k] = aux[i - l]; i++;
             }
             else {  // 右半部分所指元素 < 左半部分所指元素
                 arr[k] = aux[j - l]; j++;
-                count += mid - i + 1;  // 因为此时右半部分所指元素较小，因此该元素和左半部分的所有未处理的元素都构成了逆序对，而此时左半部分未处理的元素个数为 mid - j + 1
+                count += mid - i + 1;  // 因为此时右半部分所指元素较小，因此该元素和左半部分的所有未处理的元素都构成了逆序对，而此时左半部分未处理的元素个数为 mid-j+1
             }
         }
         return count;
     }
 
     public static void main(String[] args) {
-        Integer[] arr1 = {4, 2, 5, 1, 3};
+        Integer[] arr1 = {4, 2, 5, 1, 3, 3};
         Integer[] arr2 = arr1.clone();
         log(count1(arr1));
         log(count2(arr2));
