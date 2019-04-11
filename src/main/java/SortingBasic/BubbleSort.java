@@ -32,7 +32,7 @@ public class BubbleSort {
     }
 
     /**
-     * 在 sort1 的实现中，每一遍排序都会比较所有元素 pair，不论当时数组是否已经是有序的了（即不能提前结束）。
+     * 在 sort 的实现中，每一遍排序都会比较所有元素 pair，不论当时数组是否已经是有序的了（即不能提前结束）。
      * 针对这点进行优化：提前结束的条件就是在一遍排序中是否 swap 过元素，如果没有则说明此时的数组已经是有序的了。
      */
     public static void sort2(Comparable[] arr) {
@@ -62,11 +62,11 @@ public class BubbleSort {
         Integer[] arr3 = generateRandomIntArr(10000);
         Integer[] arr4 = arr3.clone();
         timeIt(arr3, BubbleSort::sort1);
-        timeIt(arr4, BubbleSort::sort2);  // 对于完全随机的数据集比 sort1 稍慢
+        timeIt(arr4, BubbleSort::sort2);  // 对于完全随机的数据集比 sort 稍慢
 
-        Integer[] arr5 = generateNearlyOrderedArr(10000, 10);  // numOfSwap 越小，sort2 比 sort1 快的越多
+        Integer[] arr5 = generateNearlyOrderedArr(10000, 10);  // numOfSwap 越小，sort2 比 sort 快的越多
         Integer[] arr6 = arr5.clone();
         timeIt(arr5, BubbleSort::sort1);
-        timeIt(arr6, BubbleSort::sort2);  // 对于近乎有序的数据集比 sort1 快很多
+        timeIt(arr6, BubbleSort::sort2);  // 对于近乎有序的数据集比 sort 快很多
     }
 }

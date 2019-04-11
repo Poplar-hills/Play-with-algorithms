@@ -86,7 +86,7 @@ public class HeapSort {
         Integer[] arr5 = arr4.clone();
         Integer[] arr6 = arr4.clone();
         timeIt(arr4, HeapSort::sort1);
-        timeIt(arr5, HeapSort::sort2);  // 比 sort1 快很多
+        timeIt(arr5, HeapSort::sort2);  // 比 sort 快很多
         timeIt(arr6, HeapSort::sort3);  // 比 sort2 快一点
     }
 }
