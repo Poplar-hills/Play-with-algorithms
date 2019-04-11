@@ -11,6 +11,9 @@ import static Utils.Helpers.log;
 *
 * - 对此优化方式:
 *   以 arr 最大元素和最小元素之差+1作为 bucket 数组的长度，同时用最小元素作为填充 arr 时的偏移量，代码见 countingSort2。
+*
+* - 复杂度：
+*   时间和空间复杂度仍然是 O(n+k) 和 O(k)，但其中 k 变成了最大元素和最小元素之差。
 * */
 
 public class CountingSort2 {
@@ -20,9 +23,9 @@ public class CountingSort2 {
 
     private static int[] findMinAndMax(int[] arr) {
         int min = arr[0], max = arr[0];
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] > max) max = arr[i];
-            if (arr[i] < min) min = arr[i];
+        for (int n : arr) {
+            if (n > max) max = n;
+            if (n < min) min = n;
         }
         return new int[] {min, max};
     }
