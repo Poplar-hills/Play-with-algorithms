@@ -1,7 +1,11 @@
 package SortingAdvanced;
 
+import java.util.Random;
+
+import static Utils.Helpers.*;
+
 /*
-* 三路快速排序（Three Pivot Quicksort / 3-way Quick Sort）：
+* 三路快速排序（3-way Quick Sort）：
 *
 * - 对于包含大量重复元素的数据集，还有一种更经典的优化方式 —— 三路快速排序。
 *
@@ -30,10 +34,6 @@ package SortingAdvanced;
 *   分别讨论每种实现的优劣。
 * */
 
-import java.util.Random;
-
-import static Utils.Helpers.*;
-
 public class QuickSort3Ways {
     public static void sort(Comparable[] arr) {
         sort(arr, 0, arr.length - 1);
@@ -56,15 +56,12 @@ public class QuickSort3Ways {
         int i = l + 1;
 
         while (i < gt) {
-            if (arr[i].compareTo(v) < 0) {
-                swap(arr, i, lt + 1);  // 与 < v 的最后一个元素的后一个元素 swap
-                lt++; i++;
-            } else if (arr[i].compareTo(v) > 0) {
-                swap(arr, i, gt - 1);  // 与 > v 的第一个元素的前一个元素 swap
-                gt--;  // 此时 i 不用自增。因为 swap 之后 i 指向的是之前 gt-1 指向的元素，即一个还未被处理过的元素，因此继续处理即可
-            } else {   // arr[i] == v 的情况
+            if (arr[i].compareTo(v) < 0)
+                swap(arr, i++, ++lt);  // 与 < v 的最后一个元素的后一个元素 swap
+            else if (arr[i].compareTo(v) > 0)
+                swap(arr, i, --gt);    // 与 > v 的第一个元素的前一个元素 swap。此时 i 不用自增，因为 swap 之后 i 指向的还是一个还未被处理过的元素，因此继续处理即可
+            else                       // arr[i] == v 的情况
                 i++;
-            }
         }
         swap(arr, l, lt);
         lt--;          // 上一句 swap 之后 lt 指向 == v 的第一个元素，因此自减使其指向 < v 的最后一个元素

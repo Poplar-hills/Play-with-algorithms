@@ -9,7 +9,7 @@ package SortingAdvanced;
 *   1. 选择一个元素作为标定元素（pivot）；
 *   2. 将 pivot 移动到正确的位置上，并使其前面的元素都 < pivot，其后面的元素都 > pivot；
 *   3. 再对 pivot 之前和之后的元素分别递归地进行快速排序。
-*   注：其中第2步叫做 partition 过程，是快速排序的核心步骤。
+*   注：其中第2步叫做 partition 过程，是快排的核心思想，要记住！Exercise_kthSmallestElement 用的就是该思想。
 *
 * - partition 过程：
 *   - 通常使用数组中的第一个元素作为 pivot，记作 v。

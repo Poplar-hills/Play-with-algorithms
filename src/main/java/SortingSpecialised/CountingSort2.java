@@ -44,7 +44,7 @@ public class CountingSort2 {
         int i = 0;
         for (int n = 0; n < buckets.length; n++)
             for (int j = 0; j < buckets[n]; j++)
-                arr[i++] = n + min;  // 填充 arr 时把偏移量加回来
+                arr[i++] = min + n;  // 填充 arr 时把偏移量加回来
     }
 
     public static void main(String[] args) {

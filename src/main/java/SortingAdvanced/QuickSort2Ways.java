@@ -1,13 +1,11 @@
 package SortingAdvanced;
 
-import SortingBasic.InsertionSort;
-
 import java.util.Random;
 
 import static Utils.Helpers.*;
 
 /*
-* 双路快速排序（Dual-pivot Quick Sort / 2-way Quick Sort）：
+* 双路快速排序（2-way Quick Sort）：
 *
 * - QuickSort 和 QuickSort2 都是一路快排，也叫做 Naive Quick Sort。
 * - 虽然 QuickSort2 对于近似有序的数组进行了优化，但对于包含大量重复元素的数组，Naive Quick Sort 还是会退化成 O(n^2) 的复杂度，

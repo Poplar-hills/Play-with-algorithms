@@ -15,9 +15,9 @@ import static Utils.Helpers.*;
  * - 其中 QuickSelect 解法如下：
  *   - 思路：
  *     我们已知在快速排序中，partition 方法返回的是标定元素 pivot 最后应该被放置的索引位置，我们可根据这个信息来解决该问题。
- *     比如有 arr = [4, 2, 5, 1, 3]，k = 4（即要找到第3小的元素（索引从0开始））。此时对数组进行 partition，若 pivot 取
- *     到了3，则 partition 结束后数组为 [1, 2, 3, 5, 4]，并返回索引2。而因为 k > 2，因此只需要再在 arr[2+1...r] 的区间
- *     中递归查找即可，而 arr[l...p-1] 区间内的元素就可以不用管了。
+ *     比如有 arr = [4, 2, 5, 1, 3]，k = 4（即要找到第3小的元素（索引从0开始））。在 partition 过程中，若 pivot 取到了3，
+ *     则 partition 结束后数组为 [1, 2, 3, 5, 4]，并返回索引2。而因为 k > 2，因此只需要再在 arr[2+1...r] 的区间中递归查
+ *     找即可，而 arr[l...p-1] 区间内的元素就可以不用管了。
  *   - 通过这种方式，我们简化了快速排序，即 QuickSelect 只是做了局部的 QuickSort，因此复杂度更低。
  *   - 复杂度分析：n + n/2 + n/4 + n/8 + ... + 1（每次递归时查找范围都会减半，但注意是在平均情况下），等比数列求和可得 2n，
  *     因此是复杂度是 O(2n)。
@@ -30,7 +30,6 @@ public class Exercise_KthSmallestElement {
 
     private static Comparable select(Comparable[] arr, int l, int r, int k) {
         if (l == r) return arr[l];
-
         int p = partition(arr, l, r);
 
         if (k < p)  // 如果 k < p, 只需要在左半部分 arr[l...p-1] 中找第 k 小元素即可，而右半部分就不用管了
@@ -48,10 +47,8 @@ public class Exercise_KthSmallestElement {
         Comparable v = arr[l];
         int j = l;
         for (int i = l + 1; i <= r; i++) {
-            if (arr[i].compareTo(v) < 0) {
-                swap(arr, i, j + 1);
-                j++;
-            }
+            if (arr[i].compareTo(v) < 0)
+                swap(arr, i, ++j);
         }
         swap(arr, l, j);
         return j;
