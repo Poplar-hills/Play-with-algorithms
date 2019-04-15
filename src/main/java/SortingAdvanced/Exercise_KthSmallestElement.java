@@ -9,10 +9,8 @@ import static Utils.Helpers.*;
  *
  * - 该问题有多种解法：
  *   1. Sort：最直接的办法就是先将数组排序，然后取出第 k 个元素，复杂度最低是 O(nlogn)。
- *   3. HeapSelect：先通过 heapify 将数组转换为一个最小堆（O(n)），然后调用 extractMin 方法 k 次。总体的复杂度是 O(n+klogn)。
- *   2. HeapSelect2：创建一个大小为 k+1 的最小堆，将数组中的元素不断 insert 进去（O(nlogn)），若 insert 过程中堆中的元素个数
-  *     > k，则 extract（共 extract n-k 次，O((n-k)logn)），最后再 extract 一次取到第 k 小的元素。整体复杂度为 O((2n-k)logn)。
-  *     这种方法适合没有 heapify 方法的数据结构，比如 PriorityQueue。
+ *   2. MinHeapSelect：先通过 heapify 将数组转换为一个最小堆（O(n)），然后 extractMin k 次，复杂度为 O(n+klogn)。
+ *   3. MaxHeapSelect：跟 MinHeapSelect 原理相同，只是采用的是最大堆，然后 extractMax n-k 次，复杂度为 O((n-k)logn)。
  *   4. QuickSelect：平均复杂度是 O(n)，最坏情况下是 O(n^2)。
  *
  * - 其中 QuickSelect 解法如下：
@@ -42,8 +40,7 @@ public class Exercise_KthSmallestElement {
             return arr[k];
     }
 
-    // 和 QuickSort 中的 partition 一样
-    private static int partition(Comparable[] arr, int l, int r) {
+    private static int partition(Comparable[] arr, int l, int r) {  // 和 QuickSort 中的 partition 一样
         int vIndex = new Random().nextInt(r - l + 1) + l;
         swap(arr, l, vIndex);
         Comparable v = arr[l];
