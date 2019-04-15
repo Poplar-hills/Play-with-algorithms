@@ -7,7 +7,11 @@ import java.util.PriorityQueue;
 
 import static Utils.Helpers.log;
 
-public class Exercise_kthSmallestElement_heapSelect {
+/*
+ * 练习：从有 n 个元素的数组中找到第 k 小的元素 - 采用堆排序求解
+ * */
+
+public class Exercise_KthSmallestElement_HeapSelect {
     public static Comparable minHeapSelect(Comparable[] arr, int k) {  // 使用最小堆，extractMin k-1 次，总复杂度为 O(n+klogn)
         MinHeap<Comparable> heap = new MinHeap<>(arr);  // heapify，复杂度 O(n)
         for (int i = 0; i < k - 1; i++)                 // extractMin k 次，复杂度 O(klogn)

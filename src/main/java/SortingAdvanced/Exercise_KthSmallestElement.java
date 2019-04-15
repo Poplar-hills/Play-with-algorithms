@@ -55,9 +55,9 @@ public class Exercise_KthSmallestElement {
 
     public static void main(String[] args) {
         Integer[] arr1 = {4, 2, 5, 1, 3, 6, 7, 8};
-        log(quickSelect(arr1, 4));
+        log(quickSelect(arr1, 2));
 
         Character[] arr2 = {'b', 'd', 'e', 'c', 'a'};
-        log(quickSelect(arr2, 3));
+        log(quickSelect(arr2, 2));
     }
 }
