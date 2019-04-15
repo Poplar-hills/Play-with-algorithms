@@ -25,7 +25,7 @@ import static Utils.Helpers.*;
 *     以 swap(l, j)，让 v 放到正确的位置上了。
 *   - 注意在数组两端分别扫描的过程中的，当碰到 == v 的元素也要停下来 swap，这样通过不断交换，将 arr[i] == v 的情况较
 *     为均匀地分散到两个区间内，从而避免两个区间元素数量比例失衡的问题。
-*   - 过程演示 SEE：https://coding.imooc.com/lesson/71.html#mid=1460（3'33''）
+*   - 过程演示 SEE：https://coding.imooc.com/lesson/71.html#mid=1460（3'33''）（同手机 app Algorithm 里的 Quick Sort 演示）
 *   - 双路快排和三路快排的性能不如 naive quick sort，因为代码中有更多的判断，但并不会慢很多。
 *
 * - 注意：
