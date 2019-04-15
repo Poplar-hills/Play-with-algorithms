@@ -33,15 +33,12 @@ public class Exercise_KthSmallestElement_3Ways {
         int i = l + 1;
 
         while (i < gt) {
-            if (arr[i].compareTo(v) < 0) {
-                swap(arr, i, lt + 1);
-                lt++; i++;
-            } else if (arr[i].compareTo(v) > 0) {
-                swap(arr, i, gt - 1);
-                gt--;
-            } else {
+            if (arr[i].compareTo(v) < 0)
+                swap(arr, i++, ++lt);
+            else if (arr[i].compareTo(v) > 0)
+                swap(arr, i, --gt);
+            else
                 i++;
-            }
         }
         swap(arr, lt, l);
         lt--;
