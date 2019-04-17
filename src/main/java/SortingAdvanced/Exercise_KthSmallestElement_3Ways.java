@@ -10,7 +10,7 @@ import static Utils.Helpers.*;
 
 public class Exercise_KthSmallestElement_3Ways {
     public static Comparable quickSelect(Comparable[] arr, int k) {
-        return select(arr, 0, arr.length - 1, k - 1);  // k 是从0开始索引的, 即最小的元素是第0小元素, 如果希望 k 的语意是从1开始的, 只需要让 k - 1
+        return select(arr, 0, arr.length - 1, k - 1);  // k-1 是为了让语义更自然（"第1小"就是最小，"第2小"就是第2小，没有"第0小"）
     }
 
     private static Comparable select(Comparable[] arr, int l, int r, int k) {

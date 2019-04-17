@@ -16,7 +16,7 @@ import static Utils.Helpers.log;
 * */
 
 public class BinarySearch {
-    // 二分查找法
+    // 递归实现
     public static int sort(Comparable[] arr, Comparable e) {
         return binarySort(arr, e, 0, arr.length - 1);
     }
@@ -31,7 +31,7 @@ public class BinarySearch {
         return mid;
     }
 
-    // 二分查找法（非递归）
+    // 非递归实现
     public static int sortNR(Comparable[] arr, Comparable e) {
         int l = 0, r = arr.length - 1;
         while (l <= r) {
@@ -44,8 +44,8 @@ public class BinarySearch {
     }
 
     /*
-     * 基于二分查找法，在有序数组 arr 中查找 e：
-     *  - 如果找到 e，返回最后一个 e 相应的索引；
+     * 基于二分查找法，在有序数组 arr 中查找 e 的 ceiling：
+     *  - 如果有一个或多个 e，返回最后一个 e 的索引；
      *  - 如果没有找到 e, 返回比 e 大的最小值的索引，如果这个最小值有多个，返回最小的索引；
      *  - 如果这个 e 比整个数组的最大值还大，则不存在这个 e 的 ceiling 值，返回整个数组的元素个数 n。
      */
@@ -69,8 +69,8 @@ public class BinarySearch {
     }
 
     /*
-     * 基于二分查找法，在有序数组 arr 中查找 e：
-     *  - 如果找到 e，返回最后一个 e 相应的索引；
+     * 基于二分查找法，在有序数组 arr 中查找 e 的 floor：
+     *  - 如果有一个或多个 e，返回最后一个 e 相应的索引；
      *  - 如果没有找到 e, 返回比 e 小的最大值的索引，如果这个最大值有多个，返回最大的索引；
      *  - 如果这个 e 比整个数组的最小值还小，则不存在这个 e 的 floor 值，返回 -1。
      */

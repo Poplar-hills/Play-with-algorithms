@@ -25,7 +25,7 @@ import static Utils.Helpers.*;
 
 public class Exercise_KthSmallestElement {
     public static Comparable quickSelect(Comparable[] arr, int k) {
-        return select(arr, 0, arr.length - 1, k - 1);  // k-1 是为了从1开始计（而不是从0开始）
+        return select(arr, 0, arr.length - 1, k - 1);  // k-1 是为了让语义更自然（"第1小"就是最小，"第2小"就是第2小，没有"第0小"）
     }
 
     private static Comparable select(Comparable[] arr, int l, int r, int k) {
