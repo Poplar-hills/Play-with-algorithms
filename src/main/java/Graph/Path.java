@@ -43,7 +43,7 @@ public class Path {
         int n = graph.getVertexCount();
         visited = new boolean[n];
         from = new int[n];
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {  // 初始化 visited、from 数组
             visited[i] = false;
             from[i] = -1;
         }

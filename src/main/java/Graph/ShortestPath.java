@@ -22,8 +22,8 @@ import static Utils.Helpers.log;
 *
 *   如果 source 是4，则经过 new ShortestPath(graph, 4) 之后：
 *       vertex:    0  1  2  3  4  5
-*       from:    [ 1  4  1  4 -1  3 ]
-*       orders:  [ 2  1  2  1  0  2 ]
+*       from:    [ 1  4  1  4 -1  3 ] （上一跳顶点）
+*       orders:  [ 2  1  2  1  0  2 ] （从 source 到每一个节点的最短距离）
 *
 * - BFS 的复杂度与 DFS 一致：
 *   - 如果是邻接表则为 O(V + E) 或 O(E)
@@ -36,7 +36,7 @@ import static Utils.Helpers.log;
 *   - 对于上面的 graph 来说，如果 source = 4：
 *            BFS 过程中生成的树：               DFS 过程中生成的树：
 *                   4                                 4
-*                 /   \                               |
+*                /    \                               |
 *               1      3                              1
 *             /   \    |                              |
 *            0    2    5                              0
@@ -46,13 +46,12 @@ import static Utils.Helpers.log;
 *                                                        3
 *   - 通过这种思路，很多图的问题实际上是树的问题，或者说可以转化为树的问题来解决：很多迷宫实际上就是一棵树，因此要设计一个
 *     迷宫就是在生成一棵树（也有不能用树表示的迷宫，比如有环的迷宫）。
-*
 * */
 
 public class ShortestPath {
     private Graph graph;
     private boolean[] visited;
-    private int[] from;
+    private int[] from;    // 上一跳顶点
     private int source;
     private int[] orders;  // 记录从 source 到每一个节点的最短距离
 
@@ -67,7 +66,7 @@ public class ShortestPath {
         visited = new boolean[n];
         from = new int[n];
         orders = new int[n];
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {  // 初始化 visited、from 数组
             visited[i] = false;
             from[i] = -1;
             orders[i] = -1;
