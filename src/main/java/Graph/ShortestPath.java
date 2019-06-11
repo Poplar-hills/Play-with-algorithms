@@ -9,7 +9,7 @@ import static Utils.Helpers.log;
 /*
 * 最短路径（Shortest Path）
 *
-* - 通过广度优先遍历（Breadth First Search, BFS）找到两点之间的最短路径
+* - 广度优先遍历（Breadth First Search, BFS）可用于寻找无权图中两点之间的最短路径（有权图不适用）。
 *
 * - 例：对于 testG2.txt 中描述的 graph：
 *
