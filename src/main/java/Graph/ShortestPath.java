@@ -100,7 +100,7 @@ public class ShortestPath {
         return orders[target];
     }
 
-    public boolean hasPath(int target) {  // 与 Path 中的相同
+    public boolean hasPath(int target) {  // 与 Path 中的相同（即 isConnected）
         if (target < 0 || target >= graph.getVertexCount())
             throw new IllegalArgumentException("hasPath failed. Vertex out of boundary.");
         return visited[target];
