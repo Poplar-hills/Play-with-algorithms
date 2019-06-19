@@ -18,7 +18,8 @@ import static Utils.Helpers.log;
 public class SparseGraph implements Graph {
     private int n, m;  // n 为顶点数，m 为边数
     private boolean directed;  // 该图是否为有向图
-    private ArrayList<Integer>[] graph;  // 图的结构是 ArrayList 数组，不同于 DenseGraph 中的二维数组，SparseGraph 中的内层需要 ArrayList 的动态扩容功能来提高空间使用效率。
+    private ArrayList<Integer>[] graph;  // 图的结构是 ArrayList 数组，不同于 DenseGraph 中的二维数组，SparseGraph 
+                                         // 中的内层需要 ArrayList 的动态扩容功能来提高空间使用效率（因此也可使用链表）
 
     public SparseGraph(int n, boolean directed) {
         this.n = n;
