@@ -72,10 +72,10 @@ public class ShortestPath {
             orders[i] = -1;
         }
 
-        breadthFirstSearch();  // 对 source 进行寻路，记录在 from 和 orders 数组中
+        bfs();  // 对 source 进行寻路，记录在 from 和 orders 数组中
     }
 
-    private void breadthFirstSearch() {  // BFS
+    private void bfs() {
         Queue<Integer> queue = new LinkedList<>();  // 使用队列作为辅助数据结构（类似 BST 的 levelOrderTraverse）
         queue.add(source);
         visited[source] = true;
