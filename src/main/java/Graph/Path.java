@@ -2,9 +2,7 @@ package Graph;
 
 import Graph.GraphReader.GraphReader;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 import static Utils.Helpers.log;
 
@@ -88,6 +86,35 @@ public class Path {
         return list;
     }
 
+    public List<List<Integer>> allPaths(int target) {   // 找到两顶点之间的所有路径
+        if (target < 0 || target >= graph.getVertexCount())
+            throw new IllegalArgumentException("path failed. Vertex out of boundary.");
+
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<List<Integer>> q = new LinkedList<>();    // 队列存储所有从 source 出发的路径，每个分支都是一条新路径
+
+        List<Integer> initialPath = new ArrayList<>();  // 生成初始路径，放入 source 顶点
+        initialPath.add(source);
+        q.offer(initialPath);
+
+        while (!q.isEmpty()) {
+            List<Integer> path = q.poll();               // 每次拿出一条路径
+            int lastVertex = path.get(path.size() - 1);  // 获取路径中的最后一个顶点
+            if (lastVertex == target) {                  // 若该顶点就是 target 顶点则说明该是一条有效路径，放入 res 中；而那些走不到
+                res.add(path);                           // target 上的路径（比如成环的路径）会被丢弃（poll 出来后不会再 offer 进去）
+                continue;
+            }
+            for (int adj : graph.getAdjacentEdges(lastVertex)) {  // 获取所有相邻顶点
+                if (path.contains(adj)) continue;                 // 若顶点已存在于该路径中，则说明已经访问过，不再继续（否则会成环）
+                List<Integer> newPath = new ArrayList<>(path);    // 复制该路径并 add 这个 adj 顶点，形成一条新路径，放入 q 中
+                newPath.add(adj);
+                q.offer(newPath);
+            }
+        }
+
+        return res;
+    }
+
     public static void main(String[] args) {
         Graph g = new GraphReader()
                 .read("src/main/java/Graph/GraphReader/testG2.txt")
@@ -95,8 +122,9 @@ public class Path {
         log(g);
 
         Path p = new Path(g, 4);
-        log(p.path(5));  // 输出从 4 到 5 的 path
-        log(p.path(2));  // 输出从 4 到 2 的 path（不是最短路径）
-        log(p.path(3));  // 输出从 4 到 3 的 path（不是最短路径）
+        log("A path from 4 to 5: " + p.path(5));
+        log("A path from 4 to 2: " + p.path(2));
+        log("A path from 4 to 3: " + p.path(3));
+        log("All paths from 4 to 3: " + p.allPaths(3));
     }
 }
