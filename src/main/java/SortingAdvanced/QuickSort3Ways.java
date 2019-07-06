@@ -14,13 +14,13 @@ import static Utils.Helpers.*;
 *     [ v|--- <v ---|--- ==v ---|......|--- >v ---| ]
 *       l          lt            i      gt       r
 *   - 这里除了 l 和 r，还需要3个中间索引：
-*     1. lt 指向最后一个 < v 的元素；
-*     2. gt 指向第一个 > v 的元素；
+*     1. lt 指向 < v 最后一个的元素；
+*     2. gt 指向 > v 的第一个元素；
 *     3. i 指向正在访问的元素。
 *   - 这样在 i 访问下一个元素的时候：
-*     1. 若 arr[i] < v，则 swap(i, lt+1)、lt++；
+*     1. 若 arr[i] < v，则 swap(i, lt+1)；lt++；
 *     2. 若 arr[i] == v，则放着不动；
-*     3. 若 arr[i] > v，则 swap(i, gt-1)、gt--；
+*     3. 若 arr[i] > v，则 swap(i, gt-1)；gt--；
 *   - 在 partition 结束之后，数组会被分成 < v, == v, > v 的三段，且所有 == v 的元素都已经被放在了正确的位置上，
 *     只有 < v 和 > v 区间中的元素还存在乱序，因此只需分别对这两个区间进行递归即可。
 *   - 动画演示 SEE: https://coding.imooc.com/lesson/71.html#mid=1461（0'17''）
@@ -51,9 +51,9 @@ public class QuickSort3Ways {
         swap(arr, l, vIndex);
         Comparable v = arr[l];
 
-        int lt = l;      // 指向 < v 的最后一个元素；∵ 初始没有元素 < v ∴ 取值 l
-        int gt = r + 1;  // 指向 > v 的第一个元素；∵ 初始没有元素 > v ∴ 取值 r+1
-        int i = l + 1;
+        int lt = l;      // 指向 < v 的最后一个元素；∵ 初始没有元素 < v ∴ 初值为 l（l 是标定元素 v 的位置）
+        int gt = r + 1;  // 指向 > v 的第一个元素；∵ 初始没有元素 > v ∴ 初值为 r+1
+        int i = l + 1;   // 指向当前被处理中的元素
 
         while (i < gt) {
             if (arr[i].compareTo(v) < 0)
