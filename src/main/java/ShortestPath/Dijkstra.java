@@ -78,8 +78,8 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
         this.graph = graph;
         this.source = source;
         int n = graph.getVertexCount();
-        distances = (Weight[]) new Number[n];
-        visited = new boolean[n];  // 默认值都是 false
+        distances = (Weight[]) new Number[n];  // 自定义类数组的声明要强转一下
+        visited = new boolean[n];
         spt = new ArrayList<>();
         heap = new IndexMinHeap(graph.getVertexCount());
 
@@ -97,8 +97,7 @@ public class Dijkstra<Weight extends Number & Comparable<Weight>> {
             Edge<Weight> minE = heap.extractMin();
             int minV = visited[minE.v()] ? minE.w() : minE.v();
 
-            if (visited[minV])
-                continue;
+            if (visited[minV]) continue;
 
             spt.add(minE);  // 添加到最短路径树中
 
