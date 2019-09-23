@@ -1,4 +1,4 @@
-package Graph;
+package GraphBasics;
 
 public interface Graph {
     void addEdge(int v, int w);

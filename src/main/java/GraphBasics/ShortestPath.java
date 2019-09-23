@@ -1,6 +1,6 @@
-package Graph;
+package GraphBasics;
 
-import Graph.GraphReader.GraphReader;
+import GraphBasics.GraphReader.GraphReader;
 
 import java.util.*;
 

@@ -1,6 +1,6 @@
-package Graph.GraphReader;
+package GraphBasics.GraphReader;
 
-import Graph.Graph;
+import GraphBasics.Graph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
