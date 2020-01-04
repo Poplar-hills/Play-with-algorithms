@@ -24,13 +24,13 @@ import static Utils.Helpers.*;
 *                                 8 6 2 3 1 5 7 4               ---
 *         1st divide               /           \                 |
 *                            8 6 2 3          1 5 7 4            |
-*         2nd divide         /     \          /     \         分解过程
+*         2nd divide         /     \          /     \         分解过程（divide）
 *                          8 6     2 3      1 5     7 4          |
 *         3rd divide     /   \    /   \    /   \   /   \         |
 *                       8    6   2    3   1    5  7    4        ---
 *         1st conquer    \  /     \  /     \  /    \  /          |
 *                        6 8      2 3      1 5     4 7           |
-*         2nd conquer       \    /           \    /           归并过程
+*         2nd conquer       \    /           \    /           归并过程（conquer）
 *                          2 3 6 8          1 4 5 7              |
 *         3rd conquer           \            /                   |
 *                              1 2 3 4 5 6 7 8                  ---
@@ -66,24 +66,18 @@ public class MergeSort {
 
     // 将 arr[l...mid 和 arr[mid+1...r] 这两部分进行归并，此时这两部分都已经各自有序了
     private static void merge(Comparable[] arr, int l, int mid, int r) {
-        // 创建辅助数组（空间换时间）
-        Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);
+        Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);  // 创建辅助数组（空间换时间）
 
-        // 进行归并：需要3个索引 i, j, k
-        int i = l, j = mid + 1;            // i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid+1
-        for (int k = l; k <= r; k++) {     // k 指向 arr[l...r] 中的每个位置
-            if (i > mid) {                 // 如果左半部分元素已经全部处理完毕
-                arr[k] = aux[j - l]; j++;  // 要减去 l 的偏移量（因为 aux 的范围是从 0 开始的）
-            }
-            else if (j > r) {              // 如果右半部分元素已经全部处理完毕
-                arr[k] = aux[i - l]; i++;
-            }
-            else if (aux[i - l].compareTo(aux[j - l]) < 0) {  // 左半部分所指元素 < 右半部分所指元素
-                arr[k] = aux[i - l]; i++;
-            }
-            else {                         // 左半部分所指元素 >= 右半部分所指元素
-                arr[k] = aux[j - l]; j++;
-            }
+        int i = l, j = mid + 1;           // i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid+1
+        for (int k = l; k <= r; k++) {    // k 指向 arr[l...r] 中的每个位置
+            if (i > mid)                  // 若左半部分元素已经全部处理完毕
+                arr[k] = aux[j++ - l];    // 要减去 l 的偏移量（因为 aux 的范围是从 0 开始的）
+            else if (j > r)               // 若右半部分元素已经全部处理完毕
+                arr[k] = aux[i++ - l];
+            else if (aux[i - l].compareTo(aux[j - l]) < 0)  // 左半部分所指元素 < 右半部分所指元素
+                arr[k] = aux[i++ - l];
+            else                          // 左半部分所指元素 >= 右半部分所指元素
+                arr[k] = aux[j++ - l];
         }
     }
 
