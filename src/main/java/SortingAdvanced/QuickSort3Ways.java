@@ -63,8 +63,8 @@ public class QuickSort3Ways {
             else                       // arr[i] == v 的情况
                 i++;
         }
-        swap(arr, l, lt);
-        lt--;          // 上一句 swap 之后 lt 指向 == v 的第一个元素，因此自减使其指向 < v 的最后一个元素
+        swap(arr, l, lt);  // 再将 pivot 放到正确的位置上（即所有 < v 的元素之后，在所有 == v 的元素之前）
+        lt--;              // ∵ 把 pivot 放到了 lt 上 ∴ lt 需要 -1 才能继续指向 < v 的最后一个元素
         return new int[] {lt, gt};
     }
 
