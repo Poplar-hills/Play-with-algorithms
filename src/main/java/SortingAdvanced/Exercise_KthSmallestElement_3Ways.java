@@ -6,14 +6,16 @@ import static Utils.Helpers.*;
 
 /*
  * 练习：从有 n 个元素的数组中找到第 k 小的元素 - 采用三路快排求解
+ *
+ * - 下面代码中的泛型语法 SEE: https://stackoverflow.com/questions/20938318/sorting-an-array-of-comparable-interface
  * */
 
 public class Exercise_KthSmallestElement_3Ways {
-    public static Comparable quickSelect(Comparable[] arr, int k) {
+    public static <T extends Comparable<T>> T quickSelect(T[] arr, int k) {
         return select(arr, 0, arr.length - 1, k - 1);  // k-1 是为了让语义更自然（"第1小"就是最小，"第2小"就是第2小，没有"第0小"）
     }
 
-    private static Comparable select(Comparable[] arr, int l, int r, int k) {
+    private static <T extends Comparable<T>> T select(T[] arr, int l, int r, int k) {
         if (l == r) return arr[l];
         int[] ps = partition(arr, l, r);
         if (k <= ps[0])
@@ -24,10 +26,10 @@ public class Exercise_KthSmallestElement_3Ways {
             return arr[ps[0] + 1];  // 即 arr[lt + 1]，lt + 1 即 == v 的元素
     }
 
-    private static int[] partition(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> int[] partition(T[] arr, int l, int r) {
         int vIndex = new Random().nextInt(r - l + 1) + l;
         swap(arr, l, vIndex);
-        Comparable v = arr[l];
+        T v = arr[l];
         int lt = l;
         int gt = r + 1;
         int i = l + 1;

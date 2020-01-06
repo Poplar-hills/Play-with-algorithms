@@ -21,14 +21,16 @@ import static Utils.Helpers.*;
  *     arr[l...p-1] 区间内的元素就可以不用管了。通过这种方式简化了快排过程，即只做了局部快排，因此复杂度更低。
  *   - 复杂度分析：n + n/2 + n/4 + n/8 + ... + 1（每次递归时查找范围都会减半，但注意是在平均情况下），等比数列求和可得 2n，
  *     因此是复杂度是 O(2n)。
+ *
+ * - 下面代码中的泛型语法 SEE: https://stackoverflow.com/questions/20938318/sorting-an-array-of-comparable-interface
  * */
 
 public class Exercise_KthSmallestElement {
-    public static Comparable quickSelect(Comparable[] arr, int k) {
+    public static <T extends Comparable<T>> T quickSelect(T[] arr, int k) {
         return select(arr, 0, arr.length - 1, k - 1);  // k-1 是为了让语义更自然（"第1小"就是最小，"第2小"就是第2小，没有"第0小"）
     }
 
-    private static Comparable select(Comparable[] arr, int l, int r, int k) {
+    private static <T extends Comparable<T>> T select(T[] arr, int l, int r, int k) {
         if (l == r) return arr[l];
         int p = partition(arr, l, r);
 
@@ -40,15 +42,16 @@ public class Exercise_KthSmallestElement {
             return arr[k];
     }
 
-    private static int partition(Comparable[] arr, int l, int r) {  // 和 QuickSort 中的 partition 一样
+    private static <T extends Comparable<T>> int partition(T[] arr, int l, int r) {  // 和 QuickSort 中的 partition 一样
         int vIndex = new Random().nextInt(r - l + 1) + l;
         swap(arr, l, vIndex);
-        Comparable v = arr[l];
+        T v = arr[l];
         int j = l;
-        for (int i = l + 1; i <= r; i++) {
+
+        for (int i = l + 1; i <= r; i++)
             if (arr[i].compareTo(v) < 0)
                 swap(arr, i, ++j);
-        }
+
         swap(arr, l, j);
         return j;
     }
