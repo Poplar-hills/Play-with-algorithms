@@ -35,11 +35,11 @@ import static Utils.Helpers.*;
 * */
 
 public class QuickSort2 {
-    public static void sort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort(T[] arr) {
         sort(arr, 0, arr.length - 1);
     }
 
-    private static void sort(Comparable[] arr, int l, int r) {  // 与 QuickSort2 中的一致
+    private static <T extends Comparable<T>> void sort(T[] arr, int l, int r) {  // 与 QuickSort2 中的一致
         if (r - l <= 15) {  // 优化2
             InsertionSort.sortRange(arr, l, r);
             return;
@@ -49,10 +49,10 @@ public class QuickSort2 {
         sort(arr, p + 1, r);
     }
 
-    private static int partition(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> int partition(T[] arr, int l, int r) {
         int vIndex = new Random().nextInt(r - l + 1) + l;  // 优化1：随机选取标定元素的索引
         swap(arr, l, vIndex);  // 将标定元素换到最前面，这样后面就可以像标准的快排一样进行了
-        Comparable v = arr[l];
+        T v = arr[l];
         int j = l;
         for (int i = l + 1; i <= r; i++) {
             if (arr[i].compareTo(v) <= 0) {

@@ -30,11 +30,9 @@ public class Exercise_KthSmallestElement_3Ways {
         int vIndex = new Random().nextInt(r - l + 1) + l;
         swap(arr, l, vIndex);
         T v = arr[l];
-        int lt = l;
-        int gt = r + 1;
-        int i = l + 1;
+        int lt = l, gt = r + 1;
 
-        while (i < gt) {
+        for (int i = l + 1; i < gt; ) {
             if (arr[i].compareTo(v) < 0)
                 swap(arr, i++, ++lt);
             else if (arr[i].compareTo(v) > 0)

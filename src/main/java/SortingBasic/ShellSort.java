@@ -6,7 +6,7 @@ import SortingAdvanced.QuickSort3Ways;
 
 import static Utils.Helpers.*;
 
-/**
+/*
  * 希尔排序（Shell Sort）：
  *
  * - 产生背景：
@@ -59,12 +59,12 @@ import static Utils.Helpers.*;
  * */
 
 public class ShellSort {
-    public static void sort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort(T[] arr) {
         int h = arr.length / 2;  // h 即为上面说的 gap
         while (h >= 1) {         // h-sort the array
             for (int i = h; i < arr.length; i++) {  // 体会一下从 h 开始遍历的目的
                 // 循环内部进行插入排序
-                Comparable e = arr[i];
+                T e = arr[i];
                 int j = i;
                 for (; j >= h && e.compareTo(arr[j - h]) < 0 ; j -= h)  // 在比较的过程中每次步进为 h，即只对 arr[i], arr[i-h], arr[i-2*h]... 进行插入排序
                     arr[j] = arr[j - h];

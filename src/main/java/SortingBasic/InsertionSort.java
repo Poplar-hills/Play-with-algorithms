@@ -36,15 +36,15 @@ import static Utils.Helpers.*;
  * */
 
 public class InsertionSort {
-    public static void sort1(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort1(T[] arr) {
         for (int i = 0; i < arr.length; i++)
             for (int j = i; j > 0 && arr[j].compareTo(arr[j - 1]) < 0; j--)
                 swap(arr, j, j - 1);
     }
 
-    public static void sort2(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort2(T[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            Comparable e = arr[i];    // 复制当前元素
+            T e = arr[i];    // 复制当前元素
             int j = i;                // 因为找到 e 应插入的位置的时候即是循环终止的时候，因此循环的索引的最终值 j 即是要插入的位置
             for (; j > 0 && arr[j - 1].compareTo(e) > 0; j--)
                 arr[j] = arr[j - 1];  // 在循环结束之前，若前一个元素 > e，则将前一个元素复制到当前位置
@@ -52,9 +52,9 @@ public class InsertionSort {
         }
     }
 
-    public static void sortRange(Comparable[] arr, int l, int r) {  // 对数组中的某一区间进行插入排序
+    public static <T extends Comparable<T>> void sortRange(T[] arr, int l, int r) {  // 对数组中的某一区间进行插入排序
         for (int i = l; i <= r; i++) {
-            Comparable e = arr[i];
+            T e = arr[i];
             int j = i;
             for (; j > 0 && arr[j - 1].compareTo(e) > 0; j--)
                 arr[j] = arr[j - 1];

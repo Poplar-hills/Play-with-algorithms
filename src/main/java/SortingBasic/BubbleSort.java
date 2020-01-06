@@ -22,20 +22,18 @@ import static Utils.Helpers.*;
  */
 
 public class BubbleSort {
-    public static void sort1(Comparable[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {  // 外层循环控制排序遍数，只需要 n-1 次迭代即可完成排序（比如 [4,3,2,1] 只需3次迭代）
-            for (int j = 1; j < arr.length - i; j++) {  // 内层循环控制一遍排序中的比较次数。最后 i 个元素是已经排过序的，不需要再比较，因此减去
+    public static <T extends Comparable<T>> void sort1(T[] arr) {
+        for (int i = 0; i < arr.length - 1; i++)      // 外层循环控制排序遍数，只需要 n-1 次迭代即可完成排序（比如 [4,3,2,1] 只需3次迭代）
+            for (int j = 1; j < arr.length - i; j++)  // 内层循环控制一遍排序中的比较次数。最后 i 个元素是已经排过序的，不需要再比较，因此减去
                 if (arr[j - 1].compareTo(arr[j]) > 0)
                     swap(arr, j - 1, j);
-            }
-        }
     }
 
     /**
      * 在 sort 的实现中，每一遍排序都会比较所有元素 pair，不论当时数组是否已经是有序的了（即不能提前结束）。
      * 针对这点进行优化：提前结束的条件就是在一遍排序中是否 swap 过元素，如果没有则说明此时的数组已经是有序的了。
      */
-    public static void sort2(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort2(T[] arr) {
         boolean hasSwapped = true;
         for (int i = 0; i < arr.length && hasSwapped; i++) {
             hasSwapped = false;

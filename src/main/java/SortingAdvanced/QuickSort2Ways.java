@@ -39,21 +39,21 @@ import static Utils.Helpers.*;
 * */
 
 public class QuickSort2Ways {
-    public static void sort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort(T[] arr) {
         sort(arr, 0, arr.length - 1);
     }
 
-    private static void sort(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> void sort(T[] arr, int l, int r) {
         if (l >= r) return;
         int p = partition(arr, l, r);
         sort(arr, l, p - 1);
         sort(arr, p + 1, r);
     }
 
-    private static int partition(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> int partition(T[] arr, int l, int r) {
         int vIndex = new Random().nextInt(r - l + 1) + l;
         swap(arr, l, vIndex);
-        Comparable v = arr[l];
+        T v = arr[l];
 
         // 套路：使用3个 while 循环实现双路查找，内部的 while 循环找到符合条件的索引后会退出，两个 while 都退出后进行 swap
         int i = l + 1, j = r;

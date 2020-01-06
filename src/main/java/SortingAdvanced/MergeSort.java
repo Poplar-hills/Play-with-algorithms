@@ -47,12 +47,12 @@ import static Utils.Helpers.*;
 * */
 
 public class MergeSort {
-    public static void sort(Comparable[] arr) {  // 归并排序中的递归是要对数组的每一段区域进行处理，因此设计递归函数时要传入左右边界
+    public static <T extends Comparable<T>> void sort(T[] arr) {  // 归并排序中的递归是要对数组的每一段区域进行处理，因此设计递归函数时要传入左右边界
         sort(arr, 0, arr.length - 1);
     }
 
     // 递归地对 arr[l...r] 的范围（前闭后闭）进行排序
-    private static void sort(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> void sort(T[] arr, int l, int r) {
         if (l >= r) return;          // 异常及递归终止条件
         int mid = (r - l) / 2  + l;  // 也可以写成 (l + r) / 2，但是可能整型溢出
 
@@ -65,8 +65,8 @@ public class MergeSort {
     }
 
     // 将 arr[l...mid 和 arr[mid+1...r] 这两部分进行归并，此时这两部分都已经各自有序了
-    private static void merge(Comparable[] arr, int l, int mid, int r) {
-        Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);  // 创建辅助数组（空间换时间）
+    private static <T extends Comparable<T>> void merge(T[] arr, int l, int mid, int r) {
+        T[] aux = Arrays.copyOfRange(arr, l, r + 1);  // 创建辅助数组（空间换时间）
 
         int i = l, j = mid + 1;           // i 指向左半部分的起始索引 l；j 指向右半部分起始索引 mid+1
         for (int k = l; k <= r; k++) {    // k 指向 arr[l...r] 中的每个位置

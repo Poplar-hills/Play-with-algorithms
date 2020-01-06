@@ -14,21 +14,20 @@ import static Utils.Helpers.*;
 * */
 
 public class Exercise_InversionCount {
-    public static int count1(Comparable[] arr) {  // 解法一：brute force，复杂度为 O(n^2)
+    public static <T extends Comparable<T>> int count1(T[] arr) {  // 解法一：brute force，复杂度为 O(n^2)
         int count = 0;
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length; i++)
             for (int j = i + 1; j < arr.length; j++)
                 if (arr[i].compareTo(arr[j]) > 0)
                     count++;
-        }
         return count;
     }
 
-    public static int count2(Comparable[] arr) {  // 解法二：分治，复杂度为 O(nlogn)
+    public static <T extends Comparable<T>> int count2(T[] arr) {  // 解法二：分治，复杂度为 O(nlogn)
         return count2(arr, 0, arr.length - 1);
     }
 
-    private static int count2(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> int count2(T[] arr, int l, int r) {
         if (l >= r) return 0;
         int mid = (r - l) / 2 + l;
         int c1 = count2(arr, l, mid);  // 递归计算每个子问题的答案
@@ -36,23 +35,20 @@ public class Exercise_InversionCount {
         return c1 + c2 + merge(arr, l, mid, r);  // 在归并阶段将每个子问题的答案合并（即相加）在一起
     }
 
-    private static int merge(Comparable[] arr, int l, int mid, int r) {
-        Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);
+    private static <T extends Comparable<T>> int merge(T[] arr, int l, int mid, int r) {
+        T[] aux = Arrays.copyOfRange(arr, l, r + 1);
         int i = l, j = mid + 1;
         int count = 0;
 
         for (int k = l; k <= r; k++) {
-            if (i > mid) {
-                arr[k] = aux[j - l]; j++;
-            }
-            else if (j > r) {
-                arr[k] = aux[i - l]; i++;
-            }
-            else if (aux[i - l].compareTo(aux[j - l]) <= 0) {  // 注意此处条件包含 =0 的情况（即相等的两个元素不构成逆序对）
-                arr[k] = aux[i - l]; i++;
-            }
+            if (i > mid)
+                arr[k] = aux[j++ - l];
+            else if (j > r)
+                arr[k] = aux[i++ - l];
+            else if (aux[i - l].compareTo(aux[j - l]) <= 0)  // 注意此处条件包含 =0 的情况（即相等的两个元素不构成逆序对）
+                arr[k] = aux[i++ - l];
             else {  // 右半部分所指元素 < 左半部分所指元素
-                arr[k] = aux[j - l]; j++;
+                arr[k] = aux[j++ - l];
                 count += mid - i + 1;  // 因为此时右半部分所指元素较小，因此该元素和左半部分的所有未处理的元素都构成了逆序对，而此时左半部分未处理的元素个数为 mid-j+1
             }
         }

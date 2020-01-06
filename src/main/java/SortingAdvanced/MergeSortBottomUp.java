@@ -33,7 +33,7 @@ import static Utils.Helpers.*;
  * */
 
 public class MergeSortBottomUp {
-    public static void sort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort(T[] arr) {
         for (int step = 1; step <= arr.length; step *= 2) {          // 产生二分的 step 序列：1, 2, 4, 8, ... 对应每组元素个数
             for (int i = 0; i + step < arr.length; i += step * 2) {  // 每次对两个 step 内的元素（即 arr[i...i+step-1] 和 arr[i+step...i+2*step-1]）
                 int l = i;                                           // 进行归并，而 i + step < arr.length 保证了第二段 step 中至少有元素存在。
@@ -45,23 +45,19 @@ public class MergeSortBottomUp {
         }
     }
 
-    private static void merge(Comparable[] arr, int l, int mid, int r) {  // merge 方法不变
-        Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);
+    private static <T extends Comparable<T>> void merge(T[] arr, int l, int mid, int r) {  // merge 方法不变
+        T[] aux = Arrays.copyOfRange(arr, l, r + 1);
         int i = l, j = mid + 1;
 
         for (int k = l; k <= r; k++) {
-            if (i > mid) {
-                arr[k] = aux[j - l]; j++;
-            }
-            else if (j > r) {
-                arr[k] = aux[i - l]; i++;
-            }
-            else if (aux[i - l].compareTo(aux[j - l]) < 0) {
-                arr[k] = aux[i - l]; i++;
-            }
-            else {
-                arr[k] = aux[j - l]; j++;
-            }
+            if (i > mid)
+                arr[k] = aux[j++ - l];
+            else if (j > r)
+                arr[k] = aux[i++ - l];
+            else if (aux[i - l].compareTo(aux[j - l]) < 0)
+                arr[k] = aux[i++ - l];
+            else
+                arr[k] = aux[j++ - l];
         }
     }
 

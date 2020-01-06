@@ -35,21 +35,21 @@ import static Utils.Helpers.*;
 * */
 
 public class QuickSort3Ways {
-    public static void sort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort(T[] arr) {
         sort(arr, 0, arr.length - 1);
     }
 
-    private static void sort(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> void sort(T[] arr, int l, int r) {
         if (l >= r) return;
         int[] ps = partition(arr, l, r);  // 与两路快排不同，三路快排中的 partition 返回两个索引（lt 和 gt）
         sort(arr, l, ps[0]);              // 对 arr[l...lt]（即 < v 的所有元素）进行递归排序
         sort(arr, ps[1], r);              // 对 arr[gt...r]（即 > v 的所有元素）进行递归排序
     }
 
-    private static int[] partition(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> int[] partition(T[] arr, int l, int r) {
         int vIndex = new Random().nextInt(r - l + 1) + l;
         swap(arr, l, vIndex);
-        Comparable v = arr[l];
+        T v = arr[l];
 
         int lt = l;      // 指向 < v 的最后一个元素；∵ 初始没有元素 < v ∴ 初值为 l（l 是标定元素 v 的位置）
         int gt = r + 1;  // 指向 > v 的第一个元素；∵ 初始没有元素 > v ∴ 初值为 r+1

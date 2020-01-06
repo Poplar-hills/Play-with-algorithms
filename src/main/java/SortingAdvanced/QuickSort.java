@@ -1,5 +1,9 @@
 package SortingAdvanced;
 
+import SortingBasic.InsertionSort;
+
+import static Utils.Helpers.*;
+
 /*
 * 快速排序（Quick Sort）：
 *
@@ -49,33 +53,28 @@ package SortingAdvanced;
 *   - 综合起来就是 O(nlogn) 的复杂度。
 * */
 
-import SortingBasic.InsertionSort;
-
-import static Utils.Helpers.*;
-
 public class QuickSort {
-    public static void sort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort(T[] arr) {
         sort(arr, 0, arr.length - 1);
     }
 
-    private static void sort(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> void sort(T[] arr, int l, int r) {
         if (l >= r) return;
         int p = partition(arr, l, r);
         sort(arr, l, p - 1);
         sort(arr, p + 1, r);
     }
 
-    private static int partition(Comparable[] arr, int l, int r) {
-        Comparable v = arr[l];  // 标定元素 pivot
-        int j = l;              // j 指向 <= v 的最后一个元素，∵ 最初没有元素 <= v，∴ 指向 l
-        for (int i = l + 1; i <= r; i++) {
-            if (arr[i].compareTo(v) <= 0) {
-                swap(arr, i, j + 1);  // 与 > v 的第一个元素进行 swap
-                j++;
-            }
-        }
-        swap(arr, l, j);  // 将 v 放到正确的位置上
-        return j;         // 返回 v 的索引
+    private static <T extends Comparable<T>> int partition(T[] arr, int l, int r) {
+        T v = arr[l];          // 标定元素 pivot
+        int j = l;                      // j 指向 <= v 的最后一个元素，∵ 最初没有元素 <= v，∴ 指向 l
+
+        for (int i = l + 1; i <= r; i++)
+            if (arr[i].compareTo(v) <= 0)
+                swap(arr, i, j++ + 1);  // 与 > v 的第一个元素进行 swap
+
+        swap(arr, l, j);                // 将 v 放到正确的位置上
+        return j;                       // 返回 v 的索引
     }
 
     public static void main(String[] args) {
@@ -87,7 +86,7 @@ public class QuickSort {
         Integer[] arr1 = generateRandomIntArr(100000);
         Integer[] arr2 = arr1.clone();
         Integer[] arr3 = arr1.clone();
-        timeIt(arr1, QuickSort::sort);  // 比 MergeSort 快不少，原因分析见 QuickSort2
+        timeIt(arr1, QuickSort::sort);       // 比 MergeSort 快不少，原因分析见 QuickSort2
         timeIt(arr2, MergeSort::sort);
         timeIt(arr3, InsertionSort::sort2);  // 对于完全随机的数据集，插入排序完全不是归并排序和快排的对手，不在一个量级上，慢几百倍
     }

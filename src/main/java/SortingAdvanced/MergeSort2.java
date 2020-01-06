@@ -18,11 +18,11 @@ import static Utils.Helpers.*;
 * */
 
 public class MergeSort2 {
-    public static void sort(Comparable[] arr) {
+    public static <T extends Comparable<T>> void sort(T[] arr) {
         sort(arr, 0, arr.length - 1);
     }
 
-    private static void sort(Comparable[] arr, int l, int r) {
+    private static <T extends Comparable<T>> void sort(T[] arr, int l, int r) {
         if (r - l <= 15) {  // 当元素个数 >= 15时，直接采用插入排序（这个优化只会提升对于近有序数组的排序性能）
             InsertionSort.sortRange(arr, l, r);
             return;
@@ -36,23 +36,19 @@ public class MergeSort2 {
             merge(arr, l, mid, r);
     }
 
-    private static void merge(Comparable[] arr, int l, int mid, int r) {
-        Comparable[] aux = Arrays.copyOfRange(arr, l, r + 1);
+    private static <T extends Comparable<T>> void merge(T[] arr, int l, int mid, int r) {
+        T[] aux = Arrays.copyOfRange(arr, l, r + 1);
         int i = l, j = mid + 1;
 
         for (int k = l; k <= r; k++) {
-            if (i > mid) {
-                arr[k] = aux[j - l]; j++;
-            }
-            else if (j > r) {
-                arr[k] = aux[i - l]; i++;
-            }
-            else if (aux[i - l].compareTo(aux[j - l]) < 0) {
-                arr[k] = aux[i - l]; i++;
-            }
-            else {
-                arr[k] = aux[j - l]; j++;
-            }
+            if (i > mid)
+                arr[k] = aux[j++ - l];
+            else if (j > r)
+                arr[k] = aux[i++ - l];
+            else if (aux[i - l].compareTo(aux[j - l]) < 0)
+                arr[k] = aux[i++ - l];
+            else
+                arr[k] = aux[j++ - l];
         }
     }
 
