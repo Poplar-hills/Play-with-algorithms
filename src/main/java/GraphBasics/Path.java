@@ -7,23 +7,23 @@ import java.util.*;
 import static Utils.Helpers.log;
 
 /*
-* 寻路（Path）
-*
-* - 通过深度优先遍历（Depth First Search, DFS）找到两点之间的路径（不一定是最短的）
-*
-* - 例：对于 testG2.txt 中描述的 graph：
-*
-*             0 ----- 1 ------- 4       0 | 1  2  5
-*           / \     / \        /        1 | 0  2  3  4
-*         /    \  /    \     /          2 | 0  1
-*       /       2       \  /            3 | 1  4  5
-*      5 --------------- 3              4 | 1  3
-*                                       5 | 0  3
-*
-*   如果 source 是4，则经过 new Path(graph, 4) 之后：
-*       vertex:    0  1  2  3  4  5
-*       from:    [ 1  4  0  5 -1  0 ]
-* */
+ * 寻路（Path）
+ *
+ * - 通过深度优先遍历（Depth First Search, DFS）找到两点之间的路径（不一定是最短的）
+ *
+ * - 例：对于 testG2.txt 中描述的 graph：
+ *
+ *             0 ----- 1 ------- 4       0 | 1  2  5
+ *           / \     / \        /        1 | 0  2  3  4
+ *         /    \  /    \     /          2 | 0  1
+ *       /       2       \  /            3 | 1  4  5
+ *      5 --------------- 3              4 | 1  3
+ *                                       5 | 0  3
+ *
+ *   如果 source 是4，则经过 new Path(graph, 4) 之后：
+ *       vertex:    0  1  2  3  4  5
+ *       from:    [ 1  4  0  5 -1  0 ]
+ * */
 
 public class Path {
     private Graph graph;
@@ -86,7 +86,7 @@ public class Path {
         return list;
     }
 
-    public List<List<Integer>> allPaths(int target) {   // 找到两顶点之间的所有路径
+    public List<List<Integer>> allPaths(int target) {   // 找到两顶点之间的所有路径，复杂度 O(n^n)
         if (target < 0 || target >= graph.getVertexCount())
             throw new IllegalArgumentException("path failed. Vertex out of boundary.");
 
@@ -105,7 +105,7 @@ public class Path {
                 continue;
             }
             for (int adj : graph.getAdjacentEdges(lastVertex)) {  // 获取所有相邻顶点
-                if (path.contains(adj)) continue;                 // 若顶点已存在于该路径中，则说明已经访问过，不再继续（否则会成环）
+                if (path.contains(adj)) continue;                 // 【重要】若顶点已存在于该路径中，则说明已经访问过，不再继续（否则会成环）
                 List<Integer> newPath = new ArrayList<>(path);    // 复制该路径并 add 这个 adj 顶点，形成一条新路径，放入 q 中
                 newPath.add(adj);
                 q.offer(newPath);
