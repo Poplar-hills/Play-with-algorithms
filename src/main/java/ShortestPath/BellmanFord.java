@@ -16,7 +16,7 @@ import static Utils.Helpers.log;
 *
 * - 概要
 *   - 可以为含有负权边（negative weight edge）的图计算最短路径（Dijkstra 算法则不行）
-*   - 相应的代价是复杂度是 O(EV)，大大高于 Dijkstra 算法。
+*   - 相应的代价是复杂度是 O(EV)，大大高于 Dijkstra 算法的 O(ElogV)。
 *
 * - 前提：
 *   - 计算含有负权边的图的最短路径仍然依赖于松弛操作（relaxation）。
