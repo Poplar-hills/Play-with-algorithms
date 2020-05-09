@@ -1,10 +1,10 @@
 package UnionFind;
 
 /*
-* 并查集（Union Find）第一版
-*
-* SEE: play-with-data-structure/UnionFind
-* */
+ * 并查集（Union Find）第一版
+ *
+ * SEE: play-with-data-structure/UnionFind
+ * */
 
 public class UnionFind1 implements UF {
     private int[] setIds;
